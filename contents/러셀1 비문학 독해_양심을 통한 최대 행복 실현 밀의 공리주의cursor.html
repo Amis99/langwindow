@@ -1,0 +1,3311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>양심을 통한 최대 행복 실현 - 밀의 공리주의 - 비문학 독해</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif KR', serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .progress-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .stage-indicator {
+            display: flex;
+            gap: 10px;
+        }
+
+        .stage-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .stage-dot.active {
+            background: #3498db;
+            transform: scale(1.3);
+        }
+
+        .stage-dot.completed {
+            background: #27ae60;
+        }
+
+        .question-counter {
+            font-size: 18px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        /* Timer Bar */
+        .timer-container {
+            width: 300px;
+            height: 24px;
+            background: #ecf0f1;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .timer-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            border-radius: 12px;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timer-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(100%); }
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 100px; /* Fixed header spacing */
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            min-height: 600px;
+            position: relative;
+        }
+
+        .passage-container {
+            font-size: 18px;
+            line-height: 2;
+            color: #2c3e50;
+            white-space: pre-wrap;
+            word-break: keep-all;
+        }
+
+        .poem-section {
+            margin: 30px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            border-radius: 8px;
+        }
+
+        /* 확인 학습에서 텍스트 선택 지원 */
+        #poem-content {
+            -webkit-user-select: text;
+            user-select: text;
+            -webkit-touch-callout: default;
+            cursor: text;
+        }
+
+        .poem-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .commentary-section {
+            margin: 30px 0;
+        }
+
+        .commentary-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .highlight {
+            background-color: rgba(255, 235, 59, 0.3);
+            padding: 2px 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .highlight:hover {
+            background-color: rgba(255, 235, 59, 0.5);
+            box-shadow: 0 0 0 2px rgba(255, 235, 59, 0.3);
+        }
+
+        .highlight.active {
+            background-color: rgba(255, 235, 59, 0.6);
+            box-shadow: 0 0 0 3px rgba(255, 235, 59, 0.4);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        /* Question Modal */
+        .question-modal {
+            position: fixed;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            background: white;
+            padding: 14px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: min(90vw, 400px);
+            height: min(135vw, 600px); /* 가로 세로 비율 1:1.5 고정 (세로가 더 길게) */
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1000;
+            cursor: move;
+            display: none;
+            will-change: transform;
+        }
+
+        /* 모바일에서 독해학습 모달 10% 추가 축소 */
+        @media (max-width: 768px) {
+            .question-modal {
+                width: 85vw;
+                height: 127.5vw; /* 85vw * 1.5 = 127.5vw (세로가 더 길게) */
+                max-height: 70vh;
+                padding: 12px;
+                transform: translateX(-50%) scale(0.9);
+                transform-origin: center center;
+            }
+
+            .modal-question {
+                font-size: 11.5px; /* 0.5pt 감소 */
+            }
+
+            .option-button {
+                padding: 6px 10px;
+                font-size: 10.5px; /* 0.5pt 감소 */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .question-modal {
+                width: 90vw;
+                height: 135vw; /* 90vw * 1.5 = 135vw (세로가 더 길게) */
+                max-height: 60vh;
+                padding: 10px;
+            }
+        }
+
+        /* 핸드폰 사이즈에서 모달 크기 20% 더 작게 */
+        @media (max-width: 480px) {
+            .question-modal {
+                width: 72vw; /* 90vw * 0.8 = 72vw */
+                height: 108vw; /* 72vw * 1.5 = 108vw (세로가 더 길게) */
+                max-height: 48vh; /* 60vh * 0.8 = 48vh */
+                padding: 8px; /* 10px * 0.8 = 8px */
+                transform: translateX(-50%) scale(0.8); /* 기존 0.9에서 0.8로 변경 */
+            }
+        }
+
+        .question-modal.active {
+            display: block;
+        }
+
+        .question-modal.dragging {
+            opacity: 0.95;
+            user-select: none;
+        }
+
+        .modal-header {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .modal-question {
+            font-size: 12.5px;
+            line-height: 1.5;
+            color: #34495e;
+            margin-bottom: 15px;
+        }
+
+        .modal-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option-button {
+            padding: 8px 14px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 12.5px; /* 0.5pt 감소 */
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* MCQ 단계에서 더 큰 폰트 */
+        .mcq-container .option-button {
+            font-size: 18.5px; /* 0.5pt 감소 */
+            padding: 20px 25px;
+            border-radius: 10px;
+            width: 100%;
+            line-height: 1.7;
+        }
+
+        /* 모바일에서 MCQ 글자 크기 30% 축소 */
+        @media (max-width: 768px) {
+            .mcq-question {
+                font-size: 14px !important; /* 20px * 0.7 = 14px */
+            }
+
+            .mcq-container .option-button {
+                font-size: 12.5px !important; /* 0.5pt 감소 */
+                padding: 15px 18px;
+            }
+        }
+
+        .option-number {
+            width: 20px;
+            height: 20px;
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        .option-button:hover {
+            background: #e3f2fd;
+            border-color: #3498db;
+            transform: translateX(5px);
+        }
+
+        .option-button.correct {
+            background: #d4edda;
+            border-color: #27ae60;
+            animation: correctAnswer 0.6s ease;
+        }
+
+        .option-button.incorrect {
+            background: #f8d7da;
+            border-color: #e74c3c;
+            animation: incorrectAnswer 0.6s ease;
+        }
+
+        @keyframes correctAnswer {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes incorrectAnswer {
+            0%, 20%, 40%, 60%, 80%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            15%, 35%, 55%, 75%, 95% { transform: translateX(5px); }
+        }
+
+        /* Find Stage Styles */
+        .find-question-modal {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 14px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 280px;
+            z-index: 1000;
+            cursor: move;
+            display: none;
+        }
+
+        .find-counter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .selection-badge {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 0 2px;
+        }
+
+        .text-selection {
+            background: rgba(52, 152, 219, 0.3);
+            position: relative;
+        }
+
+        /* Review Stage Styles */
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 30px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            min-height: 450px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 15px 20px; /* 30% 감소 */
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: grab;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 2px solid #e0e0e0;
+            white-space: pre-line;
+            font-size: 15px; /* 14px에서 15px로 1포인트 증가 */
+            line-height: 1.6;
+            touch-action: none;
+            -webkit-user-select: none;
+            user-select: none;
+            position: relative;
+            width: 100%;
+        }
+
+        /* 모바일에서 복기학습 카드 20% 축소 */
+        @media (max-width: 768px) {
+            .summary-card {
+                padding: 12px 16px; /* 80% 크기 */
+                font-size: 11px; /* 80% 크기 */
+                line-height: 1.5;
+            }
+
+            .card-number {
+                font-size: 10px !important;
+                width: 18px !important;
+                height: 18px !important;
+            }
+        }
+
+        .summary-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+        }
+
+        .summary-card.dragging {
+            opacity: 0.95;
+            cursor: grabbing;
+            z-index: 1000;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+
+        .summary-card.drag-placeholder {
+            background: #f0f0f0;
+            border: 2px dashed #999;
+            opacity: 0.5;
+        }
+
+        .summary-card.correct {
+            border-color: #27ae60;
+            background: #d4edda;
+            animation: cardCorrect 0.6s ease;
+        }
+
+        .summary-card.incorrect {
+            border-color: #e74c3c;
+            background: #f8d7da;
+            animation: cardIncorrect 0.6s ease;
+        }
+
+        @keyframes cardCorrect {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes cardIncorrect {
+            0%, 20%, 40%, 60%, 80%, 100% { transform: rotate(0); }
+            10%, 30%, 50%, 70%, 90% { transform: rotate(-2deg); }
+            15%, 35%, 55%, 75%, 95% { transform: rotate(2deg); }
+        }
+
+        .card-number {
+            display: inline-block;
+            width: 24px; /* 30% 감소 */
+            height: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-weight: bold;
+            font-size: 12px;
+            margin-right: 10px;
+            margin-bottom: 0;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            vertical-align: middle;
+        }
+
+        @keyframes numberUpdate {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.3) rotate(180deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+
+        .card-number.updating {
+            animation: numberUpdate 0.5s ease;
+        }
+
+        /* MCQ Stage Styles */
+        .mcq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .mcq-question {
+            font-size: 24px;
+            line-height: 1.9;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 5px solid #3498db;
+            text-align: center;
+        }
+
+        .mcq-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .mcq-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Results Panel */
+        .results-panel {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 120px auto 40px; /* Add top margin for fixed header */
+            text-align: center;
+            display: none;
+            position: relative;
+        }
+
+        .results-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .results-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+        }
+
+        /* View Passage Button */
+        .view-passage-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #3498db;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .view-passage-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+        }
+
+        /* Passage Modal */
+        .passage-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+        }
+
+        .passage-modal-overlay.active {
+            display: block;
+        }
+
+        .passage-modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 560px;
+            max-height: 80vh;
+            overflow-y: auto;
+            width: 90%;
+        }
+
+        .passage-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .passage-modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .close-modal {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            background: #c0392b;
+        }
+
+        .passage-modal-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c3e50;
+            white-space: pre-wrap;
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes correctGlow {
+            0% { box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(76, 175, 80, 0.8), 0 0 30px rgba(76, 175, 80, 0.5); }
+            100% { box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); }
+        }
+
+        @keyframes incorrectShake {
+            0%, 100% { transform: translateX(0); }
+            10% { transform: translateX(-15px) rotateZ(-2deg); }
+            20% { transform: translateX(15px) rotateZ(2deg); }
+            30% { transform: translateX(-15px) rotateZ(-2deg); }
+            40% { transform: translateX(15px) rotateZ(2deg); }
+            50% { transform: translateX(0); }
+        }
+
+        .correct-animation {
+            animation: correctGlow 0.6s ease-in-out, pulse 0.6s ease-in-out;
+        }
+
+        .incorrect-animation {
+            animation: incorrectShake 0.6s ease-in-out;
+            background-color: #ffebee !important;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Submit Button for Review Stage */
+        .submit-btn {
+            margin: 30px auto;
+            display: block;
+            background: #27ae60;
+            color: white;
+            padding: 14px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #229954;
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        /* Mobile Responsive */
+        /* Tablet styles */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px;
+            }
+
+            .title {
+                font-size: 20px;
+            }
+
+            .subtitle {
+                font-size: 12px;
+            }
+
+            .progress-info {
+                width: 100%;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .timer-container {
+                width: 100%;
+                height: 20px;
+            }
+
+            .question-counter {
+                font-size: 16px;
+            }
+
+            .main-content {
+                margin-top: 140px;
+                padding: 20px;
+            }
+        }
+
+        /* Mobile portrait styles */
+        @media (max-width: 480px) and (orientation: portrait) {
+            .header {
+                padding: 10px;
+            }
+
+            .title {
+                font-size: 16px;
+            }
+
+            .subtitle {
+                font-size: 11px;
+            }
+
+            .progress-info {
+                gap: 8px;
+            }
+
+            .stage-indicator {
+                gap: 6px;
+            }
+
+            .stage-dot {
+                width: 8px;
+                height: 8px;
+            }
+
+            .timer-container {
+                height: 16px;
+            }
+
+            .question-counter {
+                font-size: 14px;
+            }
+
+            .main-content {
+                margin-top: 100px;
+                padding: 15px;
+            }
+
+            .passage-container {
+                font-size: 14px;
+                line-height: 1.7;
+            }
+
+            .poem-section {
+                padding: 15px;
+                margin: 15px 0;
+            }
+
+            .poem-title {
+                font-size: 16px;
+            }
+
+            /* Results panel adjustment for mobile */
+            .results-panel {
+                margin-top: 110px !important;
+                padding: 20px;
+            }
+
+            .results-title {
+                font-size: 20px;
+            }
+
+            .results-stats {
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 10px;
+            }
+
+            .stat-value {
+                font-size: 20px;
+            }
+
+            .stat-label {
+                font-size: 11px;
+            }
+        }
+
+        /* Very small mobile screens */
+        @media (max-width: 360px) {
+            .header {
+                padding: 8px;
+            }
+
+            .title {
+                font-size: 14px;
+            }
+
+            .subtitle {
+                display: none; /* Hide subtitle on very small screens */
+            }
+
+            .main-content {
+                margin-top: 85px;
+            }
+
+            .results-panel {
+                margin-top: 95px !important;
+            }
+
+            .question-modal {
+                min-width: 85vw;
+                max-width: 85vw;
+                left: 7.5%;
+                right: 7.5%;
+            }
+
+            .find-question-modal {
+                max-width: 85vw;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <div class="title">양심을 통한 최대 행복 실현</div>
+                <div class="subtitle">밀의 공리주의 - 비문학 독해</div>
+            </div>
+            <div class="progress-info">
+                <div class="stage-indicator">
+                    <div class="stage-dot active" data-stage="reading"></div>
+                    <div class="stage-dot" data-stage="find"></div>
+                    <div class="stage-dot" data-stage="review"></div>
+                    <div class="stage-dot" data-stage="mcq"></div>
+                </div>
+                <div class="question-counter">
+                    문제 <span id="current-question">1</span> / <span id="total-questions">28</span>
+                </div>
+                <div class="timer-container">
+                    <div class="timer-bar" id="timer-bar" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content" id="main-content">
+            <!-- Content will be dynamically loaded here -->
+        </div>
+
+        <!-- Question Modal -->
+        <div class="question-modal" id="question-modal">
+            <div class="modal-header">문제 <span id="modal-question-num">1</span></div>
+            <div class="modal-question" id="modal-question-text"></div>
+            <div class="modal-options" id="modal-options"></div>
+        </div>
+
+        <!-- Find Question Modal -->
+        <div class="find-question-modal" id="find-question-modal">
+            <div class="modal-header">확인 학습</div>
+            <div class="modal-question" id="find-question-text"></div>
+            <div style="text-align: center; margin: 10px 0; color: #3498db; font-weight: bold;">
+                정답 글자수: <span id="answer-char-count" style="font-size: 18px;">0</span>글자
+            </div>
+            <div class="find-counter">
+                선택: <span id="find-selection-count">0</span> / <span id="find-required-count">1</span>
+            </div>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="results-panel" id="results-panel">
+            <div class="results-title">학습 결과</div>
+            <div class="results-stats" id="results-stats"></div>
+            <div class="results-actions">
+                <button class="btn btn-secondary" onclick="restartStage()">다시 학습하기</button>
+                <button class="btn btn-primary" onclick="nextStage()">다음으로</button>
+            </div>
+        </div>
+
+        <!-- View Passage Button -->
+        <button class="view-passage-btn" onclick="showPassageModal()" style="display: none;">지문 보기</button>
+
+        <!-- Passage Modal -->
+        <div class="passage-modal-overlay" id="passage-modal-overlay">
+            <div class="passage-modal">
+                <div class="passage-modal-header">
+                    <div class="passage-modal-title">전체 지문 보기</div>
+                    <button class="close-modal" onclick="closePassageModal()">×</button>
+                </div>
+                <div class="passage-modal-content" id="passage-modal-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 기본 변수 설정
+        let currentStage = 'reading';
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctAnswers = 0;
+        let wrongAttempts = 0; // 독해 학습 틀린 횟수
+        let findWrongAttempts = 0; // 확인 학습 틀린 횟수
+        let reviewWrongAttempts = 0; // 복기 학습 틀린 횟수
+        let reviewCorrectCards = 0; // 복기 학습 누적 정답 카드 수
+        let mcqWrongAttempts = 0; // 단답형 학습 틀린 횟수
+        let totalQuestions = 0;
+        let timeRemaining = 100; // percentage
+        let timerInterval = null;
+        let lastModalPosition = null; // 마지막 모달 위치 저장
+        let stageStartTime = 0; // 각 단계 시작 시간
+        let globalStartTime = 0; // 전체 학습 시작 시간
+
+        // 학습 단계별 결과 저장
+        let stageResults = {
+            reading: { correct: 0, wrong: 0, score: 0, time: 0, attempts: 0, elapsedTime: 0 },
+            find: { correct: 0, wrong: 0, score: 0, time: 0, attempts: 0, elapsedTime: 0 },
+            review: { correct: 0, wrong: 0, score: 0, time: 0, attempts: 0, elapsedTime: 0 },
+            mcq: { correct: 0, wrong: 0, score: 0, time: 0, attempts: 0, elapsedTime: 0 }
+        };
+
+        // 누적 데이터 제거됨
+
+        // 시간을 분:초 형식으로 변환
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}분 ${secs}초`;
+        }
+
+        // 마크다운 파서 함수
+        function parseMarkdown(text) {
+            return text
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')  // **굵은 글씨**
+                .replace(/__(.+?)__/g, '<u>$1</u>')                // __밑줄__
+                .replace(/\*([^*]+?)\*/g, '<em>$1</em>');          // *이탤릭*
+        }
+
+        // 퍼지 매칭 함수 (한 글자 차이, 구두점 차이 허용)
+        function fuzzyMatch(text1, text2) {
+            // 공백 정규화
+            const normalize = (str) => {
+                return str.replace(/\s+/g, ' ').trim()
+                    .replace(/[.,!?;:]/g, '') // 구두점 제거
+                    .replace(/[''""「」『』]/g, ''); // 특수 따옴표 제거
+            };
+
+            const norm1 = normalize(text1);
+            const norm2 = normalize(text2);
+
+            // 완전 일치
+            if (norm1 === norm2) return true;
+
+            // 길이 차이 확인 (1글자 차이만 허용)
+            if (Math.abs(norm1.length - norm2.length) > 1) return false;
+
+            // Levenshtein 거리 계산 (1 이하만 허용)
+            const dp = Array(norm2.length + 1).fill(null).map(() => Array(norm1.length + 1).fill(0));
+
+            for (let i = 0; i <= norm1.length; i++) dp[0][i] = i;
+            for (let j = 0; j <= norm2.length; j++) dp[j][0] = j;
+
+            for (let j = 1; j <= norm2.length; j++) {
+                for (let i = 1; i <= norm1.length; i++) {
+                    if (norm1[i - 1] === norm2[j - 1]) {
+                        dp[j][i] = dp[j - 1][i - 1];
+                    } else {
+                        dp[j][i] = Math.min(
+                            dp[j - 1][i] + 1,
+                            dp[j][i - 1] + 1,
+                            dp[j - 1][i - 1] + 1
+                        );
+                    }
+                }
+            }
+
+            return dp[norm2.length][norm1.length] <= 1;
+        }
+
+        // 어절 단위 선택 검사 함수
+        function checkWordSelection(selectedText, correctAnswer) {
+            // 1. 기존 퍼지 매칭으로 먼저 검사 (정확히 일치 또는 1글자 차이)
+            if (fuzzyMatch(selectedText, correctAnswer)) return true;
+
+            // 2. 어절 단위 검사
+            const selectedWords = selectedText.split(/\s+/);
+            const answerWords = correctAnswer.split(/\s+/);
+
+            // 경우 1: 단일 어절 정답
+            // 예: 정답 '나'일 때
+            if (answerWords.length === 1) {
+                // 반드시 단일 어절만 선택해야 함
+                // '나는' 선택 - 정답 (정답이 포함된 단일 어절)
+                // '나는 괴로워했다' 선택 - 오답 (여러 어절 선택)
+                if (selectedWords.length === 1 && selectedWords[0].includes(correctAnswer)) {
+                    return true;
+                }
+                return false;
+            }
+
+            // 경우 2: 복수 어절 정답
+            // 예: 정답 '하늘을 우러러'일 때
+            // '하늘을 우러러' 선택 - 정답
+            // '죽는 날까지 하늘을 우러러' 선택 - 오답 (정답 외 어절 포함)
+            if (answerWords.length > 1) {
+                // 선택된 모든 어절이 정답 어절에 속해야 함
+                // 정답에 없는 어절이 하나라도 있으면 오답
+
+                for (let selectedWord of selectedWords) {
+                    let foundInAnswer = false;
+
+                    for (let answerWord of answerWords) {
+                        // 선택 어절이 정답 어절과 일치하거나 부분 일치
+                        if (selectedWord === answerWord ||
+                            answerWord.includes(selectedWord) ||
+                            selectedWord.includes(answerWord)) {
+                            foundInAnswer = true;
+                            break;
+                        }
+                    }
+
+                    // 정답에 없는 어절이 선택되었으면 오답
+                    if (!foundInAnswer) {
+                        return false;
+                    }
+                }
+
+                // 모든 정답 어절이 선택에 포함되어야 함
+                for (let answerWord of answerWords) {
+                    let foundInSelection = false;
+
+                    for (let selectedWord of selectedWords) {
+                        if (selectedWord === answerWord ||
+                            selectedWord.includes(answerWord) ||
+                            answerWord.includes(selectedWord)) {
+                            foundInSelection = true;
+                            break;
+                        }
+                    }
+
+                    // 정답 어절이 선택에 없으면 오답
+                    if (!foundInSelection) {
+                        return false;
+                    }
+                }
+
+                // 모든 조건을 만족하면 정답
+                return true;
+            }
+
+            return false;
+        }
+
+        // 전체 학습 데이터
+        const learningData = {
+            // 지문 본문 (원고 그대로)
+            passage: `공리주의는 공리를 통해 최대 행복을 실현하는 것을 중시하는 이론이다. 여기서 공리란 이익과 유용함을 뜻하며, 공리주의에서 행복이란 고통을 피하고 쾌락을 추구하는 것을 의미한다. 이때 행복은 개인의 쾌락만이 아니라 개인의 행위와 관련된 사회 구성원의 쾌락도 함께 고려하는 것이다.
+
+밀 이전의 공리주의는 양적 쾌락주의의 입장을 가졌다. 이는 모든 쾌락이 측정 가능하고 어디서 나오든 상관없이 똑같은 성질을 가지므로 단지 양에서만 차이가 난다고 보는 것이다. 동물적 욕망에서 나오는 감각적 쾌락과 인간의 지성, 도덕 감정, 상상력 등에서 나오는 정신적 쾌락이 본질적으로 동일하다고 본 것이다.
+
+하지만 이런 입장은 여러 비판을 받았다. 상대적으로 쉽게 쾌락을 누릴 수 있는 동물이 가장 행복한 존재가 될 수 있기 때문에 '천박한 돼지의 철학'이라는 비판을 받았다. 또한 최대 행복의 추구가 인간의 이기심과 충돌할 수 있어서 실현하기 어렵다는 비판도 있었다. 이런 문제점들을 해결하기 위해 밀은 공리주의 이론을 발전시켰다.
+
+밀은 질적 쾌락주의를 주장했다. 그는 쾌락이 본래부터 질적 차이가 있다고 봤다. 감각적이고 육체적인 쾌락은 저급 쾌락이고, 정신적 쾌락은 고급 쾌락이다. 고급 쾌락은 저급 쾌락보다 더 바람직하고 가치 있는 우월성을 지닌다고 생각했다. 동물과 달리 인간은 고급 쾌락의 추구를 통해 인간의 품위를 높일 수 있다고 봤다.
+
+밀 이전의 공리주의는 최대 행복 추구와 이기심이 충돌할 때 법률, 여론 등과 같은 외적 제재가 개인의 이기적 본성을 제어할 수 있다고 생각했다. 하지만 밀은 이것이 근본적인 해결책이 아니라고 봤다. 외적 제재가 최대 행복의 원리에 맞는 행동을 하게 할 수는 있지만, 자발적으로 그런 행동을 하도록 이끄는 힘은 아니라고 생각했기 때문이다.
+
+그래서 밀은 내적 제재인 양심을 강조했다. 양심은 우리 마음 안에서 형성되는 일종의 도덕적 의무감으로, 이를 어기면 내면에 고통을 준다. 양심은 구성원들과 일체감을 이루고자 하는 타고난 사회적 감정에 바탕을 두고, 교육과 외적 제재 등의 후천적인 경험을 통해 기를 수 있다. 이를 통해 비로소 인간은 자기 이익만 추구하는 성향을 극복하고 최대 행복의 원리에 따르는 삶을 실현할 수 있다고 봤다.
+
+밀은 외적 제재와 내적 제재를 통해 최대 행복의 원리를 실현하여 사회 구성원의 복지를 높일 수 있다고 보았고, 그런 점에서 공리주의가 인간 윤리의 타당한 기준이 될 수 있다고 강조했다.`,
+
+            // 전체 지문
+            fullPassage: function() {
+                return this.passage;
+            }
+        };
+
+        // 독해 학습 문제들 (28개)
+        learningData.readingQuestions = [
+            {
+                text: "공리주의는 공리를 통해 최대 행복을 실현하는 것을 중시하는 이론이다.",
+                question: "공리주의가 가장 중요하게 여기는 목표가 무엇인지 추론한 것으로 가장 적절한 것을 고르시오.",
+                correct: "공리(이익과 유용함)라는 수단을 사용하여 사회의 총 행복량을 가장 크게 만드는 것을 목표로 한다.",
+                wrong: [
+                    "사회 전체의 행복을 위해 공리의 개념을 비판적으로 재정립하는 것을 목표로 한다.",
+                    "개인의 행복 실현을 최우선으로 삼되, 공리는 부차적인 요소로 간주하는 것을 목표로 한다.",
+                    "최대 행복이라는 추상적인 가치보다 공리라는 현실적인 이익을 확보하는 것을 목표로 한다.",
+                    "공리와 행복의 충돌 가능성을 인지하고, 이를 해결할 윤리적 원칙을 세우는 것을 목표로 한다.",
+                    "'최대 행복'의 기준을 명확히 정의하는 철학적 토대를 마련하는 것을 최우선 목표로 한다.",
+                    "개인이 공리를 실현하는 과정에서 겪는 고통의 의미를 탐구하는 것을 목표로 한다."
+                ]
+            },
+            {
+                text: "여기서 공리란 이익과 유용함을 뜻하며, 공리주의에서 행복이란 고통을 피하고 쾌락을 추구하는 것을 의미한다.",
+                question: "'공리주의적 행복'의 개념을 올바르게 이해한 것을 고르시오.",
+                correct: "고통이라는 부정적 상태를 제거하고 쾌락이라는 긍정적 상태를 지향하는 것이다.",
+                wrong: [
+                    "사회적 이익과 유용함을 실현하기 위해 때로는 고통을 감수하는 것이다.",
+                    "정신적 쾌락을 통해 육체적 고통의 의미를 숭고하게 받아들이는 것이다.",
+                    "장기적인 쾌락을 위해 단기적인 고통과 이익을 모두 회피하는 것이다.",
+                    "고통과 쾌락의 총량을 계산하여 유용함의 가치를 판단하는 것이다.",
+                    "타인의 쾌락을 위해 자신의 고통을 감내하는 이타적인 상태를 의미하는 것이다.",
+                    "이익과 유용함을 실현하는 과정에서 자연스럽게 발생하는 정신적 만족감을 뜻하는 것이다."
+                ]
+            },
+            {
+                text: "이때 행복은 개인의 쾌락만이 아니라 개인의 행위와 관련된 사회 구성원의 쾌락도 함께 고려하는 것이다.",
+                question: "공리주의가 고려하는 '행복의 범위'를 가장 정확하게 설명한 것을 고르시오.",
+                correct: "한 개인의 행동이 영향을 미치는 범위 내에 있는 다른 사람들의 쾌락까지 포함한다.",
+                wrong: [
+                    "개인의 내면적 쾌락을 가장 우선시하며, 타인의 쾌락은 간접적으로만 고려한다.",
+                    "사회 구성원 다수의 쾌락을 위해 개인의 쾌락은 희생될 수 있음을 암시한다.",
+                    "행위자와 직접적인 관계가 없는 불특정 다수를 포함한 모든 인류의 쾌락을 계산한다.",
+                    "개인의 행위보다는 사회 시스템이 구성원의 쾌락에 미치는 영향을 먼저 고려한다.",
+                    "사회 전체의 쾌락 총량이 개인의 쾌락 총량보다 항상 더 중요하다고 강조한다.",
+                    "개인의 쾌락과 사회 구성원의 쾌락이 충돌할 경우, 그 판단을 개인의 양심에 맡긴다."
+                ]
+            },
+            {
+                text: "밀 이전의 공리주의는 양적 쾌락주의의 입장을 가졌다.",
+                question: "'밀 이전의 공리주의'가 어떤 입장이었는지 가장 정확하게 파악한 것을 고르시오.",
+                correct: "쾌락의 질적 차이를 인정하지 않고 오직 양으로만 쾌락을 평가하는 관점을 가졌다.",
+                wrong: [
+                    "쾌락의 정신적 가치를 강조하며 질적 우월성을 중시하는 관점을 가졌다.",
+                    "개인의 양심을 쾌락 측정의 기준으로 삼는 내적 제재 중심의 관점을 가졌다.",
+                    "쾌락의 양을 측정하는 것이 불가능하다고 보고 행복의 실현 가능성에 비판적 관점을 가졌다.",
+                    "사회적 공리를 위해 개인의 쾌락을 통제해야 한다는 엄격한 관점을 가졌다.",
+                    "다양한 쾌락의 종류를 인정하되, 감각적 쾌락을 더 중시하는 관점을 가졌다.",
+                    "쾌락의 양과 질을 모두 고려해야 한다는 통합적인 관점을 가졌다."
+                ]
+            },
+            {
+                text: "이는 모든 쾌락이 측정 가능하고 어디서 나오든 상관없이 똑같은 성질을 가지므로 단지 양에서만 차이가 난다고 보는 것이다.",
+                question: "양적 쾌락주의가 쾌락들을 비교하는 유일한 기준을 올바르게 추론한 것을 고르시오.",
+                correct: "쾌락의 양이 얼마나 더 많은가 혹은 적은가.",
+                wrong: [
+                    "쾌락이 정신에서 비롯되었는가 혹은 육체에서 비롯되었는가.",
+                    "쾌락이 얼마나 고상하고 품위 있는 가치를 지니는가.",
+                    "쾌락을 느끼는 과정이 얼마나 도덕적으로 정당한가.",
+                    "쾌락이 개인에게만 한정되는가 혹은 사회 전체에 영향을 미치는가.",
+                    "쾌락을 얻기까지의 노력이 얼마나 더 어려웠는가.",
+                    "쾌락이 얼마나 오랫동안 지속될 수 있는가."
+                ]
+            },
+            {
+                text: "동물적 욕망에서 나오는 감각적 쾌락과 인간의 지성, 도덕 감정, 상상력 등에서 나오는 정신적 쾌락이 본질적으로 동일하다고 본 것이다.",
+                question: "양적 쾌락주의가 두 종류의 쾌락을 어떻게 평가했는지 가장 잘 설명한 것을 고르시오.",
+                correct: "두 쾌락의 근원은 다르지만, 그 본질적 가치나 성질은 같다고 보았다.",
+                wrong: [
+                    "정신적 쾌락이 더 고차원적이므로 감각적 쾌락보다 우월하다고 보았다.",
+                    "측정하기 용이한 감각적 쾌락이 추상적인 정신적 쾌락보다 더 중요하다고 보았다.",
+                    "동물적 욕망에 기반한 감각적 쾌락은 피해야 할 저급한 가치로 보았다.",
+                    "두 쾌락은 성질이 완전히 달라 결코 동일한 기준으로 비교할 수 없다고 보았다.",
+                    "정신적 쾌락을 느끼기 위한 전제 조건으로 감각적 쾌락이 필수적이라고 보았다.",
+                    "감각적 쾌락과 정신적 쾌락의 조화로운 추구를 가장 이상적인 상태로 보았다."
+                ]
+            },
+            {
+                text: "하지만 이런 입장은 여러 비판을 받았다.",
+                question: "'이런 입장'이 구체적으로 무엇을 가리키는지 가장 정확하게 설명한 것을 고르시오.",
+                correct: "모든 쾌락의 가치는 질적으로 동일하며 오직 양으로만 그 차이를 구분할 수 있다는 관점",
+                wrong: [
+                    "최대 행복을 실현하기 위해 사회 구성원 모두의 쾌락을 고려해야 한다는 관점",
+                    "고통을 피하고 쾌락을 추구하는 것을 인간의 가장 중요한 목표로 삼는 관점",
+                    "이익과 유용함을 기준으로 모든 행위의 도덕적 가치를 판단해야 한다는 관점",
+                    "동물의 감각적 쾌락보다 인간의 정신적 쾌락이 더 우월한 가치를 지닌다는 관점",
+                    "인간의 이기심을 극복하기 위해 외적 제재가 반드시 필요하다는 관점",
+                    "공리주의가 인간 윤리의 타당한 기준이 될 수 있다고 주장하는 관점"
+                ]
+            },
+            {
+                text: "상대적으로 쉽게 쾌락을 누릴 수 있는 동물이 가장 행복한 존재가 될 수 있기 때문에 '천박한 돼지의 철학'이라는 비판을 받았다.",
+                question: "양적 쾌락주의가 '돼지의 철학'으로 비판받은 핵심 이유를 올바르게 추론한 것을 고르시오.",
+                correct: "인간의 고유한 정신적 가치를 무시하고, 단순한 감각적 쾌락만을 최고로 여기는 결과를 낳을 수 있어서",
+                wrong: [
+                    "동물의 권리를 인간의 권리와 동등하게 취급하여 윤리적 혼란을 일으킬 수 있어서",
+                    "쾌락을 양으로 측정하려는 시도 자체가 비과학적이고 실현 불가능한 목표라서",
+                    "사회 전체의 행복을 위해 동물의 희생을 정당화하는 논리로 사용될 수 있어서",
+                    "돼지와 같은 동물을 비유적으로 사용하여 철학의 품위를 떨어뜨렸기 때문에",
+                    "최대 행복의 추구가 결국 인간의 끝없는 욕망을 자극하여 사회적 갈등을 유발할 수 있어서",
+                    "쾌락의 기준을 동물에게 맞춤으로써 인간의 도덕적 타락을 조장할 위험이 있어서"
+                ]
+            },
+            {
+                text: "또한 최대 행복의 추구가 인간의 이기심과 충돌할 수 있어서 실현하기 어렵다는 비판도 있었다.",
+                question: "양적 쾌락주의의 또 다른 문제점을 가장 잘 설명한 것을 고르시오.",
+                correct: "이론적으로는 사회 전체의 행복을 말하지만, 실제 인간은 자신의 이익을 우선하려는 본성을 거스르기 어렵다는 점",
+                wrong: [
+                    "최대 행복이라는 개념 자체가 너무 추상적이어서 현실에 적용하기 어렵다는 점",
+                    "사회 구성원 각자가 생각하는 행복의 기준이 달라 하나의 목표로 합의하기 어렵다는 점",
+                    "이기심을 완전히 제거하는 것이 인간 본성에 어긋나므로 비현실적인 주장이라는 점",
+                    "최대 행복을 추구하는 과정에서 발생하는 선의의 경쟁이 과도한 이기심으로 변질될 수 있다는 점",
+                    "사회의 행복을 위해 개인의 이기심을 법적으로 통제하는 것이 인권 침해의 소지가 있다는 점",
+                    "이기심이 때로는 사회 발전의 원동력이 될 수 있다는 긍정적인 측면을 간과했다는 점"
+                ]
+            },
+            {
+                text: "이런 문제점들을 해결하기 위해 밀은 공리주의 이론을 발전시켰다.",
+                question: "밀이 공리주의 이론을 발전시킨 근본적인 동기를 가장 정확하게 추론한 것을 고르시오.",
+                correct: "기존 공리주의가 가진 철학적 한계와 현실적 문제점을 보완하여 이론의 설득력을 높이기 위해",
+                wrong: [
+                    "기존 공리주의의 핵심 원리를 완전히 부정하고 새로운 윤리 이론을 창시하기 위해",
+                    "쾌락을 양으로 계산하는 더욱 정밀하고 과학적인 방법을 개발하기 위해",
+                    "인간의 이기심을 강력하게 통제할 수 있는 사회적 시스템을 제안하기 위해",
+                    "공리주의가 '돼지의 철학'이라는 비판을 넘어서 동물 윤리의 영역까지 확장되기 위해",
+                    "사회 구성원들의 행복을 측정하는 객관적인 지표를 만들기 위해",
+                    "최대 행복의 추구가 개인의 자유를 침해할 수 있다는 점을 지적하기 위해"
+                ]
+            },
+            {
+                text: "밀은 질적 쾌락주의를 주장했다.",
+                question: "'질적 쾌락주의'라는 용어의 핵심 의미를 가장 잘 파악한 것을 고르시오.",
+                correct: "쾌락의 가치는 양적인 측면뿐만 아니라 질적인 수준에 의해서도 결정된다는 입장",
+                wrong: [
+                    "오직 정신적 쾌락만이 진정한 쾌락이며 감각적 쾌락은 피해야 한다는 입장",
+                    "쾌락의 질을 높이기 위해 사회 구성원 전체의 교육 수준을 높여야 한다는 입장",
+                    "쾌락의 질은 개인이 주관적으로 판단할 문제이므로 객관적 비교가 불가능하다는 입장",
+                    "양적으로는 부족하더라도 질적으로 우수한 쾌락을 추구해야 한다는 입장",
+                    "사회 전체의 행복의 질을 높이기 위해 개인의 쾌락은 제한될 수 있다는 입장",
+                    "쾌락의 양과 질이 서로 비례 관계에 있음을 주장하는 입장"
+                ]
+            }
+        ];
+
+        // 독해 학습 문제 11-20
+        learningData.readingQuestions.push(
+            {
+                text: "그는 쾌락이 본래부터 질적 차이가 있다고 봤다.",
+                question: "이 문장이 함축하는 의미를 가장 정확하게 설명한 것을 고르시오.",
+                correct: "어떤 쾌락은 다른 쾌락보다 그 자체로 더 가치 있고 우월한 성질을 타고났다는 것",
+                wrong: [
+                    "쾌락의 질적 차이는 사회적 합의나 교육을 통해 후천적으로 형성된다는 것",
+                    "모든 쾌락은 본래 동일했으나 인간의 편견으로 인해 질적 차이가 생긴 것처럼 보인다는 것",
+                    "쾌락의 질적 가치는 시대와 문화에 따라 상대적으로 변할 수 있다는 것",
+                    "쾌락의 질을 결정하는 것은 그것을 느끼는 개인의 주관적인 만족도라는 것",
+                    "쾌락이 가진 질적 차이를 이해하기 위해서는 먼저 양적 차이를 이해해야 한다는 것",
+                    "쾌락의 근원이 어디인지에 따라 질적 차이가 결정된다는 것"
+                ]
+            },
+            {
+                text: "감각적이고 육체적인 쾌락은 저급 쾌락이고, 정신적 쾌락은 고급 쾌락이다.",
+                question: "밀이 쾌락을 구분하는 기준을 가장 올바르게 추론한 것을 고르시오.",
+                correct: "쾌락이 인간의 감각과 육체에서 비롯되는지, 아니면 정신적 능력에서 비롯되는지",
+                wrong: [
+                    "쾌락이 개인의 만족에 그치는지, 아니면 사회 전체의 이익에 기여하는지",
+                    "쾌락을 얻기 위해 특별한 노력이 필요한지, 아니면 쉽게 얻을 수 있는지",
+                    "쾌락이 순간적으로 강렬한지, 아니면 오랫동안 은은하게 지속되는지",
+                    "쾌락이 인간에게만 고유한 것인지, 아니면 동물과 공유하는 것인지",
+                    "쾌락이 법률과 여론의 지지를 받는지, 아니면 비판을 받는지",
+                    "쾌락이 타고난 본성에서 나오는지, 아니면 후천적인 교육을 통해 형성되는지"
+                ]
+            },
+            {
+                text: "고급 쾌락은 저급 쾌락보다 더 바람직하고 가치 있는 우월성을 지닌다고 생각했다.",
+                question: "밀이 두 쾌락의 관계를 어떻게 설정했는지 가장 정확하게 파악한 것을 고르시오.",
+                correct: "두 쾌락 사이에 명확한 가치의 위계를 두어, 고급 쾌락을 더 높은 수준으로 평가했다.",
+                wrong: [
+                    "두 쾌락은 본질적으로 동등하지만, 상황에 따라 그 가치가 다르게 나타난다고 보았다.",
+                    "저급 쾌락의 충분한 만족이 고급 쾌락으로 나아가기 위한 필수적인 단계라고 보았다.",
+                    "두 쾌락은 서로를 보완하는 관계이므로, 어느 한쪽만 추구해서는 안 된다고 보았다.",
+                    "저급 쾌락은 피해야 할 대상이고, 고급 쾌락만이 유일하게 추구할 가치가 있다고 보았다.",
+                    "쾌락의 가치는 주관적이므로, 어떤 쾌락이 더 우월한지 객관적으로 판단할 수 없다고 보았다.",
+                    "두 쾌락의 우월성은 양에 의해 결정되며, 질은 부차적인 요소라고 보았다."
+                ]
+            },
+            {
+                text: "동물과 달리 인간은 고급 쾌락의 추구를 통해 인간의 품위를 높일 수 있다고 봤다.",
+                question: "이 문장이 강조하는 바로 가장 적절한 것을 고르시오.",
+                correct: "정신적이고 고차원적인 쾌락을 추구하는 것은 인간을 다른 동물과 구별시켜 주는 중요한 특징이다.",
+                wrong: [
+                    "인간은 동물이 느끼는 감각적 쾌락을 완전히 이해하고 통제할 수 있어야 한다.",
+                    "인간의 품위는 쾌락의 추구가 아닌 고통을 인내하는 과정에서 완성된다.",
+                    "모든 인간은 태어날 때부터 고급 쾌락을 추구하려는 본능을 가지고 있다.",
+                    "동물에게는 없는 '품위'라는 개념을 통해 인간의 우월성을 증명하고자 했다.",
+                    "인간의 품위를 지키기 위해서는 때로 모든 종류의 쾌락을 멀리해야 한다.",
+                    "고급 쾌락을 추구하는 능력은 후천적인 교육과 훈련을 통해서만 얻을 수 있다."
+                ]
+            },
+            {
+                text: "밀 이전의 공리주의는 최대 행복 추구와 이기심이 충돌할 때 법률, 여론 등과 같은 외적 제재가 개인의 이기적 본성을 제어할 수 있다고 생각했다.",
+                question: "밀 이전 공리주의가 제시한 '이기심 통제 방안'의 특징을 가장 잘 설명한 것을 고르시오.",
+                correct: "개인의 외부에서 작용하는 사회적, 법적 강제력을 통해 이기적인 행동을 억제하려 했다.",
+                wrong: [
+                    "개인의 내면에 있는 도덕적 의무감을 일깨워 이기심을 스스로 조절하도록 유도했다.",
+                    "이기심을 인간의 자연스러운 본성으로 인정하고, 그것을 사회 발전의 동력으로 삼으려 했다.",
+                    "교육을 통해 이기심의 문제점을 알리고, 공동체 의식을 함양하여 해결하려 했다.",
+                    "최대 행복과 이기심의 조화가 가능하다고 보고, 둘 사이의 균형점을 찾으려 했다.",
+                    "이기심이 발현될 수 없는 이상적인 사회 구조를 설계하여 문제를 원천적으로 차단하려 했다.",
+                    "법률이나 여론이 아닌, 종교적 가르침을 통해 이기심을 극복할 수 있다고 보았다."
+                ]
+            },
+            {
+                text: "하지만 밀은 이것이 근본적인 해결책이 아니라고 봤다.",
+                question: "'이것이' 가리키는 대상과 그에 대한 밀의 평가를 가장 정확하게 짝지은 것을 고르시오.",
+                correct: "대상: 법률, 여론과 같은 외적 제재 / 평가: 문제의 핵심을 해결하지 못하는 방법이다.",
+                wrong: [
+                    "대상: 개인의 이기적 본성 / 평가: 교육을 통해 완전히 제거할 수 있는 대상이다.",
+                    "대상: 최대 행복의 원리 / 평가: 이기심과 충돌하기에 비현실적인 목표이다.",
+                    "대상: 밀 이전의 공리주의 / 평가: 철학적으로는 타당하지만 현실성이 부족하다.",
+                    "대상: 쾌락의 양적 측정 / 평가: 불가능하지는 않지만 매우 어려운 작업이다.",
+                    "대상: 사회 구성원의 복지 / 평가: 외적 제재만으로는 결코 달성할 수 없다.",
+                    "대상: 인간의 자발적인 행동 / 평가: 외적 제재를 통해서만 이끌어낼 수 있다."
+                ]
+            },
+            {
+                text: "외적 제재가 최대 행복의 원리에 맞는 행동을 하게 할 수는 있지만, 자발적으로 그런 행동을 하도록 이끄는 힘은 아니라고 생각했기 때문이다.",
+                question: "밀이 '외적 제재'의 한계를 어떻게 파악했는지 가장 잘 설명한 것을 고르시오.",
+                correct: "겉으로 드러나는 행동은 바꿀 수 있으나, 행동의 동기가 되는 내면의 의지까지는 바꿀 수 없다고 보았다.",
+                wrong: [
+                    "법률이나 여론은 일부 사람들에게만 효과가 있고 모든 사람에게 적용하기는 어렵다고 보았다.",
+                    "외적 제재를 계속 사용하면 사람들이 점차 제재에 무감각해져 효과가 떨어진다고 보았다.",
+                    "최대 행복을 위한 행동이 무엇인지 외적 제재만으로는 명확한 기준을 제시할 수 없다고 보았다.",
+                    "외적 제재에 의한 강제적인 행동은 결국 사회 구성원들의 반발심을 키울 수 있다고 보았다.",
+                    "자발적인 행동이라도 그것이 이기심에서 비롯되었다면 진정한 선행이 아니라고 보았다.",
+                    "외적 제재를 집행하는 과정에서 또 다른 불평등과 사회적 갈등이 발생할 수 있다고 보았다."
+                ]
+            },
+            {
+                text: "그래서 밀은 내적 제재인 양심을 강조했다.",
+                question: "밀이 '양심'을 강조한 이유를 가장 올바르게 추론한 것을 고르시오.",
+                correct: "외적 제재의 한계를 넘어, 인간의 내면에서부터 자발적인 도덕적 행동을 이끌어내기 위해",
+                wrong: [
+                    "외적 제재를 보조하여 이기심을 더욱 효과적으로 처벌하고 통제하기 위해",
+                    "양심을 통해 쾌락의 질을 객관적으로 측정하는 새로운 기준을 제시하기 위해",
+                    "'돼지의 철학'이라는 비판을 반박하고 인간의 정신적 우월성을 증명하기 위해",
+                    "법률이나 여론이 미치지 못하는 영역까지 도덕적 통제를 확장시키기 위해",
+                    "모든 인간이 태어날 때부터 완벽한 양심을 가지고 있음을 주장하기 위해",
+                    "외적 제재가 개인의 자유를 심각하게 침해한다는 사실을 비판하기 위해"
+                ]
+            },
+            {
+                text: "양심은 우리 마음 안에서 형성되는 일종의 도덕적 의무감으로, 이를 어기면 내면에 고통을 준다.",
+                question: "'양심'의 작동 방식을 가장 정확하게 설명한 것을 고르시오.",
+                correct: "스스로에게 부과한 도덕적 의무를 위반했을 때, 심리적인 고통을 유발하여 올바른 행동을 하도록 유도한다.",
+                wrong: [
+                    "사회적 비난이나 법적 처벌에 대한 두려움을 통해 잘못된 행동을 하지 않도록 예방한다.",
+                    "도덕적 의무감을 지켰을 때 특별한 쾌락을 제공하여 선한 행동을 강화한다.",
+                    "외부의 제재가 있을 때만 활성화되어 내면의 고통을 가중시키는 역할을 한다.",
+                    "타인의 고통에 공감하게 만들어, 그 고통을 자신의 것처럼 느끼게 한다.",
+                    "이성적인 판단을 통해 어떤 행동이 더 큰 이익을 가져올지 계산하게 한다.",
+                    "모든 도덕적 의무감으로부터 개인을 해방시켜 내면의 진정한 자유를 느끼게 한다."
+                ]
+            },
+            {
+                text: "양심은 구성원들과 일체감을 이루고자 하는 타고난 사회적 감정에 바탕을 두고, 교육과 외적 제재 등의 후천적인 경험을 통해 기를 수 있다.",
+                question: "'양심'의 형성 과정에 대한 설명으로 가장 적절한 것을 고르시오.",
+                correct: "선천적으로 주어진 사회적 감정을 기초로 하여, 후천적인 학습과 경험을 통해 완성되고 발전된다.",
+                wrong: [
+                    "태어날 때부터 완벽하게 갖추어져 있으며, 후천적 경험은 단지 그것을 확인하는 과정일 뿐이다.",
+                    "선천적인 기반 없이, 오직 교육과 사회적 압력이라는 후천적 요인에 의해서만 만들어진다.",
+                    "외적 제재와는 아무런 관련 없이, 순수하게 개인의 내면적 성찰을 통해서만 길러진다.",
+                    "타고난 사회적 감정이 너무 강하면 오히려 양심의 발달에 방해가 될 수 있다.",
+                    "교육을 통해 사회적 감정을 완전히 제거해야만 순수한 양심을 기를 수 있다.",
+                    "다른 사람과의 일체감보다는 개인의 독립성을 추구할 때 더욱 올바르게 형성된다."
+                ]
+            }
+        );
+        // 독해 학습 문제 21-28
+        learningData.readingQuestions.push(
+            {
+                text: "이를 통해 비로소 인간은 자기 이익만 추구하는 성향을 극복하고 최대 행복의 원리에 따르는 삶을 실현할 수 있다고 봤다.",
+                question: "'이를 통해' 실현 가능한 결과로 가장 적절한 것을 고르시오.",
+                correct: "내적 제재인 양심의 작용을 통해 이기심을 넘어서서 사회 전체의 행복을 추구하는 삶을 살게 된다.",
+                wrong: [
+                    "외적 제재의 엄격한 적용을 통해 이기적인 성향을 가진 사람들을 사회로부터 격리하게 된다.",
+                    "자기 이익을 극대화하는 것이 결국 최대 행복의 원리와 일치함을 깨닫게 된다.",
+                    "타고난 사회적 감정을 억제함으로써 개인의 완전한 자율성을 갖춘 삶을 실현하게 된다.",
+                    "최대 행복의 원리를 포기하고 각자의 이익을 존중하는 합리적인 사회를 만들게 된다.",
+                    "양심의 고통을 피하기 위해 모든 종류의 쾌락을 거부하는 금욕적인 삶을 살게 된다.",
+                    "교육을 통해 모든 사람의 이기심을 완전히 제거하여 갈등 없는 이상 사회를 실현하게 된다."
+                ]
+            },
+            {
+                text: "밀은 외적 제재와 내적 제재를 통해 최대 행복의 원리를 실현하여 사회 구성원의 복지를 높일 수 있다고 보았고, 그런 점에서 공리주의가 인간 윤리의 타당한 기준이 될 수 있다고 강조했다.",
+                question: "밀이 공리주의를 '타당한 윤리 기준'으로 본 핵심적인 이유를 올바르게 추론한 것을 고르시오.",
+                correct: "사회 전체의 실질적인 복지 증진에 기여할 수 있는 현실적인 방법론을 제시하기 때문에",
+                wrong: [
+                    "개인의 양심에만 의존하여 모든 윤리적 문제를 해결할 수 있는 완벽한 이론이기 때문에",
+                    "오직 법률과 여론이라는 강력한 수단으로 사회 질서를 유지할 수 있기 때문에",
+                    "인간의 이기심을 선천적인 악으로 규정하고 그것을 제거하는 것을 목표로 하기 때문에",
+                    "모든 사람이 감각적 쾌락보다 정신적 쾌락을 추구하도록 강제할 수 있기 때문에",
+                    "최대 행복이라는 추상적인 이상을 강조하며 현실적인 문제와는 거리를 두기 때문에",
+                    "외적 제재와 내적 제재의 조화가 현실적으로는 불가능함을 인정했기 때문에"
+                ]
+            },
+            {
+                text: "공리주의는 공리를 통해 최대 행복을 실현하는 것을 중시하는 이론이다.",
+                question: "이 문장에서 '공리주의'의 핵심 특징을 가장 정확하게 파악한 것을 고르시오.",
+                correct: "공리라는 수단을 통해 사회 전체의 최대 행복이라는 목표를 달성하려는 실용적 이론이다.",
+                wrong: [
+                    "공리라는 개념을 철학적으로 탐구하여 행복의 본질을 규명하려는 이론이다.",
+                    "개인의 공리 추구를 최우선으로 하되 사회적 행복은 부차적으로 고려하는 이론이다.",
+                    "공리와 행복의 충돌을 해결하기 위한 새로운 윤리적 원칙을 제시하는 이론이다.",
+                    "공리라는 추상적 개념을 현실에 적용할 수 있는 구체적 방법을 제시하는 이론이다.",
+                    "공리주의의 역사적 발전 과정을 체계적으로 정리한 이론이다.",
+                    "공리와 행복의 관계를 수학적으로 계산하여 정확한 가치를 산출하는 이론이다."
+                ]
+            },
+            {
+                text: "여기서 공리란 이익과 유용함을 뜻하며, 공리주의에서 행복이란 고통을 피하고 쾌락을 추구하는 것을 의미한다.",
+                question: "이 문장에서 정의하는 '공리'와 '행복'의 관계를 가장 정확하게 설명한 것을 고르시오.",
+                correct: "공리는 행복을 실현하기 위한 수단적 가치이고, 행복은 공리를 통해 달성하려는 목적적 가치이다.",
+                wrong: [
+                    "공리와 행복은 서로 독립적인 개념으로, 공리는 사회적 가치이고 행복은 개인적 가치이다.",
+                    "공리는 행복의 한 부분으로, 행복이 더 포괄적인 개념이며 공리를 포함한다.",
+                    "공리와 행복은 동일한 개념의 다른 표현으로, 본질적으로 같은 의미를 가진다.",
+                    "공리는 행복을 제한하는 요소로, 공리가 많을수록 행복은 오히려 감소한다.",
+                    "공리는 행복의 전제 조건으로, 공리가 없으면 행복도 존재할 수 없다.",
+                    "공리와 행복은 서로 상충하는 개념으로, 공리를 추구하면 행복은 포기해야 한다."
+                ]
+            },
+            {
+                text: "이때 행복은 개인의 쾌락만이 아니라 개인의 행위와 관련된 사회 구성원의 쾌락도 함께 고려하는 것이다.",
+                question: "이 문장이 강조하는 공리주의적 행복의 특징으로 가장 적절한 것을 고르시오.",
+                correct: "개인의 행동이 미치는 사회적 영향까지 고려하는 포괄적이고 책임감 있는 행복 개념",
+                wrong: [
+                    "개인의 쾌락을 우선시하되 사회 구성원의 쾌락도 부차적으로 고려하는 이기적 행복 개념",
+                    "사회 전체의 쾌락을 위해 개인의 쾌락은 희생되어야 한다는 집단주의적 행복 개념",
+                    "개인과 사회의 쾌락이 충돌할 때 중립적인 입장을 취하는 상대주의적 행복 개념",
+                    "개인의 쾌락과 사회 구성원의 쾌락을 동등하게 취급하는 평등주의적 행복 개념",
+                    "개인의 행동이 사회에 미치는 영향을 계산하여 최적의 균형점을 찾는 효율적 행복 개념",
+                    "개인의 쾌락을 사회적 쾌락의 수단으로만 보는 도구적 행복 개념"
+                ]
+            },
+            {
+                text: "밀 이전의 공리주의는 양적 쾌락주의의 입장을 가졌다.",
+                question: "이 문장에서 '밀 이전의 공리주의'의 특징을 가장 정확하게 파악한 것을 고르시오.",
+                correct: "밀의 이론이 등장하기 전까지의 공리주의는 쾌락의 양적 측정에만 집중하는 한계를 가졌다.",
+                wrong: [
+                    "밀 이전의 공리주의는 밀의 이론과 완전히 다른 새로운 철학 체계였다.",
+                    "밀 이전의 공리주의는 쾌락의 질적 차이를 인정하지 않는 잘못된 이론이었다.",
+                    "밀 이전의 공리주의는 밀의 이론에 비해 훨씬 더 발전된 형태의 이론이었다.",
+                    "밀 이전의 공리주의는 밀의 이론과 본질적으로 동일한 내용을 담고 있었다.",
+                    "밀 이전의 공리주의는 밀의 이론이 등장한 후 완전히 사라진 구시대 이론이었다.",
+                    "밀 이전의 공리주의는 밀의 이론을 비판하고 반대하는 입장을 가졌다."
+                ]
+            },
+            {
+                text: "이는 모든 쾌락이 측정 가능하고 어디서 나오든 상관없이 똑같은 성질을 가지므로 단지 양에서만 차이가 난다고 보는 것이다.",
+                question: "이 문장이 설명하는 양적 쾌락주의의 핵심 가정을 가장 정확하게 파악한 것을 고르시오.",
+                correct: "모든 쾌락은 본질적으로 동일한 성질을 가지며, 그 차이는 오직 양적 규모에 의해서만 결정된다.",
+                wrong: [
+                    "모든 쾌락은 측정이 불가능하므로 그 가치를 객관적으로 판단할 수 없다.",
+                    "쾌락의 근원에 따라 그 성질이 달라지므로 서로 다른 기준으로 평가해야 한다.",
+                    "쾌락의 질적 차이가 양적 차이보다 더 중요하므로 양적 측정은 의미가 없다.",
+                    "모든 쾌락은 주관적이므로 개인마다 다른 기준으로 평가해야 한다.",
+                    "쾌락의 양과 질이 서로 반비례 관계에 있으므로 둘을 동시에 고려해야 한다.",
+                    "모든 쾌락은 일시적이므로 그 지속 시간에 따라 가치가 결정된다."
+                ]
+            },
+            {
+                text: "동물적 욕망에서 나오는 감각적 쾌락과 인간의 지성, 도덕 감정, 상상력 등에서 나오는 정신적 쾌락이 본질적으로 동일하다고 본 것이다.",
+                question: "이 문장이 설명하는 양적 쾌락주의의 관점을 가장 정확하게 파악한 것을 고르시오.",
+                correct: "감각적 쾌락과 정신적 쾌락은 근원이 다르지만 그 자체의 가치나 성질은 동일하다고 보았다.",
+                wrong: [
+                    "감각적 쾌락과 정신적 쾌락은 근원이 다르므로 그 가치도 다르다고 보았다.",
+                    "감각적 쾌락이 정신적 쾌락보다 더 우월한 가치를 지닌다고 보았다.",
+                    "정신적 쾌락이 감각적 쾌락보다 더 고차원적인 가치를 지닌다고 보았다.",
+                    "감각적 쾌락과 정신적 쾌락은 서로 상충하므로 둘 중 하나만 선택해야 한다고 보았다.",
+                    "감각적 쾌락은 정신적 쾌락을 얻기 위한 수단일 뿐이라고 보았다.",
+                    "감각적 쾌락과 정신적 쾌락은 측정할 수 없으므로 비교가 불가능하다고 보았다."
+                ]
+            }
+        );
+        // 확인 학습 문제들 (8개)
+        learningData.findQuestions = [
+            {
+                question: "이 글에서 '이익과 유용함'을 의미하는 핵심 개념어는 무엇인가요?",
+                answer: "공리",
+                type: "OR"
+            },
+            {
+                question: "공리주의에서 '고통을 피하고 쾌락을 추구하는 것'을 무엇이라고 정의하나요?",
+                answer: "행복",
+                type: "OR"
+            },
+            {
+                question: "모든 쾌락은 질적으로 동일하며 오직 양으로만 측정 가능하다고 보는, 밀 이전의 공리주의 입장은 무엇인가요?",
+                answer: "양적 쾌락주의",
+                type: "OR"
+            },
+            {
+                question: "우리 마음 안에서 형성되는 일종의 도덕적 의무감으로, 밀이 근본적인 해결책으로 강조한 내적 제재는 무엇인가요?",
+                answer: "양심",
+                type: "OR"
+            },
+            {
+                question: "양적 쾌락주의가 '천박한 돼지의 철학'이라는 비판을 받게 된 이유를 찾으시오.",
+                answer: "상대적으로 쉽게 쾌락을 누릴 수 있는 동물이 가장 행복한 존재가 될 수 있기 때문에",
+                type: "OR"
+            },
+            {
+                question: "밀이 법률, 여론과 같은 '외적 제재'를 근본적인 해결책으로 보지 않은 이유를 찾으시오.",
+                answer: "자발적으로 그런 행동을 하도록 이끄는 힘은 아니라고 생각했기 때문이다.",
+                type: "OR"
+            },
+            {
+                question: "밀에 따르면 양심의 바탕이 되는 타고난 감정은 무엇인지 찾으시오.",
+                answer: "구성원들과 일체감을 이루고자 하는 타고난 사회적 감정",
+                type: "OR"
+            },
+            {
+                question: "밀이 공리주의가 타당한 윤리 기준이 될 수 있다고 본 이유는 무엇인지 찾으시오.",
+                answer: "최대 행복의 원리를 실현하여 사회 구성원의 복지를 높일 수 있다고 보았",
+                type: "OR"
+            }
+        ];
+        // 단답형 학습 문제들 (20개)
+        learningData.mcqQuestions = [
+            {
+                question: "1문단에 근거하여, 공리주의에서 '행복'을 올바르게 정의한 것을 고르시오.",
+                correct: "고통을 피하고 쾌락을 추구하는 것",
+                wrong: [
+                    "이익과 유용함을 추구하고 손실을 피하는 것",
+                    "감각적 고통을 피하고 정신적 쾌락만을 추구하는 것",
+                    "양심의 고통을 피하고 도덕적 의무감을 추구하는 것",
+                    "인간의 품위를 높이고 동물적 욕망을 피하는 것",
+                    "개인의 쾌락을 넘어 사회 전체의 고통을 함께 고려하는 것",
+                    "외적 제재를 통해 이기심을 극복한 상태를 의미하는 것"
+                ]
+            },
+            {
+                question: "2문단에 따르면, 모든 쾌락이 질적으로는 동일하고 양으로만 차이가 난다고 본 밀 이전의 공리주의 입장을 무엇이라고 하는지 고르시오.",
+                correct: "양적 쾌락주의",
+                wrong: [
+                    "질적 쾌락주의",
+                    "감각적 쾌락주의",
+                    "이기적 공리주의",
+                    "정신적 쾌락주의",
+                    "외적 제재 공리주의",
+                    "사회적 공리주의"
+                ]
+            },
+            {
+                question: "3문단에 따르면, 양적 쾌락주의가 인간의 정신적 가치를 무시한다는 이유로 받은 비판적인 별칭은 무엇인지 고르시오.",
+                correct: "천박한 돼지의 철학",
+                wrong: [
+                    "이기적인 인간의 논리",
+                    "동물적 욕망의 윤리",
+                    "만족한 바보의 행복",
+                    "불완전한 쾌락론",
+                    "배부른 소크라테스",
+                    "어리석은 자의 공리"
+                ]
+            },
+            {
+                question: "4문단에 근거하여, 밀이 쾌락에는 양뿐만 아니라 질적인 차이도 본래부터 존재한다고 본 이론을 무엇이라고 하는지 고르시오.",
+                correct: "질적 쾌락주의",
+                wrong: [
+                    "양적 쾌락주의",
+                    "정신적 공리주의",
+                    "내적 제재 이론",
+                    "고급 쾌락주의",
+                    "사회적 감정론",
+                    "품위의 윤리학"
+                ]
+            },
+            {
+                question: "4문단에 따르면, 밀이 감각적 쾌락보다 더 바람직하고 가치 있다고 여긴 정신적 쾌락을 무엇이라고 부르는지 고르시오.",
+                correct: "고급 쾌락",
+                wrong: [
+                    "저급 쾌락",
+                    "양적 쾌락",
+                    "내적 제재",
+                    "인간의 품위",
+                    "사회적 감정",
+                    "도덕적 의무감"
+                ]
+            },
+            {
+                question: "5문단에 따르면, 법률이나 여론처럼 개인의 외부에서 이기적인 본성을 제어하는 장치를 무엇이라고 하는지 고르시오.",
+                correct: "외적 제재",
+                wrong: [
+                    "내적 제재",
+                    "양심",
+                    "질적 쾌락주의",
+                    "사회적 감정",
+                    "이기적 본성",
+                    "도덕적 의무감"
+                ]
+            },
+            {
+                question: "6문단에 근거하여, 밀이 이기심을 극복할 근본적인 해결책으로 강조한 내적 제재는 무엇인지 고르시오.",
+                correct: "양심",
+                wrong: [
+                    "외적 제재",
+                    "사회적 감정",
+                    "도덕적 의무감",
+                    "고급 쾌락",
+                    "인간의 품위",
+                    "후천적 경험"
+                ]
+            },
+            {
+                question: "6문단에 따르면, 양심의 바탕이 되는 타고난 감정은 무엇인지 고르시오.",
+                correct: "사회적 감정",
+                wrong: [
+                    "이기적 본성",
+                    "도덕적 의무감",
+                    "내적 제재",
+                    "양심의 가책",
+                    "정신적 쾌락",
+                    "개인의 행복"
+                ]
+            },
+            {
+                question: "공리주의에서 '이익과 유용함'을 의미하는 핵심 개념어는 무엇인가?",
+                correct: "공리",
+                wrong: [
+                    "행복",
+                    "쾌락",
+                    "이기심",
+                    "양심",
+                    "제재",
+                    "복지"
+                ]
+            },
+            {
+                question: "공리주의에서 '고통을 피하고 쾌락을 추구하는 것'을 무엇이라고 정의하나요?",
+                correct: "행복",
+                wrong: [
+                    "공리",
+                    "쾌락",
+                    "이기심",
+                    "양심",
+                    "제재",
+                    "복지"
+                ]
+            }
+        ];
+
+        // 단답형 학습 문제 11-20 추가
+        learningData.mcqQuestions.push(
+            {
+                question: "밀 이전의 공리주의가 모든 쾌락을 동일하게 평가하는 기준은 무엇인가?",
+                correct: "양적 규모",
+                wrong: [
+                    "질적 수준",
+                    "지속 시간",
+                    "얻기 어려움",
+                    "사회적 가치",
+                    "도덕적 정당성",
+                    "개인적 만족도"
+                ]
+            },
+            {
+                question: "양적 쾌락주의가 받은 '천박한 돼지의 철학'이라는 비판의 핵심 이유는 무엇인가?",
+                correct: "인간의 고유한 정신적 가치를 무시하고 단순한 감각적 쾌락만을 최고로 여기는 결과를 낳을 수 있어서",
+                wrong: [
+                    "동물의 권리를 인간의 권리와 동등하게 취급하여 윤리적 혼란을 일으킬 수 있어서",
+                    "쾌락을 양으로 측정하려는 시도 자체가 비과학적이고 실현 불가능한 목표라서",
+                    "사회 전체의 행복을 위해 동물의 희생을 정당화하는 논리로 사용될 수 있어서",
+                    "돼지와 같은 동물을 비유적으로 사용하여 철학의 품위를 떨어뜨렸기 때문에",
+                    "최대 행복의 추구가 결국 인간의 끝없는 욕망을 자극하여 사회적 갈등을 유발할 수 있어서",
+                    "쾌락의 기준을 동물에게 맞춤으로써 인간의 도덕적 타락을 조장할 위험이 있어서"
+                ]
+            },
+            {
+                question: "밀의 질적 쾌락주의에서 쾌락을 구분하는 기준은 무엇인가?",
+                correct: "쾌락이 인간의 감각과 육체에서 비롯되는지, 아니면 정신적 능력에서 비롯되는지",
+                wrong: [
+                    "쾌락이 개인의 만족에 그치는지, 아니면 사회 전체의 이익에 기여하는지",
+                    "쾌락을 얻기 위해 특별한 노력이 필요한지, 아니면 쉽게 얻을 수 있는지",
+                    "쾌락이 순간적으로 강렬한지, 아니면 오랫동안 은은하게 지속되는지",
+                    "쾌락이 인간에게만 고유한 것인지, 아니면 동물과 공유하는 것인지",
+                    "쾌락이 법률과 여론의 지지를 받는지, 아니면 비판을 받는지",
+                    "쾌락이 타고난 본성에서 나오는지, 아니면 후천적인 교육을 통해 형성되는지"
+                ]
+            },
+            {
+                question: "밀에 따르면 인간이 동물과 구별되는 특징은 무엇인가?",
+                correct: "고급 쾌락의 추구를 통해 인간의 품위를 높일 수 있다는 것",
+                wrong: [
+                    "동물이 느끼는 감각적 쾌락을 완전히 이해하고 통제할 수 있다는 것",
+                    "쾌락의 추구가 아닌 고통을 인내하는 과정에서 품위가 완성된다는 것",
+                    "태어날 때부터 고급 쾌락을 추구하려는 본능을 가지고 있다는 것",
+                    "동물에게는 없는 '품위'라는 개념을 통해 우월성을 증명할 수 있다는 것",
+                    "모든 종류의 쾌락을 멀리해야만 품위를 지킬 수 있다는 것",
+                    "고급 쾌락을 추구하는 능력은 후천적인 교육과 훈련을 통해서만 얻을 수 있다는 것"
+                ]
+            },
+            {
+                question: "밀 이전 공리주의가 제시한 이기심 통제 방안의 특징은 무엇인가?",
+                correct: "개인의 외부에서 작용하는 사회적, 법적 강제력을 통해 이기적인 행동을 억제하려 했다",
+                wrong: [
+                    "개인의 내면에 있는 도덕적 의무감을 일깨워 이기심을 스스로 조절하도록 유도했다",
+                    "이기심을 인간의 자연스러운 본성으로 인정하고, 그것을 사회 발전의 동력으로 삼으려 했다",
+                    "교육을 통해 이기심의 문제점을 알리고, 공동체 의식을 함양하여 해결하려 했다",
+                    "최대 행복과 이기심의 조화가 가능하다고 보고, 둘 사이의 균형점을 찾으려 했다",
+                    "이기심이 발현될 수 없는 이상적인 사회 구조를 설계하여 문제를 원천적으로 차단하려 했다",
+                    "법률이나 여론이 아닌, 종교적 가르침을 통해 이기심을 극복할 수 있다고 보았다"
+                ]
+            },
+            {
+                question: "밀이 외적 제재의 한계로 파악한 것은 무엇인가?",
+                correct: "겉으로 드러나는 행동은 바꿀 수 있으나, 행동의 동기가 되는 내면의 의지까지는 바꿀 수 없다고 보았다",
+                wrong: [
+                    "법률이나 여론은 일부 사람들에게만 효과가 있고 모든 사람에게 적용하기는 어렵다고 보았다",
+                    "외적 제재를 계속 사용하면 사람들이 점차 제재에 무감각해져 효과가 떨어진다고 보았다",
+                    "최대 행복을 위한 행동이 무엇인지 외적 제재만으로는 명확한 기준을 제시할 수 없다고 보았다",
+                    "외적 제재에 의한 강제적인 행동은 결국 사회 구성원들의 반발심을 키울 수 있다고 보았다",
+                    "자발적인 행동이라도 그것이 이기심에서 비롯되었다면 진정한 선행이 아니라고 보았다",
+                    "외적 제재를 집행하는 과정에서 또 다른 불평등과 사회적 갈등이 발생할 수 있다고 보았다"
+                ]
+            },
+            {
+                question: "밀이 양심을 강조한 이유는 무엇인가?",
+                correct: "외적 제재의 한계를 넘어, 인간의 내면에서부터 자발적인 도덕적 행동을 이끌어내기 위해",
+                wrong: [
+                    "외적 제재를 보조하여 이기심을 더욱 효과적으로 처벌하고 통제하기 위해",
+                    "양심을 통해 쾌락의 질을 객관적으로 측정하는 새로운 기준을 제시하기 위해",
+                    "'돼지의 철학'이라는 비판을 반박하고 인간의 정신적 우월성을 증명하기 위해",
+                    "법률이나 여론이 미치지 못하는 영역까지 도덕적 통제를 확장시키기 위해",
+                    "모든 인간이 태어날 때부터 완벽한 양심을 가지고 있음을 주장하기 위해",
+                    "외적 제재가 개인의 자유를 심각하게 침해한다는 사실을 비판하기 위해"
+                ]
+            },
+            {
+                question: "양심의 작동 방식은 무엇인가?",
+                correct: "스스로에게 부과한 도덕적 의무를 위반했을 때, 심리적인 고통을 유발하여 올바른 행동을 하도록 유도한다",
+                wrong: [
+                    "사회적 비난이나 법적 처벌에 대한 두려움을 통해 잘못된 행동을 하지 않도록 예방한다",
+                    "도덕적 의무감을 지켰을 때 특별한 쾌락을 제공하여 선한 행동을 강화한다",
+                    "외부의 제재가 있을 때만 활성화되어 내면의 고통을 가중시키는 역할을 한다",
+                    "타인의 고통에 공감하게 만들어, 그 고통을 자신의 것처럼 느끼게 한다",
+                    "이성적인 판단을 통해 어떤 행동이 더 큰 이익을 가져올지 계산하게 한다",
+                    "모든 도덕적 의무감으로부터 개인을 해방시켜 내면의 진정한 자유를 느끼게 한다"
+                ]
+            },
+            {
+                question: "양심의 형성 과정은 무엇인가?",
+                correct: "선천적으로 주어진 사회적 감정을 기초로 하여, 후천적인 학습과 경험을 통해 완성되고 발전된다",
+                wrong: [
+                    "태어날 때부터 완벽하게 갖추어져 있으며, 후천적 경험은 단지 그것을 확인하는 과정일 뿐이다",
+                    "선천적인 기반 없이, 오직 교육과 사회적 압력이라는 후천적 요인에 의해서만 만들어진다",
+                    "외적 제재와는 아무런 관련 없이, 순수하게 개인의 내면적 성찰을 통해서만 길러진다",
+                    "타고난 사회적 감정이 너무 강하면 오히려 양심의 발달에 방해가 될 수 있다",
+                    "교육을 통해 사회적 감정을 완전히 제거해야만 순수한 양심을 기를 수 있다",
+                    "다른 사람과의 일체감보다는 개인의 독립성을 추구할 때 더욱 올바르게 형성된다"
+                ]
+            },
+            {
+                question: "밀이 공리주의를 타당한 윤리 기준으로 본 핵심적인 이유는 무엇인가?",
+                correct: "사회 전체의 실질적인 복지 증진에 기여할 수 있는 현실적인 방법론을 제시하기 때문에",
+                wrong: [
+                    "개인의 양심에만 의존하여 모든 윤리적 문제를 해결할 수 있는 완벽한 이론이기 때문에",
+                    "오직 법률과 여론이라는 강력한 수단으로 사회 질서를 유지할 수 있기 때문에",
+                    "인간의 이기심을 선천적인 악으로 규정하고 그것을 제거하는 것을 목표로 하기 때문에",
+                    "모든 사람이 감각적 쾌락보다 정신적 쾌락을 추구하도록 강제할 수 있기 때문에",
+                    "최대 행복이라는 추상적인 이상을 강조하며 현실적인 문제와는 거리를 두기 때문에",
+                    "외적 제재와 내적 제재의 조화가 현실적으로는 불가능함을 인정했기 때문에"
+                ]
+            }
+        );
+
+        // 학습 단계 관리 함수들
+        function startLearning() {
+            currentStage = 'reading';
+            currentQuestionIndex = 0;
+            score = 0;
+            correctAnswers = 0;
+            timeRemaining = 100;
+            globalStartTime = Date.now();
+            stageStartTime = Date.now();
+            startTimer();
+            loadReadingStage();
+        }
+
+        // 타이머 관리
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+
+            timerInterval = setInterval(() => {
+                timeRemaining -= 0.1;
+                if (timeRemaining <= 0) {
+                    timeRemaining = 0;
+                    clearInterval(timerInterval);
+                    showTimeUpModal();
+                }
+                updateTimerBar();
+            }, 100);
+        }
+
+        function updateTimerBar() {
+            const timerBar = document.getElementById('timer-bar');
+            if (timerBar) {
+                timerBar.style.width = timeRemaining + '%';
+
+                // 색상 변경
+                if (timeRemaining < 20) {
+                    timerBar.style.background = 'linear-gradient(90deg, #e74c3c, #c0392b)';
+                } else if (timeRemaining < 50) {
+                    timerBar.style.background = 'linear-gradient(90deg, #f39c12, #e67e22)';
+                } else {
+                    timerBar.style.background = 'linear-gradient(90deg, #3498db, #2ecc71)';
+                }
+            }
+        }
+
+        function addTime(seconds) {
+            timeRemaining = Math.min(100, timeRemaining + (seconds * 2)); // 2% per second
+            updateTimerBar();
+        }
+
+        function subtractTime(seconds) {
+            timeRemaining = Math.max(0, timeRemaining - (seconds * 2));
+            updateTimerBar();
+        }
+
+        // 독해 학습 단계
+        function loadReadingStage() {
+            // 새 스테이지 시작 시 모달 위치 초기화
+            lastModalPosition = null;
+            if (!stageStartTime) stageStartTime = Date.now();
+
+            const mainContent = document.getElementById('main-content');
+            const questions = learningData.readingQuestions;
+
+            // 전체 지문 표시
+            let html = `
+                <div class="passage-container">
+                    <div class="poem-section">
+                        <div class="poem-title">양심을 통한 최대 행복 실현 - 밀의 공리주의</div>
+                        <div id="poem-content">${parseMarkdown(learningData.passage)}</div>
+                    </div>
+                </div>
+            `;
+
+            html += '</div>';
+            mainContent.innerHTML = html;
+
+            // 문제 수 업데이트
+            document.getElementById('total-questions').textContent = questions.length;
+
+            // 첫 문제 하이라이트
+            setTimeout(() => highlightNextQuestion(), 1000);
+        }
+
+        function highlightNextQuestion() {
+            if (currentQuestionIndex >= learningData.readingQuestions.length) {
+                showStageComplete('reading');
+                return;
+            }
+
+            const question = learningData.readingQuestions[currentQuestionIndex];
+
+            // 이전 하이라이트 제거
+            document.querySelectorAll('.highlight').forEach(el => {
+                el.classList.remove('highlight', 'active');
+            });
+
+            // 새 하이라이트 추가
+            highlightText(question.text);
+
+            // 문제 모달 표시
+            showQuestionModal(question);
+
+            // 카운터 업데이트
+            document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+        }
+
+        function highlightText(text) {
+            const content = document.getElementById('main-content');
+            const walker = document.createTreeWalker(
+                content,
+                NodeFilter.SHOW_TEXT,
+                null,
+                false
+            );
+
+            let node;
+            while (node = walker.nextNode()) {
+                if (node.nodeValue.includes(text)) {
+                    const span = document.createElement('span');
+                    span.className = 'highlight active';
+                    const parent = node.parentNode;
+                    const textBefore = node.nodeValue.substring(0, node.nodeValue.indexOf(text));
+                    const textAfter = node.nodeValue.substring(node.nodeValue.indexOf(text) + text.length);
+
+                    if (textBefore) {
+                        parent.insertBefore(document.createTextNode(textBefore), node);
+                    }
+                    span.textContent = text;
+                    parent.insertBefore(span, node);
+                    if (textAfter) {
+                        parent.insertBefore(document.createTextNode(textAfter), node);
+                    }
+                    parent.removeChild(node);
+
+                    // 스크롤
+                    span.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    break;
+                }
+            }
+        }
+
+        function showQuestionModal(question) {
+            const modal = document.getElementById('question-modal');
+            const questionText = document.getElementById('modal-question-text');
+            const optionsContainer = document.getElementById('modal-options');
+            const questionNum = document.getElementById('modal-question-num');
+
+            // 문제 번호 설정
+            questionNum.textContent = currentQuestionIndex + 1;
+
+            // 문제 텍스트 설정
+            questionText.textContent = question.question;
+
+            // 선택지 생성 (정답 1개 + 오답 3개 랜덤)
+            const wrongOptions = shuffleArray([...question.wrong]).slice(0, 3);
+            const allOptions = shuffleArray([question.correct, ...wrongOptions]);
+
+            optionsContainer.innerHTML = '';
+            allOptions.forEach((option, index) => {
+                const button = document.createElement('div');
+                button.className = 'option-button';
+                button.innerHTML = `
+                    <span class="option-number">${index + 1}</span>
+                    <span>${option}</span>
+                `;
+                button.onclick = () => handleAnswer(option === question.correct, button);
+                optionsContainer.appendChild(button);
+            });
+
+            // 모달 표시 및 하이라이트 근처 위치 설정
+            modal.classList.add('active');
+            positionModalNearHighlight(modal);
+
+            // 드래그 가능하게 만들기
+            makeDraggable(modal);
+        }
+
+        function handleAnswer(isCorrect, button) {
+            // 모든 버튼 비활성화
+            document.querySelectorAll('.option-button').forEach(btn => {
+                btn.style.pointerEvents = 'none';
+            });
+
+            if (isCorrect) {
+                button.classList.add('correct', 'correct-animation');
+                correctAnswers++;
+                score += 1.0;
+                addTime(15);
+
+                // 하이라이트 영역에 성공 애니메이션
+                const highlight = document.querySelector('.highlight.active');
+                if (highlight) {
+                    highlight.style.animation = 'correctGlow 0.6s ease-in-out';
+                }
+
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    document.getElementById('question-modal').classList.remove('active');
+                    highlightNextQuestion();
+                }, 1500);
+            } else {
+                button.classList.add('incorrect', 'incorrect-animation');
+                wrongAttempts++; // 틀린 횟수 증가
+                subtractTime(6);
+
+                // 모달에 실패 애니메이션
+                const modal = document.getElementById('question-modal');
+                modal.style.animation = 'incorrectShake 0.6s ease-in-out';
+
+                setTimeout(() => {
+                    modal.style.animation = '';
+                    document.querySelectorAll('.option-button').forEach(btn => {
+                        btn.style.pointerEvents = 'auto';
+                        btn.classList.remove('incorrect', 'incorrect-animation');
+                    });
+                }, 1000);
+            }
+        }
+
+        // 확인 학습 단계
+        function loadFindStage() {
+            stageStartTime = Date.now();
+            currentQuestionIndex = 0;
+            const mainContent = document.getElementById('main-content');
+
+            // 지문 본문만 표시
+            mainContent.innerHTML = `
+                <div class="passage-container">
+                    <div class="poem-section">
+                        <div class="poem-title">양심을 통한 최대 행복 실현 - 밀의 공리주의</div>
+                        <div id="poem-content">${parseMarkdown(learningData.passage)}</div>
+                    </div>
+                </div>
+            `;
+
+            // 문제 수 업데이트
+            document.getElementById('total-questions').textContent = learningData.findQuestions.length;
+
+            // 첫 문제 표시
+            showFindQuestion();
+        }
+
+        function showFindQuestion() {
+            if (currentQuestionIndex >= learningData.findQuestions.length) {
+                showStageComplete('find');
+                return;
+            }
+
+            const question = learningData.findQuestions[currentQuestionIndex];
+            const modal = document.getElementById('find-question-modal');
+            const questionText = document.getElementById('find-question-text');
+            const charCountEl = document.getElementById('answer-char-count');
+
+            questionText.textContent = question.question;
+            modal.style.display = 'block';
+
+            // 정답 글자수 표시
+            const answerLength = question.answer.replace(/\s/g, '').length; // 공백 제외한 글자수
+            charCountEl.textContent = answerLength;
+
+            // 텍스트 선택 기능 활성화
+            enableTextSelection(question.answer);
+
+            // 카운터 업데이트
+            document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+            document.getElementById('find-required-count').textContent = 1;
+            document.getElementById('find-selection-count').textContent = 0;
+
+            makeDraggable(modal);
+        }
+
+        function showCorrectAnswer(correctAnswer) {
+            const content = document.getElementById('poem-content');
+            const text = content.textContent;
+            const index = text.indexOf(correctAnswer);
+
+            if (index !== -1) {
+                const before = text.substring(0, index);
+                const after = text.substring(index + correctAnswer.length);
+
+                content.innerHTML = before +
+                    `<span class="correct-answer-highlight" style="background-color: #FFD700; padding: 2px 4px; border-radius: 4px; animation: pulse 1s ease-in-out infinite;">${correctAnswer}</span>` +
+                    after;
+                
+                // 정답 하이라이트로 자동 스크롤 (헤더 바로 아래로)
+                setTimeout(() => {
+                    const highlightElement = content.querySelector('.correct-answer-highlight');
+                    if (highlightElement) {
+                        // 헤더 높이를 고려한 스크롤 위치 계산
+                        const headerHeight = document.querySelector('.header').offsetHeight;
+                        const elementTop = highlightElement.getBoundingClientRect().top + window.pageYOffset;
+                        const scrollPosition = elementTop - headerHeight - 20; // 헤더 아래 20px 여백
+                        
+                        window.scrollTo({
+                            top: scrollPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }, 100);
+            }
+        }
+
+        function enableTextSelection(correctAnswer) {
+            const content = document.getElementById('poem-content');
+            let selectedText = '';
+
+            function handleSelection() {
+                const selection = window.getSelection();
+                selectedText = selection.toString().trim();
+
+                if (selectedText && checkWordSelection(selectedText, correctAnswer)) {
+                    // 정답
+                    const range = selection.getRangeAt(0);
+                    const span = document.createElement('span');
+                    span.className = 'text-selection correct-animation';
+                    span.style.backgroundColor = '#4CAF50';
+                    span.style.color = 'white';
+                    span.style.padding = '2px 4px';
+                    span.style.borderRadius = '4px';
+                    span.innerHTML = `${selectedText} <span class="selection-badge" style="animation: pulse 0.6s ease-in-out 2;">✓</span>`;
+                    range.deleteContents();
+                    range.insertNode(span);
+
+                    correctAnswers++;
+                    score += 0.5;
+                    addTime(9);
+
+                    content.removeEventListener('mouseup', handleSelection);
+                    content.removeEventListener('touchend', handleSelection);
+
+                    // 모달에 성공 애니메이션
+                    const modal = document.getElementById('find-question-modal');
+                    modal.classList.add('correct-animation');
+
+                    setTimeout(() => {
+                        // 정답 표시 제거
+                        const selections = document.querySelectorAll('.text-selection');
+                        selections.forEach(sel => {
+                            const text = sel.textContent.replace(' ✓', '');
+                            const textNode = document.createTextNode(text);
+                            sel.parentNode.replaceChild(textNode, sel);
+                        });
+                        modal.classList.remove('correct-animation');
+                        currentQuestionIndex++;
+                        showFindQuestion();
+                    }, 1500);
+                } else if (selectedText) {
+                    // 오답
+                    findWrongAttempts++; // 틀린 횟수 증가
+                    subtractTime(4);
+                    selection.removeAllRanges();
+
+                    // 모달에 실패 애니메이션
+                    const modal = document.getElementById('find-question-modal');
+                    modal.classList.add('incorrect-animation');
+
+                    // 정답 표시
+                    showCorrectAnswer(correctAnswer);
+
+                    // 이벤트 리스너 제거
+                    content.removeEventListener('mouseup', handleSelection);
+                    content.removeEventListener('touchend', handleSelection);
+
+                    setTimeout(() => {
+                        modal.classList.remove('incorrect-animation');
+                        // 정답 표시 제거하고 다음 문제로
+                        const correctSpan = document.querySelector('.correct-answer-highlight');
+                        if (correctSpan) {
+                            const textNode = document.createTextNode(correctSpan.textContent);
+                            correctSpan.parentNode.replaceChild(textNode, correctSpan);
+                        }
+                        currentQuestionIndex++;
+                        showFindQuestion();
+                    }, 3000);
+                }
+            }
+
+            // 마우스와 터치 이벤트 모두 지원
+            content.addEventListener('mouseup', handleSelection);
+            content.addEventListener('touchend', handleSelection);
+        }
+
+        // 복기 학습 단계
+        function loadReviewStage() {
+            stageStartTime = Date.now();
+            reviewCorrectCards = 0;
+            reviewWrongAttempts = 0;
+            const mainContent = document.getElementById('main-content');
+
+            // 밀의 공리주의 8문장 요약으로 카드 생성
+            const passageLines = [
+                "공리주의는 사회의 고통을 줄이고 쾌락을 늘려 '최대 행복'을 실현하고자 합니다.",
+                "밀 이전의 '양적 쾌락주의'는 모든 쾌락이 질은 같고 양만 다르다고 보았습니다.",
+                "이 입장은 정신적 가치를 무시해 '천박한 돼지의 철학'이라 비판받았습니다.",
+                "밀은 정신적 쾌락이 감각적 쾌락보다 우월하다는 '질적 쾌락주의'를 주장했습니다.",
+                "또한, 밀은 법 같은 '외적 제재'는 이기심의 근본적 해결책이 아니라고 봤습니다.",
+                "그는 대안으로 내면의 자발적 의무감인 '양심', 즉 '내적 제재'를 강조했습니다.",
+                "양심은 타고난 사회적 감정을 기초로 교육을 통해 길러지며 이기심을 극복하게 합니다.",
+                "밀은 내적·외적 제재로 사회 복지를 높일 수 있기에 공리주의가 타당한 윤리 기준이라 주장했습니다."
+            ];
+
+            // 카드 생성 및 셔플
+            const shuffledCards = shuffleArray(passageLines.map((text, index) => ({
+                text: text,
+                originalIndex: index
+            })));
+
+            let html = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h2>문장을 올바른 순서로 배열하세요</h2>
+                    <p style="color: #7f8c8d;">드래그하여 카드를 이동시킬 수 있습니다.</p>
+                </div>
+                <div class="cards-container" id="cards-container">
+            `;
+
+            shuffledCards.forEach((card, index) => {
+                html += `
+                    <div class="summary-card" draggable="true" data-original="${card.originalIndex}" data-current="${index}">
+                        <span class="card-number">${index + 1}</span>
+                        <span>${card.text}</span>
+                    </div>
+                `;
+            });
+
+            html += `
+                </div>
+                <button class="submit-btn" onclick="checkCardOrder()">제출하기</button>
+                <button class="view-passage-btn" onclick="showPassageModal()" style="display: block; position: static; margin: 20px auto;">지문 다시 보기</button>
+            `;
+
+            mainContent.innerHTML = html;
+
+            // 문제 수 업데이트
+            document.getElementById('total-questions').textContent = '1';
+            document.getElementById('current-question').textContent = '1';
+
+            // 드래그 앤 드롭 설정
+            setupDragAndDrop();
+        }
+
+        function setupDragAndDrop() {
+            const container = document.getElementById('cards-container');
+            const cards = document.querySelectorAll('.summary-card');
+            let draggedCard = null;
+            let draggedClone = null;
+            let placeholder = null;
+
+            cards.forEach((card) => {
+                card.draggable = false; // 기본 드래그 비활성화
+
+                // 마우스 이벤트
+                card.addEventListener('mousedown', (e) => {
+                    if (e.button === 0) { // 왼쪽 클릭만
+                        startDrag(e, card);
+                    }
+                });
+
+                // 터치 이벤트
+                card.addEventListener('touchstart', (e) => {
+                    startDrag(e, card);
+                }, { passive: false });
+            });
+
+            function startDrag(e, card) {
+                e.preventDefault();
+                draggedCard = card;
+
+                // 카드의 원래 크기와 위치 가져오기
+                const rect = card.getBoundingClientRect();
+
+                // 플레이스홀더 생성 (원래 자리 표시)
+                placeholder = document.createElement('div');
+                placeholder.style.height = rect.height + 'px';
+                placeholder.style.background = 'linear-gradient(45deg, #f0f0f0 25%, transparent 25%, transparent 75%, #f0f0f0 75%, #f0f0f0), linear-gradient(45deg, #f0f0f0 25%, transparent 25%, transparent 75%, #f0f0f0 75%, #f0f0f0)';
+                placeholder.style.backgroundSize = '10px 10px';
+                placeholder.style.backgroundPosition = '0 0, 5px 5px';
+                placeholder.style.borderRadius = '8px';
+                placeholder.style.border = '2px dashed #ccc';
+                placeholder.style.opacity = '0.5';
+
+                // 클론 생성 (커서를 따라다닐 요소)
+                draggedClone = card.cloneNode(true);
+                draggedClone.classList.add('dragging');
+                draggedClone.style.position = 'fixed';
+                draggedClone.style.width = rect.width + 'px';
+                draggedClone.style.pointerEvents = 'none';
+                draggedClone.style.zIndex = '1000';
+                draggedClone.style.transform = 'scale(1.05) rotate(2deg)';
+                document.body.appendChild(draggedClone);
+
+                // 원본 카드를 플레이스홀더로 교체
+                card.parentNode.insertBefore(placeholder, card);
+                card.style.display = 'none';
+
+                // 클릭 위치 오프셋 계산
+                const offsetX = e.clientX ? e.clientX - rect.left : e.touches[0].clientX - rect.left;
+                const offsetY = e.clientY ? e.clientY - rect.top : e.touches[0].clientY - rect.top;
+
+                function moveCard(clientX, clientY) {
+                    // 클론을 커서 위치로 이동
+                    draggedClone.style.left = (clientX - offsetX) + 'px';
+                    draggedClone.style.top = (clientY - offsetY) + 'px';
+
+                    // 드롭 위치 계산
+                    draggedClone.style.display = 'none'; // 임시로 숨김
+                    const elemBelow = document.elementFromPoint(clientX, clientY);
+                    draggedClone.style.display = ''; // 다시 표시
+
+                    if (elemBelow && elemBelow.classList.contains('summary-card') && elemBelow !== draggedCard) {
+                        const rect = elemBelow.getBoundingClientRect();
+                        const midpoint = rect.top + rect.height / 2;
+
+                        if (clientY < midpoint) {
+                            // 위쪽에 삽입
+                            elemBelow.parentNode.insertBefore(placeholder, elemBelow);
+                            elemBelow.parentNode.insertBefore(draggedCard, placeholder);
+                        } else {
+                            // 아래쪽에 삽입
+                            if (elemBelow.nextSibling) {
+                                elemBelow.parentNode.insertBefore(placeholder, elemBelow.nextSibling);
+                                elemBelow.parentNode.insertBefore(draggedCard, placeholder);
+                            } else {
+                                elemBelow.parentNode.appendChild(placeholder);
+                                elemBelow.parentNode.appendChild(draggedCard);
+                            }
+                        }
+                    }
+                }
+
+                function onMove(e) {
+                    const clientX = e.clientX !== undefined ? e.clientX : e.touches[0].clientX;
+                    const clientY = e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
+                    moveCard(clientX, clientY);
+                }
+
+                function onEnd(e) {
+                    // 클론 제거
+                    if (draggedClone) {
+                        draggedClone.remove();
+                        draggedClone = null;
+                    }
+
+                    // 플레이스홀더를 원본 카드로 교체
+                    if (placeholder && placeholder.parentNode) {
+                        placeholder.parentNode.replaceChild(draggedCard, placeholder);
+                        placeholder = null;
+                    }
+
+                    // 원본 카드 다시 표시
+                    draggedCard.style.display = '';
+                    draggedCard = null;
+
+                    // 카드 번호 업데이트
+                    updateCardNumbers();
+
+                    // 이벤트 리스너 제거
+                    document.removeEventListener('mousemove', onMove);
+                    document.removeEventListener('mouseup', onEnd);
+                    document.removeEventListener('touchmove', onMove);
+                    document.removeEventListener('touchend', onEnd);
+                    document.removeEventListener('touchcancel', onEnd);
+                }
+
+                // 초기 위치 설정
+                const initialX = e.clientX !== undefined ? e.clientX : e.touches[0].clientX;
+                const initialY = e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
+                moveCard(initialX, initialY);
+
+                // 이벤트 리스너 추가
+                if (e.type === 'mousedown') {
+                    document.addEventListener('mousemove', onMove);
+                    document.addEventListener('mouseup', onEnd);
+                } else {
+                    document.addEventListener('touchmove', onMove, { passive: false });
+                    document.addEventListener('touchend', onEnd);
+                    document.addEventListener('touchcancel', onEnd);
+                }
+            }
+        }
+
+        // 카드 번호 업데이트 함수
+        function updateCardNumbers() {
+            const cards = document.querySelectorAll('.summary-card');
+            cards.forEach((card, index) => {
+                const numberEl = card.querySelector('.card-number');
+                if (numberEl) {
+                    const oldNumber = numberEl.textContent;
+                    const newNumber = (index + 1).toString();
+
+                    if (oldNumber !== newNumber) {
+                        numberEl.textContent = newNumber;
+                        numberEl.classList.add('updating');
+                        setTimeout(() => {
+                            numberEl.classList.remove('updating');
+                        }, 500);
+                    }
+                }
+            });
+        }
+
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.summary-card:not(.dragging)')];
+
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        function checkCardOrder() {
+            const cards = document.querySelectorAll('.summary-card');
+            let correctCount = 0;
+            let wrongCount = 0;
+
+            cards.forEach((card, index) => {
+                const originalIndex = parseInt(card.getAttribute('data-original'));
+                if (originalIndex !== index) {
+                    wrongCount++;
+                    card.classList.add('incorrect');
+                } else {
+                    correctCount++;
+                    card.classList.add('correct');
+                }
+            });
+
+            // 정답수와 오답수 업데이트
+            reviewCorrectCards += correctCount;
+            reviewWrongAttempts += wrongCount;
+
+            // 모두 정답인 경우
+            if (wrongCount === 0) {
+                correctAnswers = 1; // 복기 학습 성공
+                score += 2.0;
+                addTime(30);
+                setTimeout(() => {
+                    showStageComplete('review');
+                }, 2000);
+            } else {
+                // 일부라도 틀린 경우
+                subtractTime(10);
+
+                // 누적 정답률 표시 업데이트
+                const accuracy = (reviewCorrectCards + reviewWrongAttempts) > 0 ?
+                    Math.round((reviewCorrectCards / (reviewCorrectCards + reviewWrongAttempts)) * 100) : 0;
+                const accuracyElem = document.getElementById('accuracy');
+                if (accuracyElem) {
+                    accuracyElem.textContent = accuracy + '%';
+                }
+
+                setTimeout(() => {
+                    cards.forEach(card => {
+                        card.classList.remove('correct', 'incorrect');
+                    });
+                }, 2000);
+            }
+        }
+
+        // 단답형 학습 단계
+        function loadMCQStage() {
+            stageStartTime = Date.now();
+            currentQuestionIndex = 0;
+            const questions = shuffleArray([...learningData.mcqQuestions]);
+            learningData.currentMCQQuestions = questions;
+
+            // 문제 수 업데이트
+            document.getElementById('total-questions').textContent = questions.length;
+
+            showMCQQuestion();
+        }
+
+        function showMCQQuestion() {
+            if (currentQuestionIndex >= learningData.currentMCQQuestions.length) {
+                showStageComplete('mcq');
+                return;
+            }
+
+            const question = learningData.currentMCQQuestions[currentQuestionIndex];
+            const mainContent = document.getElementById('main-content');
+
+            // 선택지 생성
+            const wrongOptions = shuffleArray([...question.wrong]).slice(0, 3);
+            const allOptions = shuffleArray([question.correct, ...wrongOptions]);
+
+            let html = `
+                <div class="mcq-container">
+                    <div class="mcq-question">${question.question}</div>
+                    <div class="mcq-options">
+            `;
+
+            allOptions.forEach((option, index) => {
+                html += `
+                    <div class="option-button" onclick="handleMCQAnswer('${option === question.correct}', this)">
+                        <span class="option-number">${index + 1}</span>
+                        <span>${option}</span>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                    <button class="view-passage-btn" onclick="showPassageModal()" style="display: block; position: static; margin: 30px auto;">지문 다시 보기</button>
+                </div>
+            `;
+
+            mainContent.innerHTML = html;
+
+            // 카운터 업데이트
+            document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+        }
+
+        function handleMCQAnswer(isCorrect, button) {
+            // 모든 버튼 비활성화
+            document.querySelectorAll('.option-button').forEach(btn => {
+                btn.style.pointerEvents = 'none';
+            });
+
+            if (isCorrect === 'true') {
+                button.classList.add('correct', 'correct-animation');
+                correctAnswers++;
+                score += 0.2;
+                addTime(9);
+
+                // 성공 효과음 느낌의 애니메이션
+                button.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    button.style.transform = 'scale(1)';
+                }, 300);
+
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    showMCQQuestion();
+                }, 1500);
+            } else {
+                button.classList.add('incorrect', 'incorrect-animation');
+                mcqWrongAttempts++; // 틀린 횟수 증가
+                subtractTime(6); // 2 -> 6 (3배 증가)
+
+                setTimeout(() => {
+                    document.querySelectorAll('.option-button').forEach(btn => {
+                        btn.style.pointerEvents = 'auto';
+                        btn.classList.remove('incorrect', 'incorrect-animation');
+                    });
+                }, 1000);
+            }
+        }
+
+        // 유틸리티 함수들
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function positionModalNearHighlight(modal) {
+            // 이전 모달 위치가 있으면 그 위치 사용
+            if (lastModalPosition && currentQuestionIndex > 0) {
+                modal.style.left = lastModalPosition.left + 'px';
+                modal.style.top = lastModalPosition.top + 'px';
+                modal.style.transform = lastModalPosition.transform || 'none';
+                return;
+            }
+
+            // 하이라이트된 요소 찾기
+            const highlight = document.querySelector('.highlight.active');
+            if (!highlight) {
+                // 하이라이트가 없으면 기본 위치 사용
+                positionModal(modal);
+                return;
+            }
+
+            const highlightRect = highlight.getBoundingClientRect();
+            const modalWidth = modal.offsetWidth || 350; // 기본 너비
+            const modalHeight = modal.offsetHeight || 200; // 기본 높이
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+            let left, top;
+
+            // 가로 위치: 하이라이트 중앙에 정렬
+            left = highlightRect.left + (highlightRect.width / 2) - (modalWidth / 2);
+
+            // 화면을 벗어나지 않도록 조정
+            if (left < 10) left = 10;
+            if (left + modalWidth > viewportWidth - 10) {
+                left = viewportWidth - modalWidth - 10;
+            }
+
+            // 세로 위치: 하이라이트가 화면 상단/하단에 따라 결정
+            const highlightCenterY = highlightRect.top + (highlightRect.height / 2);
+            const screenCenterY = viewportHeight / 2;
+
+            if (highlightCenterY < screenCenterY) {
+                // 하이라이트가 화면 위쪽: 모달을 아래에 배치
+                top = highlightRect.bottom + 10 + scrollY;
+            } else {
+                // 하이라이트가 화면 아래쪽: 모달을 위에 배치
+                top = highlightRect.top - modalHeight - 10 + scrollY;
+            }
+
+            // 화면 밖으로 나가지 않도록 최종 조정
+            if (top < scrollY + 10) {
+                top = highlightRect.bottom + 10 + scrollY;
+            }
+            if (top + modalHeight > scrollY + viewportHeight - 10) {
+                top = highlightRect.top - modalHeight - 10 + scrollY;
+            }
+
+            modal.style.left = left + 'px';
+            modal.style.top = top + 'px';
+            modal.style.transform = 'none'; // 초기 transform 제거
+        }
+
+        function positionModal(modal) {
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const modalWidth = modal.offsetWidth;
+            const modalHeight = modal.offsetHeight;
+
+            // 화면 크기에 따른 반응형 위치 설정
+            let left = Math.max(10, (viewportWidth - modalWidth) / 2);
+            let top = viewportHeight * 0.15; // 화면 상단 15% 위치
+
+            // 모바일에서는 상단에 더 가까이
+            if (viewportWidth < 768) {
+                top = viewportHeight * 0.08;
+            }
+
+            // 핸드폰 사이즈에서는 더 아래쪽에 위치
+            if (viewportWidth < 480) {
+                top = viewportHeight * 0.25; // 화면 상단 25% 위치로 조정
+            }
+
+            // 화면을 벗어나지 않도록 조정
+            if (left + modalWidth > viewportWidth - 10) {
+                left = viewportWidth - modalWidth - 10;
+            }
+            if (top + modalHeight > viewportHeight - 10) {
+                top = viewportHeight - modalHeight - 10;
+            }
+
+            modal.style.left = left + 'px';
+            modal.style.top = top + 'px';
+            modal.style.transform = 'none'; // 초기 transform 제거
+        }
+
+        function makeDraggable(element) {
+            // 이미 드래그 이벤트가 추가되어 있는지 확인
+            if (element.dataset.draggable === 'true') {
+                return;
+            }
+            element.dataset.draggable = 'true';
+
+            let isDragging = false;
+            let currentX = 0;
+            let currentY = 0;
+            let initialX = 0;
+            let initialY = 0;
+            let xOffset = 0;
+            let yOffset = 0;
+            let startPosX = 0;
+            let startPosY = 0;
+
+            // 이전 모달 위치에서 transform 값 가져오기
+            if (lastModalPosition && lastModalPosition.transform) {
+                const matrix = lastModalPosition.transform.match(/matrix.*\(([^)]*)\)/);
+                if (matrix) {
+                    const values = matrix[1].split(', ');
+                    xOffset = parseInt(values[4]) || 0;
+                    yOffset = parseInt(values[5]) || 0;
+                    currentX = xOffset;
+                    currentY = yOffset;
+                }
+            }
+
+            // 마우스 이벤트
+            element.addEventListener('mousedown', dragStart);
+
+            // 터치 이벤트
+            element.addEventListener('touchstart', dragStart, { passive: false });
+
+            function dragStart(e) {
+                // 옵션 버튼이나 닫기 버튼 클릭 시 드래그 방지
+                if (e.target.classList.contains('option-button') ||
+                    e.target.classList.contains('close-modal') ||
+                    e.target.closest('.option-button')) {
+                    return;
+                }
+
+                // 현재 위치 정확히 가져오기
+                const transform = window.getComputedStyle(element).transform;
+                if (transform !== 'none' && transform !== 'matrix(1, 0, 0, 1, 0, 0)') {
+                    const matrix = transform.match(/matrix.*\(([^)]*)\)/);
+                    if (matrix) {
+                        const values = matrix[1].split(', ');
+                        const newXOffset = parseFloat(values[4]) || 0;
+                        const newYOffset = parseFloat(values[5]) || 0;
+                        // 값이 유효한지 확인
+                        if (!isNaN(newXOffset) && !isNaN(newYOffset)) {
+                            xOffset = newXOffset;
+                            yOffset = newYOffset;
+                        }
+                    }
+                }
+                currentX = xOffset;
+                currentY = yOffset;
+
+                if (e.type === 'touchstart') {
+                    startPosX = initialX = e.touches[0].clientX - xOffset;
+                    startPosY = initialY = e.touches[0].clientY - yOffset;
+                } else {
+                    startPosX = initialX = e.clientX - xOffset;
+                    startPosY = initialY = e.clientY - yOffset;
+                }
+
+                if (e.target === element || element.contains(e.target)) {
+                    isDragging = true;
+                    element.classList.add('dragging');
+                    element.style.transition = 'none'; // 드래그 중 transition 제거
+                    element.style.willChange = 'transform'; // 성능 최적화
+
+                    // 드래그 중일 때만 이벤트 리스너 추가
+                    if (e.type === 'touchstart') {
+                        document.addEventListener('touchmove', drag, { passive: false });
+                        document.addEventListener('touchend', dragEnd, { passive: false });
+                        document.addEventListener('touchcancel', dragEnd, { passive: false });
+                    } else {
+                        document.addEventListener('mousemove', drag);
+                        document.addEventListener('mouseup', dragEnd);
+                        document.addEventListener('mouseleave', dragEnd);
+                    }
+
+                    e.preventDefault();
+                }
+            }
+
+            function drag(e) {
+                if (!isDragging) return;
+
+                e.preventDefault();
+
+                let clientX, clientY;
+                if (e.type === 'touchmove') {
+                    clientX = e.touches[0].clientX;
+                    clientY = e.touches[0].clientY;
+                } else {
+                    clientX = e.clientX;
+                    clientY = e.clientY;
+                }
+
+                currentX = clientX - initialX;
+                currentY = clientY - initialY;
+
+                xOffset = currentX;
+                yOffset = currentY;
+
+                // 화면 밖으로 나가지 않도록 제한 (여백 10px, 좌측으로도 이동 가능)
+                const rect = element.getBoundingClientRect();
+                const padding = 10;
+                const maxX = window.innerWidth - rect.width - padding;
+                const maxY = window.innerHeight - rect.height - padding;
+                const minX = padding - rect.left - 50; // 좌측으로 50px까지 이동 가능
+                const minY = padding - rect.top;
+
+                currentX = Math.max(minX, Math.min(currentX, maxX));
+                currentY = Math.max(minY, Math.min(currentY, maxY));
+
+                // 즉시 위치 업데이트 (더 빠른 반응)
+                element.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+            }
+
+            function dragEnd(e) {
+                if (!isDragging) return;
+
+                isDragging = false;
+                element.classList.remove('dragging');
+                element.style.transition = ''; // transition 복원
+                element.style.willChange = 'auto'; // willChange 해제
+
+                // 현재 모달 위치 저장
+                const rect = element.getBoundingClientRect();
+                lastModalPosition = {
+                    left: rect.left,
+                    top: rect.top,
+                    transform: element.style.transform
+                };
+
+                // 드래그 거리가 짧으면 클릭으로 처리
+                const dragDistance = Math.sqrt(Math.pow(currentX - startPosX, 2) + Math.pow(currentY - startPosY, 2));
+                if (dragDistance < 5) {
+                    // 클릭으로 처리
+                    xOffset = currentX;
+                    yOffset = currentY;
+                }
+
+                // 이벤트 리스너 제거
+                document.removeEventListener('mousemove', drag);
+                document.removeEventListener('mouseup', dragEnd);
+                document.removeEventListener('mouseleave', dragEnd);
+                document.removeEventListener('touchmove', drag);
+                document.removeEventListener('touchend', dragEnd);
+                document.removeEventListener('touchcancel', dragEnd);
+
+                // 최종 위치 저장
+                initialX = currentX;
+                initialY = currentY;
+            }
+        }
+
+        function showPassageModal() {
+            const overlay = document.getElementById('passage-modal-overlay');
+            const content = document.getElementById('passage-modal-content');
+
+            content.innerHTML = parseMarkdown(learningData.fullPassage()).replace(/\n/g, '<br>');
+            overlay.classList.add('active');
+        }
+
+        function closePassageModal() {
+            document.getElementById('passage-modal-overlay').classList.remove('active');
+        }
+
+        function showStageComplete(stage) {
+            clearInterval(timerInterval);
+
+            // 단계별 결과 저장
+            const elapsedSeconds = (Date.now() - stageStartTime) / 1000;
+            stageResults[stage] = {
+                correct: stage === 'review' ? reviewCorrectCards : correctAnswers,
+                wrong: stage === 'reading' ? wrongAttempts :
+                      stage === 'find' ? findWrongAttempts :
+                      stage === 'review' ? reviewWrongAttempts : mcqWrongAttempts,
+                score: score,
+                time: 100 - timeRemaining,
+                elapsedTime: elapsedSeconds,
+                attempts: stage === 'review' ? (reviewCorrectCards + reviewWrongAttempts) :
+                         (correctAnswers + (stage === 'reading' ? wrongAttempts :
+                          stage === 'find' ? findWrongAttempts : mcqWrongAttempts))
+            };
+
+            // 모든 모달 숨기기
+            document.getElementById('question-modal').classList.remove('active');
+            document.getElementById('question-modal').style.display = 'none';
+            document.getElementById('find-question-modal').style.display = 'none';
+            document.getElementById('passage-modal-overlay').classList.remove('active');
+
+            const panel = document.getElementById('results-panel');
+            const stats = document.getElementById('results-stats');
+
+            // 각 단계별 총 문제 수 계산
+            let stageTotalQuestions = 0;
+            switch(stage) {
+                case 'reading':
+                    stageTotalQuestions = learningData.readingQuestions.length;
+                    break;
+                case 'find':
+                    stageTotalQuestions = learningData.findQuestions.length;
+                    break;
+                case 'review':
+                    stageTotalQuestions = 1; // 카드 정렬은 1문제로 계산
+                    break;
+                case 'mcq':
+                    stageTotalQuestions = learningData.mcqQuestions.length;
+                    break;
+            }
+
+            // 새로운 정답률 계산: 맞은 문제 / (맞은 문제 + 틀린 횟수)
+            let stageWrongAttempts = 0;
+            switch(stage) {
+                case 'reading':
+                    stageWrongAttempts = wrongAttempts;
+                    break;
+                case 'find':
+                    stageWrongAttempts = findWrongAttempts;
+                    break;
+                case 'review':
+                    stageWrongAttempts = reviewWrongAttempts;
+                    break;
+                case 'mcq':
+                    stageWrongAttempts = mcqWrongAttempts;
+                    break;
+            }
+
+            // 복기 학습은 별도 계산
+            let displayCorrectAnswers = correctAnswers;
+            let displayWrongAttempts = stageWrongAttempts;
+            let accuracy;
+            let progressRate;
+
+            if (stage === 'review') {
+                displayCorrectAnswers = reviewCorrectCards;
+                displayWrongAttempts = reviewWrongAttempts;
+                accuracy = (reviewCorrectCards + reviewWrongAttempts) > 0 ?
+                          Math.round((reviewCorrectCards / (reviewCorrectCards + reviewWrongAttempts)) * 100) : 0;
+                // 복기 학습 진행률: 통과 시 100%, 미통과 시 0%
+                // correctAnswers가 1이면 통과한 것 (checkCardOrder에서 설정됨)
+                progressRate = correctAnswers === 1 ? 100 : 0;
+            } else {
+                accuracy = (correctAnswers + stageWrongAttempts) > 0 ?
+                          Math.round((correctAnswers / (correctAnswers + stageWrongAttempts)) * 100) : 0;
+                progressRate = stageTotalQuestions > 0 ?
+                              Math.round((correctAnswers / stageTotalQuestions) * 100) : 0;
+            }
+
+            const stageNameKor = {
+                reading: '독해 학습',
+                find: '확인 학습',
+                review: '복기 학습',
+                mcq: '단답형 학습'
+            };
+
+            stats.innerHTML = `
+                <h3 style="margin-bottom: 20px; color: #2c3e50;">${stageNameKor[stage]} 결과</h3>
+                <div class="stat-card">
+                    <div class="stat-label">점수</div>
+                    <div class="stat-value">${score.toFixed(1)}점</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">정답수</div>
+                    <div class="stat-value">${displayCorrectAnswers}개</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">오답수</div>
+                    <div class="stat-value">${displayWrongAttempts}개</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">정답률</div>
+                    <div class="stat-value">${accuracy}%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">진행률</div>
+                    <div class="stat-value">${progressRate}%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">소요 시간</div>
+                    <div class="stat-value">${formatTime((Date.now() - stageStartTime) / 1000)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">남은 시간</div>
+                    <div class="stat-value">${Math.round(timeRemaining)}%</div>
+                </div>
+            `;
+
+            panel.style.display = 'block';
+            document.getElementById('main-content').style.display = 'none';
+
+            // 단계 표시 업데이트
+            document.querySelector(`.stage-dot[data-stage="${stage}"]`).classList.add('completed');
+
+            // 부모 프로그램에 결과 전송
+            sendResultsToParent(stage, accuracy, score);
+        }
+
+        function showTimeUpModal() {
+            alert('시간이 종료되었습니다!');
+            showStageComplete(currentStage);
+        }
+
+        function restartStage() {
+            document.getElementById('results-panel').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+
+            timeRemaining = 100;
+            correctAnswers = 0;
+            currentQuestionIndex = 0;
+
+            // 틀린 횟수 초기화
+            switch(currentStage) {
+                case 'reading':
+                    wrongAttempts = 0;
+                    break;
+                case 'find':
+                    findWrongAttempts = 0;
+                    break;
+                case 'review':
+                    reviewWrongAttempts = 0;
+                    reviewCorrectCards = 0;
+                    break;
+                case 'mcq':
+                    mcqWrongAttempts = 0;
+                    break;
+            }
+
+            switch(currentStage) {
+                case 'reading':
+                    loadReadingStage();
+                    break;
+                case 'find':
+                    loadFindStage();
+                    break;
+                case 'review':
+                    loadReviewStage();
+                    break;
+                case 'mcq':
+                    loadMCQStage();
+                    break;
+            }
+
+            startTimer();
+        }
+
+        function nextStage() {
+            document.getElementById('results-panel').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+
+            const stages = ['reading', 'find', 'review', 'mcq'];
+            const currentIndex = stages.indexOf(currentStage);
+
+            if (currentIndex < stages.length - 1) {
+                currentStage = stages[currentIndex + 1];
+                document.querySelector(`.stage-dot[data-stage="${currentStage}"]`).classList.add('active');
+
+                timeRemaining = 100;
+                correctAnswers = 0;
+                currentQuestionIndex = 0;
+
+                // 다음 단계로 이동할 때 틀린 횟수 초기화
+                switch(currentStage) {
+                    case 'reading':
+                        wrongAttempts = 0;
+                        break;
+                    case 'find':
+                        findWrongAttempts = 0;
+                        break;
+                    case 'review':
+                        reviewWrongAttempts = 0;
+                        reviewCorrectCards = 0;
+                        break;
+                    case 'mcq':
+                        mcqWrongAttempts = 0;
+                        break;
+                }
+
+                switch(currentStage) {
+                    case 'find':
+                        loadFindStage();
+                        break;
+                    case 'review':
+                        loadReviewStage();
+                        break;
+                    case 'mcq':
+                        loadMCQStage();
+                        break;
+                }
+
+                startTimer();
+            } else {
+                showFinalResults();
+            }
+        }
+
+        function showFinalResults() {
+            const mainContent = document.getElementById('main-content');
+
+            // 전체 결과 계산
+            const totalCorrect = Object.values(stageResults).reduce((sum, s) => sum + s.correct, 0);
+            const totalWrong = Object.values(stageResults).reduce((sum, s) => sum + s.wrong, 0);
+            const overallAccuracy = (totalCorrect + totalWrong) > 0 ?
+                                   Math.round((totalCorrect / (totalCorrect + totalWrong)) * 100) : 0;
+            const totalScore = Object.values(stageResults).reduce((sum, s) => sum + s.score, 0);
+
+            let html = `
+                <div class="results-panel" style="display: block; position: static; max-width: 900px;">
+                    <div class="results-title">🎉 학습 완료!</div>
+                    <p style="margin: 20px 0;">모든 학습 단계를 완료했습니다.</p>
+
+                    <!-- 단계별 결과 -->
+                    <h3 style="margin: 30px 0 20px; color: #2c3e50;">📊 단계별 학습 결과</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+            `;
+
+            // 각 단계별 결과 표시
+            ['reading', 'find', 'review', 'mcq'].forEach(stage => {
+                const result = stageResults[stage];
+                const stageAccuracy = result.attempts > 0 ?
+                    Math.round((result.correct / result.attempts) * 100) : 0;
+                const stageName = {
+                    reading: '독해 학습',
+                    find: '확인 학습',
+                    review: '복기 학습',
+                    mcq: '단답형 학습'
+                }[stage];
+
+                html += `
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 4px solid #3498db;">
+                        <h4 style="margin: 0 0 10px; color: #2c3e50;">${stageName}</h4>
+                        <div style="font-size: 14px; line-height: 1.6;">
+                            <div>정답률: <strong>${stageAccuracy}%</strong></div>
+                            <div>정답: ${result.correct}개</div>
+                            <div>오답: ${result.wrong}회</div>
+                            <div>점수: ${result.score.toFixed(1)}점</div>
+                            <div>소요 시간: ${formatTime(result.elapsedTime)}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+
+                    <!-- 전체 학습 결과 -->
+                    <h3 style="margin: 30px 0 20px; color: #2c3e50;">📊 전체 학습 결과</h3>
+                    <div class="results-stats" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 30px;">
+                        <div class="stat-card">
+                            <div class="stat-label">전체 점수</div>
+                            <div class="stat-value" style="color: #3498db; font-size: 28px;">${totalScore.toFixed(1)}점</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">전체 정답수</div>
+                            <div class="stat-value" style="color: #27ae60; font-size: 28px;">${totalCorrect}개</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">전체 오답수</div>
+                            <div class="stat-value" style="color: #e74c3c; font-size: 28px;">${totalWrong}개</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">전체 정답률</div>
+                            <div class="stat-value" style="color: #27ae60; font-size: 28px;">${overallAccuracy}%</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">총 소요 시간</div>
+                            <div class="stat-value" style="color: #9b59b6; font-size: 24px;">${formatTime((Date.now() - globalStartTime) / 1000)}</div>
+                        </div>
+                    </div>
+
+                    <div class="results-actions">
+                        <button class="btn btn-primary" onclick="location.reload()">처음부터 다시하기</button>
+                    </div>
+                </div>
+            `;
+
+            mainContent.innerHTML = html;
+
+            // 부모 프로그램에 최종 누적 데이터 전송
+            sendFinalDataToParent();
+        }
+
+        function sendFinalDataToParent() {
+            if (window.parent && window.parent !== window) {
+                // 전체 결과 계산
+                const totalCorrect = Object.values(stageResults).reduce((sum, s) => sum + s.correct, 0);
+                const totalWrong = Object.values(stageResults).reduce((sum, s) => sum + s.wrong, 0);
+                const totalAccuracy = (totalCorrect + totalWrong) > 0 ?
+                                     Math.round((totalCorrect / (totalCorrect + totalWrong)) * 100) : 0;
+                const totalScore = Object.values(stageResults).reduce((sum, s) => sum + s.score, 0);
+
+                window.parent.postMessage({
+                    type: 'korean-farm.v2',
+                    version: '1.0',
+                    activity: 'complete',
+                    timestamp: Date.now(),
+                    payload: {
+                        // 전체 최종 데이터
+                        totalCorrect: totalCorrect,
+                        totalWrong: totalWrong,
+                        totalAccuracy: totalAccuracy,
+                        totalScore: totalScore,
+                        sessionTime: (Date.now() - globalStartTime) / 1000,
+
+                        // 단계별 상세 데이터
+                        stageDetails: stageResults
+                    }
+                }, '*');
+            }
+        }
+
+        function sendResultsToParent(stage, accuracy, score) {
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({
+                    type: 'korean-farm.v2',
+                    version: '1.0',
+                    activity: stage,
+                    payload: {
+                        accuracy: accuracy,
+                        score: score,
+                        timeRemainingPct: timeRemaining / 100
+                    }
+                }, '*');
+            }
+        }
+
+        // 페이지 로드 시 학습 시작
+        window.addEventListener('DOMContentLoaded', () => {
+            startLearning();
+        });
+    </script>
+</body>
+</html>

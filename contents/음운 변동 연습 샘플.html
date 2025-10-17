@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>음운 변동 연습 - 문법 학습</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif KR', serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header - 샘플과 동일 */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .progress-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .stage-indicator {
+            display: flex;
+            gap: 10px;
+        }
+
+        .stage-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .stage-dot.active {
+            background: #3498db;
+            transform: scale(1.3);
+        }
+
+        .stage-dot.completed {
+            background: #27ae60;
+        }
+
+        .question-counter {
+            font-size: 18px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        /* Timer Bar */
+        .timer-container {
+            width: 300px;
+            height: 24px;
+            background: #ecf0f1;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .timer-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            border-radius: 12px;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timer-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(100%); }
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 100px;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            min-height: 600px;
+            position: relative;
+        }
+
+        /* 음운 변동 학습 전용 스타일 */
+        .phoneme-container {
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .word-display {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .word-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .word-pronunciation {
+            font-size: 24px;
+            color: #3498db;
+            font-weight: 500;
+        }
+
+        /* 음소 테이블 스타일 - 세로 정렬 */
+        .phoneme-table {
+            display: flex;
+            justify-content: flex-start;
+            gap: 12px;
+            margin-bottom: 40px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 10px 20px;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* 스크롤바 스타일링 */
+        .phoneme-table::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .phoneme-table::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .phoneme-table::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .phoneme-table::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .phoneme-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .phoneme-box {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border: 3px solid #3498db;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 600;
+            color: #2c3e50;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .phoneme-box.original {
+            border-color: #95a5a6;
+            background: #f8f9fa;
+        }
+
+        .phoneme-box.clickable {
+            cursor: pointer;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
+            }
+        }
+
+        .phoneme-box.clickable:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .phoneme-box.changed {
+            background: #fff3cd;
+            border-color: #ffc107;
+            animation: boxChange 0.6s ease;
+        }
+
+        .phoneme-box.added {
+            background: #d4edda;
+            border-color: #28a745;
+            animation: boxAppear 0.6s ease;
+        }
+
+        .phoneme-box.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        @keyframes boxChange {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15) rotate(5deg); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes boxAppear {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .phoneme-box.new {
+            animation: boxAppear 0.5s ease;
+        }
+
+        /* 행 레이블 */
+        .row-label {
+            position: absolute;
+            left: -80px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #7f8c8d;
+            background: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        /* Question Modal - 샘플과 동일하게 작고 반투명하게 */
+        .question-modal {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: min(90vw, 224px);
+            max-height: 42vh;
+            overflow-y: auto;
+            z-index: 1000;
+            cursor: default;
+            display: none;
+            will-change: transform;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-drag-handle {
+            cursor: move;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .question-modal.active {
+            display: block;
+        }
+
+        .question-modal.dragging {
+            opacity: 0.95;
+            user-select: none;
+        }
+
+        .modal-header {
+            font-size: 12px;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #ecf0f1;
+            cursor: move;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .modal-question {
+            font-size: 11px;
+            line-height: 1.4;
+            color: #34495e;
+            margin-bottom: 12px;
+        }
+
+        .modal-options {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .option-button {
+            padding: 6px 10px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 11px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .option-number {
+            width: 16px;
+            height: 16px;
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 9px;
+            flex-shrink: 0;
+        }
+
+        .option-button:hover {
+            background: #e3f2fd;
+            border-color: #3498db;
+            transform: translateX(5px);
+        }
+
+        .option-button.correct {
+            background: #d4edda;
+            border-color: #27ae60;
+            animation: correctAnswer 0.6s ease;
+        }
+
+        .option-button.incorrect {
+            background: #f8d7da;
+            border-color: #e74c3c;
+            animation: incorrectAnswer 0.6s ease;
+        }
+
+        @keyframes correctAnswer {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes incorrectAnswer {
+            0%, 20%, 40%, 60%, 80%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            15%, 35%, 55%, 75%, 95% { transform: translateX(5px); }
+        }
+
+        /* 정답/오답 시 모달 애니메이션 - 이동 없이 색상과 효과만 */
+        @keyframes correctGlow {
+            0% {
+                box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+                border: 3px solid transparent;
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(76, 175, 80, 0.8), 0 0 50px rgba(76, 175, 80, 0.5);
+                border: 3px solid #4CAF50;
+                background: rgba(212, 237, 218, 0.95);
+            }
+            100% {
+                box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+                border: 3px solid transparent;
+            }
+        }
+
+        @keyframes incorrectPulse {
+            0% {
+                box-shadow: 0 0 5px rgba(244, 67, 54, 0.5);
+                border: 3px solid transparent;
+            }
+            25% {
+                box-shadow: 0 0 20px rgba(244, 67, 54, 0.8);
+                border: 3px solid #f44336;
+                background: rgba(255, 235, 238, 0.95);
+            }
+            50% {
+                box-shadow: 0 0 5px rgba(244, 67, 54, 0.5);
+                border: 3px solid transparent;
+            }
+            75% {
+                box-shadow: 0 0 20px rgba(244, 67, 54, 0.8);
+                border: 3px solid #f44336;
+                background: rgba(255, 235, 238, 0.95);
+            }
+            100% {
+                box-shadow: 0 0 5px rgba(244, 67, 54, 0.5);
+                border: 3px solid transparent;
+            }
+        }
+
+        .question-modal.correct-animation {
+            animation: correctGlow 0.8s ease-in-out;
+        }
+
+        .question-modal.incorrect-animation {
+            animation: incorrectPulse 0.8s ease-in-out;
+        }
+
+        /* Results Panel - 샘플과 동일 */
+        .results-panel {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 120px auto 40px;
+            text-align: center;
+            display: none;
+            position: relative;
+        }
+
+        .results-panel.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .results-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .results-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Responsive - 샘플과 동일 */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px;
+            }
+
+            .title {
+                font-size: 20px;
+            }
+
+            .subtitle {
+                font-size: 12px;
+            }
+
+            .progress-info {
+                width: 100%;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .timer-container {
+                width: 100%;
+                height: 20px;
+            }
+
+            .question-counter {
+                font-size: 16px;
+            }
+
+            .main-content {
+                margin-top: 140px;
+                padding: 20px;
+            }
+
+            .question-modal {
+                width: 75vw;
+                max-height: 50vh;
+                padding: 8px;
+            }
+
+            .modal-question {
+                font-size: 10px;
+            }
+
+            .option-button {
+                padding: 5px 8px;
+                font-size: 10px;
+            }
+
+            .phoneme-box {
+                width: 42px;
+                height: 42px;
+                font-size: 15px;
+            }
+
+            .phoneme-column {
+                gap: 5px;
+            }
+
+            .phoneme-table {
+                gap: 5px;
+                padding: 10px;
+                justify-content: flex-start;
+            }
+
+            .phoneme-container {
+                padding: 15px 0;
+            }
+
+            .row-label {
+                left: -65px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .question-modal {
+                width: 80vw;
+                max-height: 45vh;
+                padding: 8px;
+            }
+
+            .phoneme-box {
+                width: 35px;
+                height: 35px;
+                font-size: 13px;
+                border-width: 2px;
+                flex-shrink: 0;
+            }
+
+            .phoneme-column {
+                gap: 3px;
+            }
+
+            .phoneme-table {
+                gap: 3px;
+                padding: 10px;
+                justify-content: flex-start;
+            }
+
+            .phoneme-container {
+                padding: 10px 0;
+            }
+
+            .main-content {
+                padding: 20px 10px;
+            }
+
+            .row-label {
+                left: -50px;
+                font-size: 10px;
+                padding: 2px 3px;
+            }
+
+            .word-title {
+                font-size: 24px;
+            }
+
+            .word-pronunciation {
+                font-size: 18px;
+            }
+
+            .results-panel {
+                margin-top: 110px !important;
+                padding: 20px;
+            }
+
+            .results-title {
+                font-size: 20px;
+            }
+        }
+
+        /* 매우 작은 화면 (Galaxy Fold 등) */
+        @media (max-width: 360px) {
+            .phoneme-box {
+                width: 32px;
+                height: 32px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+
+            .phoneme-table {
+                gap: 2px;
+            }
+
+            .phoneme-column {
+                gap: 2px;
+            }
+
+            .row-label {
+                left: -40px;
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <div class="title">음운 변동 연습</div>
+                <div class="subtitle">문법 학습 - 음운 규칙 훈련</div>
+            </div>
+            <div class="progress-info">
+                <div class="stage-indicator">
+                    <div class="stage-dot active" data-stage="practice"></div>
+                    <div class="stage-dot" data-stage="review"></div>
+                    <div class="stage-dot" data-stage="test"></div>
+                    <div class="stage-dot" data-stage="complete"></div>
+                </div>
+                <div class="question-counter">
+                    문제 <span id="current-question">0</span> / <span id="total-questions">0</span>
+                </div>
+                <div class="timer-container">
+                    <div class="timer-bar" id="timer-bar" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content" id="main-content">
+            <div class="phoneme-container">
+                <!-- 단어 표시 -->
+                <div class="word-display">
+                    <div class="word-title">꽃잎</div>
+                    <div class="word-pronunciation">[꼰닙]</div>
+                </div>
+
+                <!-- 음소 테이블 (세로 정렬) -->
+                <div class="phoneme-table" id="phoneme-table">
+                    <!-- 여기에 컬럼들이 동적으로 생성됨 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Modal -->
+        <div class="question-modal" id="question-modal">
+            <div class="modal-header modal-drag-handle">문제 <span id="modal-question-num">1</span></div>
+            <div class="modal-question modal-drag-handle" id="modal-question-text"></div>
+            <div class="modal-options" id="modal-options"></div>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="results-panel" id="results-panel">
+            <div class="results-title">학습 완료!</div>
+            <div class="results-stats">
+                <div class="stat-card">
+                    <div class="stat-label">정답률</div>
+                    <div class="stat-value" id="accuracy">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">정답 수</div>
+                    <div class="stat-value" id="correct-count">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">오답 수</div>
+                    <div class="stat-value" id="incorrect-count">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">소요 시간</div>
+                    <div class="stat-value" id="time-spent">0:00</div>
+                </div>
+            </div>
+            <div class="results-actions">
+                <button class="btn btn-secondary" onclick="location.reload()">다시 학습하기</button>
+                <button class="btn btn-primary">학습 종료</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 음운 변동 데이터 - 5개 단어
+        const transformationData = {
+            '꽃잎': {
+                pronunciation: '[꼰닙]',
+                rows: [
+                    // 원형: ㄲㅗㅊ,ㅣㅍ
+                    { phonemes: ['ㄲ', 'ㅗ', 'ㅊ', ',', 'ㅣ', 'ㅍ'], label: '원형' },
+
+                    // 1단계: ㄲㅗㄷ(빈칸)ㅣㅍ (음절의 끝소리 규칙)
+                    {
+                        phonemes: ['ㄲ', 'ㅗ', 'ㄷ', '', 'ㅣ', 'ㅍ'],
+                        label: '1단계',
+                        questions: {
+                            2: { // ㅊ → ㄷ
+                                phoneme: {
+                                    question: '이 위치에 오는 음소는 무엇일까요?',
+                                    options: ['ㄷ', 'ㅊ', 'ㅅ'],
+                                    correct: 0
+                                },
+                                rule: {
+                                    question: '이 위치에 오는 음운변동은 무엇일까요?',
+                                    options: ['음절의 끝소리 규칙', '경음화', '자음군 단순화'],
+                                    correct: 0
+                                }
+                            },
+                            4: { // 헷갈리게 하기 위한 추가 질문
+                                phoneme: {
+                                    question: '이 위치에 오는 음소는 무엇일까요?',
+                                    options: ['ㅣ', 'ㅡ', 'ㅏ'],
+                                    correct: 0
+                                }
+                            }
+                        }
+                    },
+
+                    // 2단계: ㄲㅗㄷ+ㄴ+ㅣㅍ (ㄴ 첨가 - 4번째 칸에)
+                    {
+                        phonemes: ['ㄲ', 'ㅗ', 'ㄷ', 'ㄴ', 'ㅣ', 'ㅍ'],
+                        label: '2단계',
+                        questions: {
+                            3: { // ㄴ 첨가 (쉼표 자리에)
+                                phoneme: {
+                                    question: '이 위치에 오는 음소는 무엇일까요?',
+                                    options: ['ㄴ', 'ㅁ', 'ㅇ'],
+                                    correct: 0
+                                },
+                                rule: {
+                                    question: '이 위치에 오는 음운변동은 무엇일까요?',
+                                    options: ['ㄴ 첨가', '비음화', '구개음화'],
+                                    correct: 0
+                                }
+                            }
+                        }
+                    },
+
+                    // 3단계: ㄲㅗㄴ+ㄴ+ㅣㅍ (비음화)
+                    {
+                        phonemes: ['ㄲ', 'ㅗ', 'ㄴ', 'ㄴ', 'ㅣ', 'ㅍ'],
+                        label: '3단계',
+                        questions: {
+                            2: { // ㄷ → ㄴ (비음화)
+                                phoneme: {
+                                    question: '이 위치에 오는 음소는 무엇일까요?',
+                                    options: ['ㄴ', 'ㅁ', 'ㄷ'],
+                                    correct: 0
+                                },
+                                rule: {
+                                    question: '이 위치에 오는 음운변동은 무엇일까요?',
+                                    options: ['비음화', '유음화', '경음화'],
+                                    correct: 0
+                                }
+                            },
+                            4: { // 헷갈리게 하기 위한 추가 질문
+                                phoneme: {
+                                    question: '이 위치에 오는 음소는 무엇일까요?',
+                                    options: ['ㅣ', 'ㅡ', 'ㅏ'],
+                                    correct: 0
+                                }
+                            }
+                        }
+                    },
+
+                    // 4단계(최종): ㄲㅗㄴ+ㄴ+ㅣㅂ (음절의 끝소리 규칙)
+                    {
+                        phonemes: ['ㄲ', 'ㅗ', 'ㄴ', 'ㄴ', 'ㅣ', 'ㅂ'],
+                        label: '최종',
+                        questions: {
+                            5: { // ㅍ → ㅂ
+                                phoneme: {
+                                    question: '이 위치에 오는 음소는 무엇일까요?',
+                                    options: ['ㅂ', 'ㅍ', 'ㅁ'],
+                                    correct: 0
+                                },
+                                rule: {
+                                    question: '이 위치에 오는 음운변동은 무엇일까요?',
+                                    options: ['음절의 끝소리 규칙', '경음화', '격음화'],
+                                    correct: 0
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            '독립': {
+                pronunciation: '[동닙]',
+                rows: [
+                    // 원형: ㄷㅗㄱ,ㄹㅣㅂ
+                    { phonemes: ['ㄷ', 'ㅗ', 'ㄱ', ',', 'ㄹ', 'ㅣ', 'ㅂ'], label: '원형' },
+
+                    // 1단계: ㄷㅗㄱ_ㄴㅣㅂ (ㄹ의 비음화, 교체)
+                    {
+                        phonemes: ['ㄷ', 'ㅗ', 'ㄱ', '', 'ㄴ', 'ㅣ', 'ㅂ'],
+                        label: '1단계',
+                        questions: {
+                            4: { // ㄹ → ㄴ
+                                phoneme: {
+                                    question: '이 위치에 오는 음소는 무엇일까요?',
+                                    options: ['ㄴ', 'ㄹ', 'ㅁ'],
+                                    correct: 0
+                                },
+                                rule: {
+                                    question: '이 위치에 오는 음운변동은 무엇일까요?',
+                                    options: ['ㄹ의 비음화', '비음화', '유음화'],
+                                    correct: 0
+                                }
+                            }
+                        }
+                    },
+
+                    // 2단계(최종): ㄷㅗㅇ_ㄴㅣㅂ (비음화, 교체)
+                    {
+                        phonemes: ['ㄷ', 'ㅗ', 'ㅇ', '', 'ㄴ', 'ㅣ', 'ㅂ'],
+                        label: '최종',
+                        questions: {
+                            2: { // ㄱ → ㅇ
+                                phoneme: {
+                                    question: '이 위치에 오는 음소는 무엇일까요?',
+                                    options: ['ㅇ', 'ㄱ', 'ㅁ'],
+                                    correct: 0
+                                },
+                                rule: {
+                                    question: '이 위치에 오는 음운변동은 무엇일까요?',
+                                    options: ['비음화', '경음화', '구개음화'],
+                                    correct: 0
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            '줄넘기': {
+                pronunciation: '[줄럼끼]',
+                rows: [
+                    // 원형: ㅈㅜㄹ,ㄴㅓㅁㄱㅣ
+                    { phonemes: ['ㅈ', 'ㅜ', 'ㄹ', ',', 'ㄴ', 'ㅓ', 'ㅁ', 'ㄱ', 'ㅣ'], label: '원형' },
+
+                    // 1단계: ㅈㅜㄹ_ㄹㅓㅁㄱㅣ (유음화, 교체)
+                    {
+                        phonemes: ['ㅈ', 'ㅜ', 'ㄹ', '', 'ㄹ', 'ㅓ', 'ㅁ', 'ㄱ', 'ㅣ'],
+                        label: '1단계',
+                        questions: {
+                            4: { // ㄴ → ㄹ
+                                phoneme: {
+                                    question: '이 위치에 오는 음소는 무엇일까요?',
+                                    options: ['ㄹ', 'ㄴ', 'ㅁ'],
+                                    correct: 0
+                                },
+                                rule: {
+                                    question: '이 위치에 오는 음운변동은 무엇일까요?',
+                                    options: ['유음화', '비음화', '구개음화'],
+                                    correct: 0
+                                }
+                            }
+                        }
+                    },
+
+                    // 2단계(최종): ㅈㅜㄹ_ㄹㅓㅁㄲㅣ (경음화, 어간 받침 ㄴ,ㅁ뒤,교체)
+                    {
+                        phonemes: ['ㅈ', 'ㅜ', 'ㄹ', '', 'ㄹ', 'ㅓ', 'ㅁ', 'ㄲ', 'ㅣ'],
+                        label: '최종',
+                        questions: {
+                            7: { // ㄱ → ㄲ
+                                phoneme: {
+                                    question: '이 위치에 오는 음소는 무엇일까요?',
+                                    options: ['ㄲ', 'ㄱ', 'ㄷ'],
+                                    correct: 0
+                                },
+                                rule: {
+                                    question: '이 위치에 오는 음운변동은 무엇일까요?',
+                                    options: ['경음화', '사잇소리', '비음화'],
+                                    correct: 0
+                                },
+                                condition: {
+                                    question: '경음화가 일어난 조건은?',
+                                    options: ['받침 ㄱ,ㄷ,ㅂ,ㅅ,ㅈ 뒤', '어간 받침 ㄴ,ㅁ 뒤', '사잇소리'],
+                                    correct: 1
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            '같이': {
+                pronunciation: '[가치]',
+                rows: [
+                    // 원형: ㄱㅏ,ㅌㅣ
+                    { phonemes: ['ㄱ', 'ㅏ', ',', 'ㅌ', 'ㅣ'], label: '원형' },
+
+                    // 1단계(최종): ㄱㅏ_ㅊㅣ (구개음화, 교체)
+                    {
+                        phonemes: ['ㄱ', 'ㅏ', '', 'ㅊ', 'ㅣ'],
+                        label: '최종',
+                        questions: {
+                            3: { // ㅌ → ㅊ
+                                phoneme: {
+                                    question: '이 위치에 오는 음소는 무엇일까요?',
+                                    options: ['ㅊ', 'ㅌ', 'ㄷ'],
+                                    correct: 0
+                                },
+                                rule: {
+                                    question: '이 위치에 오는 음운변동은 무엇일까요?',
+                                    options: ['구개음화', '경음화', '비음화'],
+                                    correct: 0
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            '색연필': {
+                pronunciation: '[생년필]',
+                rows: [
+                    // 원형: ㅅㅐㄱ,jㅓㄴ,ㅍㅣㄹ
+                    { phonemes: ['ㅅ', 'ㅐ', 'ㄱ', ',', 'j', 'ㅓ', 'ㄴ', ',', 'ㅍ', 'ㅣ', 'ㄹ'], label: '원형' },
+
+                    // 1단계: ㅅㅐㄱㄴjㅓㄴ_ㅍㅣㄹ (ㄴ 첨가, 첨가)
+                    {
+                        phonemes: ['ㅅ', 'ㅐ', 'ㄱ', 'ㄴ', 'j', 'ㅓ', 'ㄴ', '', 'ㅍ', 'ㅣ', 'ㄹ'],
+                        label: '1단계',
+                        questions: {
+                            3: { // ㄴ 첨가
+                                phoneme: {
+                                    question: '이 위치에 오는 음소는 무엇일까요?',
+                                    options: ['ㄴ', 'ㅁ', 'ㅇ'],
+                                    correct: 0
+                                },
+                                rule: {
+                                    question: '이 위치에 오는 음운변동은 무엇일까요?',
+                                    options: ['ㄴ 첨가', '비음화', '경음화'],
+                                    correct: 0
+                                }
+                            }
+                        }
+                    },
+
+                    // 2단계(최종): ㅅㅐㅇㄴjㅓㄴ_ㅍㅣㄹ (비음화, 교체)
+                    {
+                        phonemes: ['ㅅ', 'ㅐ', 'ㅇ', 'ㄴ', 'j', 'ㅓ', 'ㄴ', '', 'ㅍ', 'ㅣ', 'ㄹ'],
+                        label: '최종',
+                        questions: {
+                            2: { // ㄱ → ㅇ
+                                phoneme: {
+                                    question: '이 위치에 오는 음소는 무엇일까요?',
+                                    options: ['ㅇ', 'ㄱ', 'ㄷ'],
+                                    correct: 0
+                                },
+                                rule: {
+                                    question: '이 위치에 오는 음운변동은 무엇일까요?',
+                                    options: ['비음화', '경음화', '사잇소리'],
+                                    correct: 0
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        };
+
+        // 전역 변수
+        let currentWord = null;
+        let currentRowIndex = 0;
+        let currentBoxIndex = 0;
+        let currentData = null;
+        let correctAnswers = 0;
+        let incorrectAnswers = 0;
+        let totalQuestions = 0;
+        let waitingForModal = false;
+        let currentQuestion = null;
+        let currentQuestionType = null;
+        let currentQuestionSubType = null; // phoneme, rule, condition
+        let currentClickedBox = null;  // 클릭한 박스 저장용
+        let startTime = Date.now();
+        let timeLeft = 100;
+        let timerInterval;
+        let completedWords = [];
+        let currentWordIndex = 0;
+        const wordList = Object.keys(transformationData);
+
+        // 모달 드래그 관련 변수
+        let isDragging = false;
+        let modalOffset = { x: 0, y: 0 };
+
+        // 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            // 바로 첫 번째 단어로 시작
+            selectWord(wordList[0]);
+            setupModalDrag();
+        });
+
+        // 타이머 시작
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft -= 0.1;
+                if (timeLeft <= 0) {
+                    timeLeft = 0;
+                    clearInterval(timerInterval);
+                    showResults();
+                }
+                document.getElementById('timer-bar').style.width = timeLeft + '%';
+            }, 100);
+        }
+
+        // 시간 보상/차감
+        function adjustTime(amount) {
+            timeLeft += amount;
+            if (timeLeft > 100) timeLeft = 100;
+            if (timeLeft < 0) timeLeft = 0;
+            document.getElementById('timer-bar').style.width = timeLeft + '%';
+        }
+
+        // 전체 질문 수 계산
+        function countTotalQuestions() {
+            totalQuestions = 0;
+            // 모든 단어의 질문 수 계산
+            wordList.forEach(word => {
+                const data = transformationData[word];
+                data.rows.forEach(row => {
+                    if (row.questions) {
+                        Object.values(row.questions).forEach(q => {
+                            if (q.phoneme) totalQuestions++;
+                            if (q.rule) totalQuestions++;
+                            if (q.condition) totalQuestions++;
+                        });
+                    }
+                });
+            });
+            document.getElementById('total-questions').textContent = totalQuestions;
+        }
+
+        // 질문 카운터 업데이트
+        function updateQuestionCounter() {
+            const current = correctAnswers + incorrectAnswers;
+            document.getElementById('current-question').textContent = current;
+            document.getElementById('modal-question-num').textContent = current + 1;
+        }
+
+        // 단어 선택 및 학습 시작
+        function selectWord(word) {
+            currentWord = word;
+            currentData = transformationData[word];
+            currentRowIndex = 0;
+            currentBoxIndex = 0;
+
+            // 헤더 업데이트
+            document.querySelector('.word-title').textContent = word;
+            document.querySelector('.word-pronunciation').textContent = currentData.pronunciation;
+
+            // 메인 컨텐츠 초기화
+            document.getElementById('main-content').innerHTML = `
+                <div class="phoneme-container">
+                    <div class="word-display">
+                        <div class="word-title">${word}</div>
+                        <div class="word-pronunciation">${currentData.pronunciation}</div>
+                    </div>
+                    <div class="phoneme-table" id="phoneme-table"></div>
+                </div>
+            `;
+
+            initializePhonemeTable();
+            if (!timerInterval) {
+                countTotalQuestions();
+                updateQuestionCounter();
+                startTimer();
+            }
+            setupModalDrag(); // 모달 드래그 이벤트 재설정
+        }
+
+        // 음소 테이블 초기화 (세로 정렬)
+        function initializePhonemeTable() {
+            const table = document.getElementById('phoneme-table');
+            table.innerHTML = ''; // 기존 내용 클리어
+            const firstRow = currentData.rows[0];
+
+            // 각 컬럼 생성
+            firstRow.phonemes.forEach((phoneme, colIndex) => {
+                const column = document.createElement('div');
+                column.className = 'phoneme-column';
+                column.id = `column-${colIndex}`;
+
+                // 첫 번째 행 박스 추가 (원형)
+                const box = document.createElement('div');
+                box.className = 'phoneme-box original';
+                box.textContent = phoneme;
+
+                // 첫 번째 컬럼에 레이블 추가
+                if (colIndex === 0) {
+                    const label = document.createElement('div');
+                    label.className = 'row-label';
+                    label.textContent = '원형';
+                    label.style.top = '50%';
+                    label.style.transform = 'translateY(-50%)';
+                    box.style.position = 'relative';
+                    box.appendChild(label);
+                }
+
+                column.appendChild(box);
+                table.appendChild(column);
+            });
+
+            // 1초 후 두 번째 행의 첫 번째 빈 박스 생성
+            if (currentData.rows.length > 1) {
+                setTimeout(() => {
+                    currentRowIndex = 1;
+                    currentBoxIndex = 0;
+                    createEmptyBox();
+                }, 1000);
+            }
+        }
+
+        // 빈 박스 생성 (클릭 가능)
+        function createEmptyBox() {
+            if (currentBoxIndex >= currentData.rows[currentRowIndex].phonemes.length) {
+                moveToNextRow();
+                return;
+            }
+
+            const column = document.getElementById(`column-${currentBoxIndex}`);
+            const phoneme = currentData.rows[currentRowIndex].phonemes[currentBoxIndex];
+
+            const box = document.createElement('div');
+            box.className = 'phoneme-box new';
+
+            // 빈 문자열인 경우 (원래 쉼표 자리)
+            if (phoneme === '') {
+                box.textContent = '';
+                box.style.background = 'transparent';
+                box.style.border = 'none';
+                box.style.boxShadow = 'none';
+                box.style.cursor = 'default';
+
+                // 빈칸은 자동으로 다음 박스로 진행
+                column.appendChild(box);
+                currentBoxIndex++;
+                setTimeout(() => {
+                    createEmptyBox();
+                }, 100);
+                return;
+            }
+
+            // 일반 음소 자리
+            box.className += ' clickable';
+            box.textContent = '?';
+            box.style.color = '#bdc3c7';
+            box.style.cursor = 'pointer';
+            box.onclick = () => handleBoxClick(box);
+
+            // 첫 번째 컬럼에 레이블 추가
+            if (currentBoxIndex === 0) {
+                const label = document.createElement('div');
+                label.className = 'row-label';
+                label.textContent = currentData.rows[currentRowIndex].label;
+                label.style.top = '50%';
+                label.style.transform = 'translateY(-50%)';
+                box.style.position = 'relative';
+                box.appendChild(label);
+            }
+
+            column.appendChild(box);
+        }
+
+        // 박스 클릭 처리
+        function handleBoxClick(box) {
+            if (waitingForModal) return;
+
+            const currentRow = currentData.rows[currentRowIndex];
+            const phoneme = currentRow.phonemes[currentBoxIndex];
+            const questions = currentRow.questions;
+
+            // 질문이 있는지 확인
+            if (questions && questions[currentBoxIndex]) {
+                currentQuestion = questions[currentBoxIndex];
+                currentClickedBox = box; // 클릭한 박스 저장
+                showQuestionModal('phoneme');
+            } else {
+                // 질문 없이 바로 글자 채우기
+                fillBox(box, phoneme);
+                currentBoxIndex++;
+
+                // 다음 빈 박스 생성
+                setTimeout(() => {
+                    createEmptyBox();
+                }, 300);
+            }
+        }
+
+        // 박스에 글자 채우기
+        function fillBox(box, phoneme) {
+            box.textContent = phoneme;
+            box.style.color = '#2c3e50';
+
+            // 변경된 음소 표시 - 원형과 비교
+            if (currentRowIndex > 0) {
+                const originalRow = currentData.rows[0];
+                // 원형에서 쉼표였던 자리에 새로운 음소가 추가된 경우
+                if (currentBoxIndex < originalRow.phonemes.length &&
+                    originalRow.phonemes[currentBoxIndex] === ',') {
+                    box.classList.add('added');
+                }
+                // 이전 단계와 비교해서 변경된 경우
+                else if (currentRowIndex > 0) {
+                    const prevRow = currentData.rows[currentRowIndex - 1];
+                    if (currentBoxIndex < prevRow.phonemes.length &&
+                        prevRow.phonemes[currentBoxIndex] !== phoneme) {
+                        box.classList.add('changed');
+                    }
+                }
+            }
+
+            box.classList.remove('clickable');
+            box.onclick = null;
+            box.style.cursor = 'default';
+        }
+
+        // Fisher-Yates 셔플 알고리즘
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // 질문 모달 표시
+        function showQuestionModal(type) {
+            waitingForModal = true;
+            currentQuestionSubType = type;
+
+            const modal = document.getElementById('question-modal');
+            const questionText = document.getElementById('modal-question-text');
+            const optionsContainer = document.getElementById('modal-options');
+
+            let questionData;
+            if (type === 'phoneme') {
+                questionData = currentQuestion.phoneme;
+            } else if (type === 'rule') {
+                questionData = currentQuestion.rule;
+            } else if (type === 'condition') {
+                questionData = currentQuestion.condition;
+            }
+
+            questionText.textContent = questionData.question;
+
+            // 선택지를 섞기 위한 인덱스 배열 생성
+            const indices = questionData.options.map((_, index) => index);
+            const shuffledIndices = shuffleArray(indices);
+
+            // 정답의 새로운 위치 찾기
+            const newCorrectIndex = shuffledIndices.indexOf(questionData.correct);
+
+            // 선택지 생성 (번호 포함)
+            optionsContainer.innerHTML = '';
+            shuffledIndices.forEach((originalIndex, displayIndex) => {
+                const option = questionData.options[originalIndex];
+                const button = document.createElement('button');
+                button.className = 'option-button';
+                button.innerHTML = `
+                    <span class="option-number">${displayIndex + 1}</span>
+                    <span>${option}</span>
+                `;
+
+                // 터치와 클릭 이벤트 모두 추가
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleAnswer(displayIndex, newCorrectIndex);
+                });
+                button.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleAnswer(displayIndex, newCorrectIndex);
+                });
+
+                optionsContainer.appendChild(button);
+            });
+
+            // 모달 위치 초기화 (헤더 바로 아래)
+            modal.style.left = '50%';
+            modal.style.top = '120px'; // 헤더 높이는 약 100px
+            modal.style.transform = 'translateX(-50%)';
+            modal.classList.add('active');
+
+            updateQuestionCounter();
+        }
+
+        // 답변 처리
+        function handleAnswer(selectedIndex, correctIndex) {
+            const modal = document.getElementById('question-modal');
+            const optionButtons = document.querySelectorAll('.option-button');
+            const isCorrect = selectedIndex === correctIndex;
+
+            if (isCorrect) {
+                correctAnswers++;
+                optionButtons[selectedIndex].classList.add('correct');
+                modal.classList.add('correct-animation');
+                adjustTime(10); // 시간 보상 2배로 증가
+            } else {
+                incorrectAnswers++;
+                optionButtons[selectedIndex].classList.add('incorrect');
+                optionButtons[correctIndex].classList.add('correct');
+                modal.classList.add('incorrect-animation');
+                adjustTime(-9); // 시간 차감 3배로 증가
+            }
+
+            // 버튼 비활성화
+            optionButtons.forEach(btn => {
+                btn.style.pointerEvents = 'none';
+                btn.style.cursor = 'not-allowed';
+            });
+
+            setTimeout(() => {
+                modal.classList.remove('correct-animation', 'incorrect-animation');
+                modal.classList.remove('active');
+
+                if (currentQuestionSubType === 'phoneme' && currentQuestion.rule) {
+                    // 음운 변동 규칙 질문
+                    setTimeout(() => {
+                        showQuestionModal('rule');
+                    }, 300);
+                } else if (currentQuestionSubType === 'rule' && currentQuestion.condition) {
+                    // 경음화 조건 질문
+                    setTimeout(() => {
+                        showQuestionModal('condition');
+                    }, 300);
+                } else {
+                    // 클릭한 박스에 글자 채우고 계속
+                    waitingForModal = false;
+                    if (currentClickedBox) {
+                        const phoneme = currentData.rows[currentRowIndex].phonemes[currentBoxIndex];
+                        fillBox(currentClickedBox, phoneme);
+                        currentClickedBox = null;
+                        currentBoxIndex++;
+
+                        // 다음 빈 박스 생성
+                        setTimeout(() => {
+                            createEmptyBox();
+                        }, 500);
+                    }
+                }
+            }, 1500);
+        }
+
+        // 다음 행으로 이동
+        function moveToNextRow() {
+            currentRowIndex++;
+            currentBoxIndex = 0;
+
+            // 스테이지 인디케이터 업데이트
+            const stageDots = document.querySelectorAll('.stage-dot');
+            if (currentRowIndex < stageDots.length) {
+                stageDots[currentRowIndex - 1].classList.remove('active');
+                stageDots[currentRowIndex - 1].classList.add('completed');
+                if (currentRowIndex < currentData.rows.length) {
+                    stageDots[currentRowIndex].classList.add('active');
+                }
+            }
+
+            if (currentRowIndex < currentData.rows.length) {
+                setTimeout(() => {
+                    createEmptyBox();  // addNextBox 대신 createEmptyBox 호출
+                }, 500);
+            } else {
+                // 현재 단어 완료
+                completedWords.push(currentWord);
+                currentWordIndex++;
+
+                if (currentWordIndex < wordList.length) {
+                    // 다음 단어로 이동
+                    setTimeout(() => {
+                        selectWord(wordList[currentWordIndex]);
+                    }, 1000);
+                } else {
+                    // 모든 단어 완료
+                    clearInterval(timerInterval);
+                    setTimeout(showResults, 500);
+                }
+            }
+        }
+
+        // 모달 드래그 설정
+        function setupModalDrag() {
+            const modal = document.getElementById('question-modal');
+            const dragHandles = document.querySelectorAll('.modal-drag-handle');
+
+            // 기존 이벤트 제거
+            dragHandles.forEach(handle => {
+                const newHandle = handle.cloneNode(true);
+                handle.parentNode.replaceChild(newHandle, handle);
+            });
+
+            // 새로운 드래그 핸들 찾기 및 이벤트 추가
+            const newDragHandles = document.querySelectorAll('.modal-drag-handle');
+            newDragHandles.forEach(handle => {
+                handle.addEventListener('mousedown', startDrag, { passive: false });
+                handle.addEventListener('touchstart', startDrag, { passive: false });
+            });
+
+            document.addEventListener('mousemove', drag, { passive: false });
+            document.addEventListener('touchmove', drag, { passive: false });
+
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchend', endDrag);
+        }
+
+        function startDrag(e) {
+            const modal = document.getElementById('question-modal');
+            if (!modal.classList.contains('active')) return;
+
+            // 선택지 버튼을 클릭한 경우 드래그 방지
+            if (e.target.closest('.option-button')) {
+                return;
+            }
+
+            // 드래그 핸들에서만 드래그 시작
+            if (!e.target.closest('.modal-drag-handle')) {
+                return;
+            }
+
+            isDragging = true;
+            modal.classList.add('dragging');
+
+            const rect = modal.getBoundingClientRect();
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+            modalOffset.x = clientX - rect.left;
+            modalOffset.y = clientY - rect.top;
+
+            e.preventDefault();
+        }
+
+        function drag(e) {
+            if (!isDragging) return;
+
+            const modal = document.getElementById('question-modal');
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+            let newX = clientX - modalOffset.x;
+            let newY = clientY - modalOffset.y;
+
+            // 화면 밖으로 나가지 않도록 제한
+            const maxX = window.innerWidth - modal.offsetWidth;
+            const maxY = window.innerHeight - modal.offsetHeight;
+
+            newX = Math.max(0, Math.min(newX, maxX));
+            newY = Math.max(0, Math.min(newY, maxY));
+
+            modal.style.left = newX + 'px';
+            modal.style.top = newY + 'px';
+            modal.style.transform = 'none';
+        }
+
+        function endDrag() {
+            isDragging = false;
+            const modal = document.getElementById('question-modal');
+            modal.classList.remove('dragging');
+        }
+
+        // 결과 표시
+        function showResults() {
+            const mainContent = document.getElementById('main-content');
+            const resultsPanel = document.getElementById('results-panel');
+
+            const totalAnswers = correctAnswers + incorrectAnswers;
+            const accuracy = totalAnswers > 0 ?
+                Math.round((correctAnswers / totalAnswers) * 100) : 0;
+
+            const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+            const minutes = Math.floor(elapsedTime / 60);
+            const seconds = elapsedTime % 60;
+
+            document.getElementById('accuracy').textContent = accuracy + '%';
+            document.getElementById('correct-count').textContent = correctAnswers;
+            document.getElementById('incorrect-count').textContent = incorrectAnswers;
+            document.getElementById('time-spent').textContent =
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+            // 완료한 단어 표시
+            const completedWordsText = completedWords.length === wordList.length ?
+                '모든 단어를 완료했습니다!' :
+                `완료한 단어: ${completedWords.join(', ')}`;
+
+            const resultsTitle = document.querySelector('.results-title');
+            resultsTitle.innerHTML = `학습 완료!<br><span style="font-size: 18px; color: #7f8c8d;">${completedWordsText}</span>`;
+
+            // 마지막 스테이지 완료 표시
+            const stageDots = document.querySelectorAll('.stage-dot');
+            stageDots.forEach(dot => {
+                dot.classList.remove('active');
+                dot.classList.add('completed');
+            });
+
+            mainContent.style.display = 'none';
+            resultsPanel.classList.add('active');
+
+            // 부모 프로그램에 결과 전송
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({
+                    type: 'korean-farm.v2',
+                    version: '1.0',
+                    activity: 'complete',
+                    timestamp: Date.now(),
+                    payload: {
+                        // 전체 최종 데이터
+                        totalCorrect: correctAnswers,
+                        totalWrong: incorrectAnswers,
+                        totalAccuracy: accuracy,
+                        totalScore: Math.round((correctAnswers / totalAnswers) * 100),
+                        sessionTime: elapsedTime,
+
+                        // 상세 데이터
+                        totalQuestions: totalAnswers,
+                        timeRemainingPct: timeLeft / 100,
+                        completedWords: completedWords,
+
+                        // 단계별 상세 데이터 (음운 변동 연습의 경우 단일 활동)
+                        stageDetails: {
+                            phonemePractice: {
+                                correct: correctAnswers,
+                                wrong: incorrectAnswers,
+                                accuracy: accuracy,
+                                score: Math.round((correctAnswers / totalAnswers) * 100),
+                                time: elapsedTime
+                            }
+                        }
+                    }
+                }, '*');
+            }
+        }
+    </script>
+</body>
+</html>

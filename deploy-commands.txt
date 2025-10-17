@@ -1,0 +1,16 @@
+# Git 배포 명령어 (순서대로 실행)
+
+## 1단계: Git 사용자 정보 설정
+git config --global user.name "Amis99"
+git config --global user.email "itsme0215@hanmail.net"
+
+## 2단계: Commit 실행
+git commit -m "Initial commit: 언어의 창 온라인 학습관"
+
+## 3단계: Remote URL 수정
+git remote remove origin
+git remote add origin https://github.com/Amis99/langwindow.git
+
+## 4단계: Push 실행
+git branch -M main
+git push -u origin main
