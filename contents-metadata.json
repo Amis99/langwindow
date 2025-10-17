@@ -1,0 +1,236 @@
+{
+  "site": {
+    "name": "언어의 창 온라인 학습관",
+    "description": "국어 학습 콘텐츠를 제공하는 온라인 학습 플랫폼",
+    "version": "1.0.0"
+  },
+  "categories": [
+    {
+      "id": "grammar",
+      "name": "문법",
+      "icon": "📚",
+      "color": "#4A90E2"
+    },
+    {
+      "id": "literature",
+      "name": "문학",
+      "icon": "📖",
+      "color": "#E24A4A"
+    },
+    {
+      "id": "reading",
+      "name": "독해",
+      "icon": "📰",
+      "color": "#50C878"
+    },
+    {
+      "id": "classical",
+      "name": "고전/중세국어",
+      "icon": "📜",
+      "color": "#9B59B6"
+    }
+  ],
+  "contents": [
+    {
+      "id": "hangeul-spelling-3",
+      "title": "한글 맞춤법 해설 (심화편) - 제3장 소리에 관한 것",
+      "category": "grammar",
+      "subcategory": "맞춤법",
+      "description": "된소리, 두음 법칙 등 소리에 관한 한글 맞춤법 규정을 심화 학습합니다",
+      "difficulty": "심화",
+      "filename": "한글 맞춤법 해설 3장 소리에 관한 것 워크북.html",
+      "thumbnailUrl": "images/thumbnails/hangeul-spelling.png",
+      "uploadDate": "2025-01-17",
+      "estimatedTime": "30분",
+      "tags": ["맞춤법", "된소리", "두음법칙", "문법"],
+      "stages": ["딥러서치", "OX퀴즈", "객관식"],
+      "questionCount": {
+        "stage1": 60,
+        "stage2": 40,
+        "stage3": 30
+      }
+    },
+    {
+      "id": "phoneme-changes-1",
+      "title": "음운 변동 연습 1",
+      "category": "grammar",
+      "subcategory": "음운론",
+      "description": "다양한 음운 변동 현상을 학습하고 연습합니다",
+      "difficulty": "중급",
+      "filename": "음운 변동 연습1.html",
+      "thumbnailUrl": "images/thumbnails/phoneme.png",
+      "uploadDate": "2025-01-15",
+      "estimatedTime": "25분",
+      "tags": ["음운변동", "음운론", "문법"],
+      "stages": ["딥러서치", "OX퀴즈", "객관식"]
+    },
+    {
+      "id": "middle-korean-phonology",
+      "title": "중세국어의 특징 - 음운 파트",
+      "category": "classical",
+      "subcategory": "중세국어",
+      "description": "중세국어의 음운 체계와 특징을 학습합니다",
+      "difficulty": "심화",
+      "filename": "중세국어의 특징_음운 파트.html",
+      "thumbnailUrl": "images/thumbnails/middle-korean.png",
+      "uploadDate": "2025-01-12",
+      "estimatedTime": "35분",
+      "tags": ["중세국어", "음운", "역사문법"],
+      "stages": ["딥러서치", "OX퀴즈", "객관식"]
+    },
+    {
+      "id": "middle-korean-grammar",
+      "title": "중세국어의 특징 - 문법 파트",
+      "category": "classical",
+      "subcategory": "중세국어",
+      "description": "중세국어의 문법적 특징을 학습합니다",
+      "difficulty": "심화",
+      "filename": "중세국어의 특징_문법 파트.html",
+      "thumbnailUrl": "images/thumbnails/middle-korean.png",
+      "uploadDate": "2025-01-12",
+      "estimatedTime": "35분",
+      "tags": ["중세국어", "문법", "역사문법"],
+      "stages": ["딥러서치", "OX퀴즈", "객관식"]
+    },
+    {
+      "id": "middle-korean-vocabulary",
+      "title": "중세국어의 특징 - 어휘 파트",
+      "category": "classical",
+      "subcategory": "중세국어",
+      "description": "중세국어의 어휘와 의미 변화를 학습합니다",
+      "difficulty": "심화",
+      "filename": "중세국어의 특징_어휘 파트.html",
+      "thumbnailUrl": "images/thumbnails/middle-korean.png",
+      "uploadDate": "2025-01-12",
+      "estimatedTime": "30분",
+      "tags": ["중세국어", "어휘", "역사문법"],
+      "stages": ["딥러서치", "OX퀴즈", "객관식"]
+    },
+    {
+      "id": "middle-korean-writing",
+      "title": "중세국어의 특징 - 표기 파트",
+      "category": "classical",
+      "subcategory": "중세국어",
+      "description": "중세국어의 표기법과 특징을 학습합니다",
+      "difficulty": "심화",
+      "filename": "중세국어의 특징_표기 파트.html",
+      "thumbnailUrl": "images/thumbnails/middle-korean.png",
+      "uploadDate": "2025-01-12",
+      "estimatedTime": "30분",
+      "tags": ["중세국어", "표기법", "역사문법"],
+      "stages": ["딥러서치", "OX퀴즈", "객관식"]
+    },
+    {
+      "id": "kim-yoojung-bombom",
+      "title": "김유정 - 봄봄 (내신 대비 워크북)",
+      "category": "literature",
+      "subcategory": "현대소설",
+      "description": "김유정의 단편소설 '봄봄'을 분석하고 내신을 대비합니다",
+      "difficulty": "중급",
+      "filename": "김유정 봄봄 내신 대비 워크북.html",
+      "thumbnailUrl": "images/thumbnails/bombom.png",
+      "uploadDate": "2025-01-10",
+      "estimatedTime": "40분",
+      "tags": ["현대소설", "김유정", "내신대비", "문학"],
+      "stages": ["딥러서치", "OX퀴즈", "객관식"]
+    },
+    {
+      "id": "hyun-jingon-gohyang",
+      "title": "현진건 - 고향 (내신 대비 워크북)",
+      "category": "literature",
+      "subcategory": "현대소설",
+      "description": "현진건의 단편소설 '고향'을 분석하고 내신을 대비합니다",
+      "difficulty": "중급",
+      "filename": "현진건 고향 내신 대비 워크북.html",
+      "thumbnailUrl": "images/thumbnails/gohyang.png",
+      "uploadDate": "2025-01-10",
+      "estimatedTime": "40분",
+      "tags": ["현대소설", "현진건", "내신대비", "문학"],
+      "stages": ["딥러서치", "OX퀴즈", "객관식"]
+    },
+    {
+      "id": "jeon-sangguk-donghaeng",
+      "title": "전상국 - 동행 (내신 대비 워크북)",
+      "category": "literature",
+      "subcategory": "현대소설",
+      "description": "전상국의 단편소설 '동행'을 분석하고 내신을 대비합니다",
+      "difficulty": "중급",
+      "filename": "전상국 동행 내신 대비 워크북.html",
+      "thumbnailUrl": "images/thumbnails/donghaeng.png",
+      "uploadDate": "2025-01-10",
+      "estimatedTime": "40분",
+      "tags": ["현대소설", "전상국", "내신대비", "문학"],
+      "stages": ["딥러서치", "OX퀴즈", "객관식"]
+    },
+    {
+      "id": "heungbujeon",
+      "title": "흥부전 (내신 대비 워크북)",
+      "category": "literature",
+      "subcategory": "고전소설",
+      "description": "고전소설 '흥부전'을 분석하고 내신을 대비합니다",
+      "difficulty": "중급",
+      "filename": "흥부전 내신 대비 워크북.html",
+      "thumbnailUrl": "images/thumbnails/heungbu.png",
+      "uploadDate": "2025-01-10",
+      "estimatedTime": "45분",
+      "tags": ["고전소설", "판소리계소설", "내신대비", "문학"],
+      "stages": ["딥러서치", "OX퀴즈", "객관식"]
+    },
+    {
+      "id": "chamasul",
+      "title": "차마설 (내신 대비 워크북)",
+      "category": "literature",
+      "subcategory": "고전",
+      "description": "고전 작품 '차마설'을 분석하고 내신을 대비합니다",
+      "difficulty": "중급",
+      "filename": "차마설 내신 대비 워크북.html",
+      "thumbnailUrl": "images/thumbnails/chamasul.png",
+      "uploadDate": "2025-01-10",
+      "estimatedTime": "35분",
+      "tags": ["고전", "내신대비", "문학"],
+      "stages": ["딥러서치", "OX퀴즈", "객관식"]
+    },
+    {
+      "id": "russell-lit-seosi",
+      "title": "러셀1 문학 독해 - 윤동주 '서시'",
+      "category": "reading",
+      "subcategory": "문학독해",
+      "description": "윤동주의 시 '서시'를 깊이 있게 독해합니다",
+      "difficulty": "고급",
+      "filename": "러셀1 문학 독해_윤동주_서시.html",
+      "thumbnailUrl": "images/thumbnails/seosi.png",
+      "uploadDate": "2025-01-08",
+      "estimatedTime": "30분",
+      "tags": ["현대시", "윤동주", "문학독해", "러셀"],
+      "stages": ["딥러서치", "OX퀴즈", "객관식"]
+    },
+    {
+      "id": "russell-nonlit-mill",
+      "title": "러셀1 비문학 독해 - 밀의 공리주의",
+      "category": "reading",
+      "subcategory": "비문학독해",
+      "description": "밀의 공리주의 사상을 깊이 있게 독해합니다",
+      "difficulty": "고급",
+      "filename": "러셀1 비문학 독해_양심을 통한 최대 행복 실현 밀의 공리주의cursor.html",
+      "thumbnailUrl": "images/thumbnails/mill.png",
+      "uploadDate": "2025-01-08",
+      "estimatedTime": "35분",
+      "tags": ["비문학", "철학", "공리주의", "러셀"],
+      "stages": ["딥러서치", "OX퀴즈", "객관식"]
+    },
+    {
+      "id": "dryer-principle",
+      "title": "의류건조기의 원리 (워크북)",
+      "category": "reading",
+      "subcategory": "비문학독해",
+      "description": "의류건조기의 작동 원리를 학습합니다",
+      "difficulty": "중급",
+      "filename": "250902 의류건조기의 원리 워크북.html",
+      "thumbnailUrl": "images/thumbnails/dryer.png",
+      "uploadDate": "2025-01-05",
+      "estimatedTime": "25분",
+      "tags": ["비문학", "과학", "기술"],
+      "stages": ["딥러서치", "OX퀴즈", "객관식"]
+    }
+  ]
+}
