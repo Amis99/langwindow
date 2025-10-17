@@ -231,6 +231,20 @@
       "estimatedTime": "25분",
       "tags": ["비문학", "과학", "기술"],
       "stages": ["딥러서치", "OX퀴즈", "객관식"]
+    },
+    {
+      "id": "redenomination-workbook",
+      "title": "리디노미네이션 워크북",
+      "category": "reading",
+      "subcategory": "비문학독해",
+      "description": "화폐 단위 변경인 리디노미네이션의 개념과 경제적 영향을 학습합니다",
+      "difficulty": "중급",
+      "filename": "리디노미네이션 워크북.html",
+      "thumbnailUrl": "images/thumbnails/redenomination.png",
+      "uploadDate": "2025-10-18",
+      "estimatedTime": "30분",
+      "tags": ["비문학", "경제", "리디노미네이션"],
+      "stages": ["딥러서치", "OX퀴즈", "객관식"]
     }
   ]
 }
