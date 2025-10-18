@@ -13,26 +13,68 @@ if (typeof API_CONFIG === 'undefined') {
  * 기존 버튼 옆에 배치됩니다
  */
 function addCompleteLearningButton() {
-    // 액션 버튼 컨테이너 찾기
-    const buttonContainers = document.querySelectorAll('[style*="text-align: center"]');
+    console.log('=== 학습 완료 버튼 추가 시작 ===');
 
-    // 마지막 버튼 컨테이너 (결과 페이지의 버튼들)
+    // 이미 추가되었는지 확인
+    if (document.getElementById('completeLearningBtn')) {
+        console.log('버튼이 이미 추가되어 있습니다.');
+        return;
+    }
+
+    // 여러 방법으로 버튼 컨테이너 찾기
     let targetContainer = null;
-    for (let container of buttonContainers) {
-        const buttons = container.querySelectorAll('button');
-        if (buttons.length >= 2) {  // "결과 이미지 저장", "처음부터 다시하기" 버튼이 있는 컨테이너
-            targetContainer = container;
+
+    // 방법 1: "결과 이미지 저장" 버튼의 부모 찾기
+    const saveImageBtn = Array.from(document.querySelectorAll('button')).find(btn =>
+        btn.textContent.includes('결과 이미지 저장') || btn.textContent.includes('이미지 저장')
+    );
+
+    if (saveImageBtn) {
+        targetContainer = saveImageBtn.parentElement;
+        console.log('방법 1 성공: 결과 이미지 저장 버튼의 부모 찾음');
+    }
+
+    // 방법 2: "처음부터 다시하기" 버튼의 부모 찾기
+    if (!targetContainer) {
+        const restartBtn = Array.from(document.querySelectorAll('button')).find(btn =>
+            btn.textContent.includes('처음부터 다시하기') || btn.textContent.includes('다시하기')
+        );
+
+        if (restartBtn) {
+            targetContainer = restartBtn.parentElement;
+            console.log('방법 2 성공: 다시하기 버튼의 부모 찾음');
+        }
+    }
+
+    // 방법 3: main-content 내부에서 버튼이 2개 이상 있는 div 찾기
+    if (!targetContainer) {
+        const mainContent = document.getElementById('main-content');
+        if (mainContent) {
+            const containers = mainContent.querySelectorAll('div');
+            for (let container of containers) {
+                const buttons = container.querySelectorAll('button');
+                if (buttons.length >= 2) {
+                    targetContainer = container;
+                    console.log('방법 3 성공: main-content 내 버튼 컨테이너 찾음');
+                    break;
+                }
+            }
         }
     }
 
     if (!targetContainer) {
-        console.warn('버튼 컨테이너를 찾을 수 없습니다.');
-        return;
-    }
-
-    // 이미 추가되었는지 확인
-    if (document.getElementById('completeLearningBtn')) {
-        return;
+        console.error('버튼 컨테이너를 찾을 수 없습니다.');
+        // 대안: main-content의 끝에 새 div 생성
+        const mainContent = document.getElementById('main-content');
+        if (mainContent) {
+            targetContainer = document.createElement('div');
+            targetContainer.style.cssText = 'text-align: center; margin-top: 30px; padding-bottom: 30px;';
+            mainContent.appendChild(targetContainer);
+            console.log('대안: 새 컨테이너 생성');
+        } else {
+            console.error('main-content도 찾을 수 없습니다.');
+            return;
+        }
     }
 
     // 학습 완료 버튼 생성
