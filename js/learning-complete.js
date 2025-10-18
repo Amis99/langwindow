@@ -74,14 +74,14 @@ async function handleCompleteLearning() {
     const btn = document.getElementById('completeLearningBtn');
 
     // 로그인 확인
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
     if (!token) {
         alert('로그인이 필요합니다. 학생 대시보드에서 콘텐츠를 시작해주세요.');
         return;
     }
 
     // 사용자 정보 확인
-    const userStr = localStorage.getItem('currentUser');
+    const userStr = localStorage.getItem(STORAGE_KEYS.USER);
     if (!userStr) {
         alert('사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요.');
         return;
