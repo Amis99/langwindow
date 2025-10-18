@@ -673,7 +673,7 @@
 
             try {
                 const response = await API.getContents();
-                const contents = response.data;
+                const contents = response.data.contents || [];
 
                 if (contents.length === 0) {
                     container.innerHTML = `
