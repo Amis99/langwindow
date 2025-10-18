@@ -1553,6 +1553,10 @@
 
             document.getElementById('result-screen').classList.remove('active');
             document.getElementById('main-content').style.display = 'block';
+            // 학습 완료 버튼 추가
+            if (typeof addCompleteLearningButton === 'function') {
+                setTimeout(() => addCompleteLearningButton(), 500);
+            }
             startTimer();
         }
 

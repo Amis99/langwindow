@@ -175,19 +175,36 @@ async function handleCompleteLearning() {
  * 각 학습 콘텐츠에서 전역 변수로 관리하는 데이터를 수집
  */
 function collectLearningData() {
-    // 전역 변수에서 데이터 수집
-    if (typeof totalScore !== 'undefined') {
-        return {
-            totalStages: typeof totalStages !== 'undefined' ? totalStages : 5,
-            totalCorrect: typeof totalCorrect !== 'undefined' ? totalCorrect : 0,
-            totalWrong: typeof totalWrong !== 'undefined' ? totalWrong : 0,
-            totalAccuracy: typeof totalAccuracy !== 'undefined' ? totalAccuracy : 0,
-            totalScore: typeof totalScore !== 'undefined' ? totalScore : 0,
-            totalElapsedTime: typeof globalStartTime !== 'undefined' ? (Date.now() - globalStartTime) : 0,
-            stagesDetail: typeof stageResults !== 'undefined' ? stageResults : {}
+    console.log('=== 학습 데이터 수집 시작 ===');
+    console.log('totalScore:', typeof totalScore !== 'undefined' ? totalScore : 'undefined');
+    console.log('totalCorrect:', typeof totalCorrect !== 'undefined' ? totalCorrect : 'undefined');
+    console.log('totalWrong:', typeof totalWrong !== 'undefined' ? totalWrong : 'undefined');
+    console.log('stageResults:', typeof stageResults !== 'undefined' ? stageResults : 'undefined');
+
+    // 전역 변수 체크 (window 객체를 통해 확인)
+    const hasScore = typeof window.totalScore !== 'undefined';
+    const hasCorrect = typeof window.totalCorrect !== 'undefined';
+    const hasStageResults = typeof window.stageResults !== 'undefined';
+
+    console.log('hasScore:', hasScore, 'hasCorrect:', hasCorrect, 'hasStageResults:', hasStageResults);
+
+    // 최소한 점수 정보가 있으면 수집
+    if (hasScore || hasCorrect || hasStageResults) {
+        const data = {
+            totalStages: window.totalStages || 5,
+            totalCorrect: window.totalCorrect || 0,
+            totalWrong: window.totalWrong || 0,
+            totalAccuracy: window.totalAccuracy || 0,
+            totalScore: window.totalScore || 0,
+            totalElapsedTime: window.globalStartTime ? (Date.now() - window.globalStartTime) : 0,
+            stagesDetail: window.stageResults || {}
         };
+
+        console.log('수집된 데이터:', data);
+        return data;
     }
 
+    console.error('학습 데이터를 찾을 수 없습니다. 전역 변수가 정의되지 않았습니다.');
     return null;
 }
 

@@ -3256,6 +3256,10 @@
 
             // 부모 프로그램에 최종 누적 데이터 전송
             sendFinalDataToParent();
+            // 학습 완료 버튼 추가
+            if (typeof addCompleteLearningButton === 'function') {
+                setTimeout(() => addCompleteLearningButton(), 500);
+            }
         }
 
         function sendFinalDataToParent() {
