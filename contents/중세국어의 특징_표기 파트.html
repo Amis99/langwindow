@@ -1552,6 +1552,19 @@
             });
 
             document.getElementById('result-screen').classList.remove('active');
+            // 학습 완료 시스템을 위한 데이터 export
+        window.learningResultData = {
+            totalStages: totalStages || 5,
+            totalCorrect: totalCorrect || 0,
+            totalWrong: totalWrong || 0,
+            totalAccuracy: totalAccuracy || 0,
+            totalScore: totalScore || 0,
+            totalElapsedTime: totalElapsedTime || (Date.now() - globalStartTime),
+            stagesDetail: stageResults || {}
+        };
+        console.log('학습 데이터 export:', window.learningResultData);
+
+
             document.getElementById('main-content').style.display = 'block';
             // 학습 완료 버튼 추가
             if (typeof addCompleteLearningButton === 'function') {
@@ -2120,18 +2133,6 @@
 
         // 전체 결과 보기
         function showFinalResults() {
-        // 학습 완료 시스템을 위한 데이터 export
-        window.learningResultData = {
-            totalStages: totalStages || 5,
-            totalCorrect: totalCorrect || 0,
-            totalWrong: totalWrong || 0,
-            totalAccuracy: totalAccuracy || 0,
-            totalScore: totalScore || 0,
-            totalElapsedTime: totalElapsedTime || (Date.now() - globalStartTime),
-            stagesDetail: stageResults || {}
-        };
-        console.log('학습 데이터 export:', window.learningResultData);
-
             // 기존 타이머 정리
             if (timerInterval) {
                 clearInterval(timerInterval);

@@ -1567,27 +1567,6 @@
 
         // 결과 표시
         function showResults() {
-        // 학습 완료 시스템을 위한 데이터 export
-        window.learningResultData = {
-            totalStages: 1, // 음운 변동 연습은 단일 활동
-            totalCorrect: correctAnswers || 0,
-            totalWrong: incorrectAnswers || 0,
-            totalAccuracy: accuracy || 0,
-            totalScore: accuracy || 0,
-            totalElapsedTime: elapsedTime * 1000 || 0, // 밀리초로 변환
-            stagesDetail: {
-                phonemePractice: {
-                    correct: correctAnswers || 0,
-                    wrong: incorrectAnswers || 0,
-                    accuracy: accuracy || 0,
-                    score: accuracy || 0,
-                    time: elapsedTime || 0,
-                    completedWords: completedWords || []
-                }
-            }
-        };
-        console.log('학습 데이터 export:', window.learningResultData);
-
             const mainContent = document.getElementById('main-content');
             const resultsPanel = document.getElementById('results-panel');
 
@@ -1619,6 +1598,27 @@
                 dot.classList.remove('active');
                 dot.classList.add('completed');
             });
+
+            // 학습 완료 시스템을 위한 데이터 export
+            window.learningResultData = {
+                totalStages: 1, // 음운 변동 연습은 단일 활동
+                totalCorrect: correctAnswers || 0,
+                totalWrong: incorrectAnswers || 0,
+                totalAccuracy: accuracy || 0,
+                totalScore: accuracy || 0,
+                totalElapsedTime: elapsedTime * 1000 || 0, // 밀리초로 변환
+                stagesDetail: {
+                    phonemePractice: {
+                        correct: correctAnswers || 0,
+                        wrong: incorrectAnswers || 0,
+                        accuracy: accuracy || 0,
+                        score: accuracy || 0,
+                        time: elapsedTime || 0,
+                        completedWords: completedWords || []
+                    }
+                }
+            };
+            console.log('학습 데이터 export:', window.learningResultData);
 
             mainContent.style.display = 'none';
             resultsPanel.classList.add('active');
