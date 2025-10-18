@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학생 회원가입 - 언어의 창 온라인 학습관</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .register-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .register-box {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .register-header h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .register-header p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 15px;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-register:active {
+            transform: translateY(0);
+        }
+
+        .btn-register:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 15px;
+            position: relative;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .link-group {
+            text-align: center;
+        }
+
+        .link-group a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .link-group a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert-error {
+            background: #fee;
+            border-left: 4px solid #e74c3c;
+            color: #c0392b;
+        }
+
+        .alert-success {
+            background: #efe;
+            border-left: 4px solid #27ae60;
+            color: #229954;
+        }
+
+        .alert-info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            color: #1976d2;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spinner 0.6s linear infinite;
+        }
+
+        @keyframes spinner {
+            to { transform: rotate(360deg); }
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-box">
+            <div class="register-header">
+                <h1>📚 학생 회원가입</h1>
+                <p>언어의 창 온라인 학습관에 오신 것을 환영합니다</p>
+            </div>
+
+            <div id="alertContainer"></div>
+
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="name">이름 <span class="required">*</span></label>
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="실명을 입력하세요"
+                        required
+                    >
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="school">학교 <span class="required">*</span></label>
+                        <input
+                            type="text"
+                            id="school"
+                            placeholder="예: 서울고등학교"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="grade">학년 <span class="required">*</span></label>
+                        <select id="grade" required>
+                            <option value="">선택하세요</option>
+                            <option value="초1">초등 1학년</option>
+                            <option value="초2">초등 2학년</option>
+                            <option value="초3">초등 3학년</option>
+                            <option value="초4">초등 4학년</option>
+                            <option value="초5">초등 5학년</option>
+                            <option value="초6">초등 6학년</option>
+                            <option value="중1">중학 1학년</option>
+                            <option value="중2">중학 2학년</option>
+                            <option value="중3">중학 3학년</option>
+                            <option value="고1">고등 1학년</option>
+                            <option value="고2">고등 2학년</option>
+                            <option value="고3">고등 3학년</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">이메일 <span class="required">*</span></label>
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="example@email.com"
+                        required
+                        autocomplete="email"
+                    >
+                    <small>로그인 시 사용할 이메일 주소입니다</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">비밀번호 <span class="required">*</span></label>
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="최소 6자 이상"
+                        required
+                        autocomplete="new-password"
+                    >
+                    <small>6자 이상의 비밀번호를 입력하세요</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="passwordConfirm">비밀번호 확인 <span class="required">*</span></label>
+                    <input
+                        type="password"
+                        id="passwordConfirm"
+                        placeholder="비밀번호를 다시 입력하세요"
+                        required
+                        autocomplete="new-password"
+                    >
+                </div>
+
+                <button type="submit" class="btn-register" id="registerBtn">
+                    회원가입
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>이미 계정이 있으신가요?</span>
+            </div>
+
+            <div class="link-group">
+                <a href="login.html">로그인하러 가기</a>
+                <span style="color: #ccc; margin: 0 10px;">|</span>
+                <a href="index.html">학습 콘텐츠 둘러보기</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        const registerForm = document.getElementById('registerForm');
+        const nameInput = document.getElementById('name');
+        const schoolInput = document.getElementById('school');
+        const gradeSelect = document.getElementById('grade');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const passwordConfirmInput = document.getElementById('passwordConfirm');
+        const registerBtn = document.getElementById('registerBtn');
+        const alertContainer = document.getElementById('alertContainer');
+
+        // 이미 로그인되어 있으면 리다이렉트
+        if (isAuthenticated()) {
+            const user = getCurrentUser();
+            if (user.role === 'admin') {
+                window.location.href = 'admin-dashboard.html';
+            } else if (user.role === 'student' && user.status === 'approved') {
+                window.location.href = 'student-dashboard.html';
+            }
+        }
+
+        // 알림 표시
+        function showAlert(message, type = 'error') {
+            alertContainer.innerHTML = `
+                <div class="alert alert-${type}">
+                    ${message}
+                </div>
+            `;
+            setTimeout(() => {
+                if (type !== 'success' && type !== 'info') {
+                    alertContainer.innerHTML = '';
+                }
+            }, 5000);
+        }
+
+        // 입력 검증
+        function validateForm() {
+            // 이름 검증
+            if (nameInput.value.trim().length < 2) {
+                showAlert('이름은 최소 2자 이상이어야 합니다.');
+                nameInput.focus();
+                return false;
+            }
+
+            // 학교 검증
+            if (schoolInput.value.trim().length < 2) {
+                showAlert('학교 이름을 정확히 입력해주세요.');
+                schoolInput.focus();
+                return false;
+            }
+
+            // 학년 검증
+            if (!gradeSelect.value) {
+                showAlert('학년을 선택해주세요.');
+                gradeSelect.focus();
+                return false;
+            }
+
+            // 이메일 검증
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailInput.value)) {
+                showAlert('올바른 이메일 형식이 아닙니다.');
+                emailInput.focus();
+                return false;
+            }
+
+            // 비밀번호 검증
+            if (passwordInput.value.length < 6) {
+                showAlert('비밀번호는 최소 6자 이상이어야 합니다.');
+                passwordInput.focus();
+                return false;
+            }
+
+            // 비밀번호 확인 검증
+            if (passwordInput.value !== passwordConfirmInput.value) {
+                showAlert('비밀번호가 일치하지 않습니다.');
+                passwordConfirmInput.focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        // 회원가입 폼 제출
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // 검증
+            if (!validateForm()) {
+                return;
+            }
+
+            const name = nameInput.value.trim();
+            const school = schoolInput.value.trim();
+            const grade = gradeSelect.value;
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            // 로딩 상태
+            registerBtn.disabled = true;
+            registerBtn.innerHTML = '<span class="spinner"></span> 회원가입 중...';
+
+            try {
+                const response = await API.register(email, password, name, school, grade);
+
+                if (response.success) {
+                    showAlert(
+                        '✅ 회원가입이 완료되었습니다!<br>' +
+                        '관리자 승인 후 로그인할 수 있습니다.<br>' +
+                        '3초 후 로그인 페이지로 이동합니다.',
+                        'success'
+                    );
+
+                    // 폼 비활성화
+                    registerForm.querySelectorAll('input, select, button').forEach(el => {
+                        el.disabled = true;
+                    });
+
+                    // 3초 후 로그인 페이지로 이동
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 3000);
+                }
+            } catch (error) {
+                showAlert(error.message || '회원가입에 실패했습니다. 다시 시도해주세요.');
+                registerBtn.disabled = false;
+                registerBtn.innerHTML = '회원가입';
+            }
+        });
+    </script>
+</body>
+</html>

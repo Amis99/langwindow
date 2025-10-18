@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 대시보드 - 언어의 창 온라인 학습관</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background: #f5f7fa;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 사이드바 */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 30px;
+        }
+
+        .sidebar-header h2 {
+            margin: 0 0 5px 0;
+            font-size: 18px;
+        }
+
+        .sidebar-header p {
+            margin: 0;
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-item {
+            margin-bottom: 5px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-link.active {
+            background: rgba(255,255,255,0.2);
+            font-weight: 600;
+        }
+
+        .nav-link span {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .logout-btn {
+            margin-top: 30px;
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* 메인 콘텐츠 */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin: 0 0 10px 0;
+        }
+
+        .page-header p {
+            color: #7f8c8d;
+            margin: 0;
+        }
+
+        /* 섹션 */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* 카드 */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .badge-warning {
+            background: #fff4e5;
+            color: #e67e22;
+        }
+
+        /* 테이블 */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #2c3e50;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .table td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .table tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* 버튼 */
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-right: 5px;
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- 사이드바 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>관리자 대시보드</h2>
+                <p id="adminName">관리자</p>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a class="nav-link active" data-section="pending">
+                        <span>⏳</span> 승인 대기
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-section="students">
+                        <span>👥</span> 전체 학생
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-section="upload">
+                        <span>📤</span> 콘텐츠 업로드
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-section="records">
+                        <span>📊</span> 학습 기록
+                    </a>
+                </li>
+            </ul>
+
+            <button class="logout-btn" onclick="logout()">로그아웃</button>
+        </aside>
+
+        <!-- 메인 콘텐츠 -->
+        <main class="main-content">
+            <!-- 승인 대기 섹션 -->
+            <section id="pending" class="section active">
+                <div class="page-header">
+                    <h1>승인 대기 학생</h1>
+                    <p>회원가입 후 승인을 기다리는 학생들입니다</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">대기 중인 학생</h3>
+                        <span class="badge badge-warning" id="pendingCount">0명</span>
+                    </div>
+
+                    <div id="pendingStudentsContainer">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>불러오는 중...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 전체 학생 섹션 -->
+            <section id="students" class="section">
+                <div class="page-header">
+                    <h1>전체 학생 관리</h1>
+                    <p>등록된 모든 학생을 관리합니다</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">학생 목록</h3>
+                    </div>
+
+                    <div id="allStudentsContainer">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>불러오는 중...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 콘텐츠 업로드 섹션 -->
+            <section id="upload" class="section">
+                <div class="page-header">
+                    <h1>콘텐츠 업로드</h1>
+                    <p>새로운 학습 콘텐츠를 추가합니다</p>
+                </div>
+
+                <div class="card">
+                    <p style="color: #7f8c8d;">콘텐츠 업로드 기능은 개발 중입니다.</p>
+                </div>
+            </section>
+
+            <!-- 학습 기록 섹션 -->
+            <section id="records" class="section">
+                <div class="page-header">
+                    <h1>학습 기록</h1>
+                    <p>전체 학생의 학습 기록을 확인합니다</p>
+                </div>
+
+                <div class="card">
+                    <div id="learningRecordsContainer">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>불러오는 중...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        // 인증 확인
+        if (!isAuthenticated() || !isAdmin()) {
+            window.location.href = 'login.html';
+        }
+
+        // 사용자 정보 표시
+        const user = getCurrentUser();
+        document.getElementById('adminName').textContent = user.name;
+
+        // 네비게이션
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                const sectionId = this.getAttribute('data-section');
+
+                // 네비게이션 활성화
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+
+                // 섹션 표시
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById(sectionId).classList.add('active');
+
+                // 데이터 로드
+                loadSectionData(sectionId);
+            });
+        });
+
+        // 섹션 데이터 로드
+        async function loadSectionData(sectionId) {
+            switch(sectionId) {
+                case 'pending':
+                    await loadPendingStudents();
+                    break;
+                case 'students':
+                    await loadAllStudents();
+                    break;
+                case 'records':
+                    await loadLearningRecords();
+                    break;
+            }
+        }
+
+        // 승인 대기 학생 로드
+        async function loadPendingStudents() {
+            const container = document.getElementById('pendingStudentsContainer');
+
+            try {
+                const response = await API.getPendingUsers();
+                const students = response.data.users;
+
+                document.getElementById('pendingCount').textContent = `${students.length}명`;
+
+                if (students.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">✅</div>
+                            <h3>승인 대기 중인 학생이 없습니다</h3>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = `
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>이름</th>
+                                <th>학교</th>
+                                <th>학년</th>
+                                <th>이메일</th>
+                                <th>가입일</th>
+                                <th>작업</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${students.map(student => `
+                                <tr>
+                                    <td>${student.name}</td>
+                                    <td>${student.school}</td>
+                                    <td>${student.grade}</td>
+                                    <td>${student.email}</td>
+                                    <td>${new Date(student.createdAt).toLocaleDateString()}</td>
+                                    <td>
+                                        <button class="btn btn-success" onclick="approveStudent('${student.userId}', '${student.name}')">승인</button>
+                                        <button class="btn btn-danger" onclick="rejectStudent('${student.userId}', '${student.name}')">거부</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                container.innerHTML = `<p style="color: #e74c3c;">오류: ${error.message}</p>`;
+            }
+        }
+
+        // 학생 승인
+        async function approveStudent(userId, name) {
+            if (!confirm(`${name} 학생을 승인하시겠습니까?`)) return;
+
+            try {
+                await API.approveUser(userId);
+                alert('승인되었습니다.');
+                await loadPendingStudents();
+            } catch (error) {
+                alert('오류: ' + error.message);
+            }
+        }
+
+        // 학생 거부
+        async function rejectStudent(userId, name) {
+            if (!confirm(`${name} 학생을 거부하시겠습니까?`)) return;
+
+            try {
+                await API.rejectUser(userId);
+                alert('거부되었습니다.');
+                await loadPendingStudents();
+            } catch (error) {
+                alert('오류: ' + error.message);
+            }
+        }
+
+        // 전체 학생 로드
+        async function loadAllStudents() {
+            const container = document.getElementById('allStudentsContainer');
+
+            try {
+                const response = await API.getAllUsers();
+                const students = response.data.users.filter(u => u.role === 'student');
+
+                if (students.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">👥</div>
+                            <h3>등록된 학생이 없습니다</h3>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = `
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>이름</th>
+                                <th>학교</th>
+                                <th>학년</th>
+                                <th>이메일</th>
+                                <th>상태</th>
+                                <th>가입일</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${students.map(student => `
+                                <tr>
+                                    <td>${student.name}</td>
+                                    <td>${student.school}</td>
+                                    <td>${student.grade}</td>
+                                    <td>${student.email}</td>
+                                    <td>${getStatusBadge(student.status)}</td>
+                                    <td>${new Date(student.createdAt).toLocaleDateString()}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                container.innerHTML = `<p style="color: #e74c3c;">오류: ${error.message}</p>`;
+            }
+        }
+
+        // 학습 기록 로드
+        async function loadLearningRecords() {
+            const container = document.getElementById('learningRecordsContainer');
+
+            try {
+                const response = await API.getAllLearningRecords();
+                const records = response.data.records;
+
+                if (records.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📊</div>
+                            <h3>학습 기록이 없습니다</h3>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = `
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>학생명</th>
+                                <th>콘텐츠</th>
+                                <th>점수</th>
+                                <th>진도율</th>
+                                <th>완료</th>
+                                <th>날짜</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${records.map(record => `
+                                <tr>
+                                    <td>${record.userName}</td>
+                                    <td>${record.contentTitle}</td>
+                                    <td>${record.totalScore}점</td>
+                                    <td>${record.progress}%</td>
+                                    <td>${record.completed ? '✅' : '⏳'}</td>
+                                    <td>${new Date(record.createdAt).toLocaleDateString()}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                container.innerHTML = `<p style="color: #e74c3c;">오류: ${error.message}</p>`;
+            }
+        }
+
+        // 상태 배지
+        function getStatusBadge(status) {
+            const badges = {
+                'approved': '<span style="color: #27ae60;">✅ 승인됨</span>',
+                'pending': '<span style="color: #f39c12;">⏳ 대기중</span>',
+                'rejected': '<span style="color: #e74c3c;">❌ 거부됨</span>'
+            };
+            return badges[status] || status;
+        }
+
+        // 로그아웃
+        function logout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                clearAuth();
+                window.location.href = 'login.html';
+            }
+        }
+
+        // 초기 데이터 로드
+        loadPendingStudents();
+    </script>
+</body>
+</html>

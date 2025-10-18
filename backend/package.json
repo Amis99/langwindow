@@ -1,0 +1,25 @@
+{
+  "name": "langwindow-backend",
+  "version": "1.0.0",
+  "description": "언어의 창 학습관 백엔드 API",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "serverless deploy",
+    "remove": "serverless remove",
+    "logs": "serverless logs -f",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["aws", "lambda", "serverless", "education"],
+  "author": "Amis99",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1691.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.3.3"
+  }
+}

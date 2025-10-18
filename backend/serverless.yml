@@ -1,0 +1,251 @@
+service: langwindow-backend
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-northeast-2  # 서울 리전
+  stage: ${opt:stage, 'dev'}
+  memorySize: 256
+  timeout: 30
+
+  environment:
+    USERS_TABLE: ${self:service}-users-${self:provider.stage}
+    CONTENTS_TABLE: ${self:service}-contents-${self:provider.stage}
+    LEARNING_RECORDS_TABLE: ${self:service}-learning-records-${self:provider.stage}
+    JWT_SECRET: ${env:JWT_SECRET, 'your-secret-key-change-this-in-production'}
+    STAGE: ${self:provider.stage}
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}/index/*
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CONTENTS_TABLE}
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.LEARNING_RECORDS_TABLE}
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+            - s3:GetObject
+            - s3:DeleteObject
+          Resource:
+            - arn:aws:s3:::${self:service}-contents-${self:provider.stage}/*
+
+functions:
+  # 인증 관련
+  register:
+    handler: functions/auth/register.handler
+    events:
+      - http:
+          path: auth/register
+          method: post
+          cors: true
+
+  login:
+    handler: functions/auth/login.handler
+    events:
+      - http:
+          path: auth/login
+          method: post
+          cors: true
+
+  getMe:
+    handler: functions/auth/getMe.handler
+    events:
+      - http:
+          path: auth/me
+          method: get
+          cors: true
+
+  # 관리자 기능
+  getPendingUsers:
+    handler: functions/admin/getPendingUsers.handler
+    events:
+      - http:
+          path: admin/pending-users
+          method: get
+          cors: true
+
+  approveUser:
+    handler: functions/admin/approveUser.handler
+    events:
+      - http:
+          path: admin/approve-user/{userId}
+          method: put
+          cors: true
+
+  rejectUser:
+    handler: functions/admin/rejectUser.handler
+    events:
+      - http:
+          path: admin/reject-user/{userId}
+          method: put
+          cors: true
+
+  getAllUsers:
+    handler: functions/admin/getAllUsers.handler
+    events:
+      - http:
+          path: admin/users
+          method: get
+          cors: true
+
+  deleteUser:
+    handler: functions/admin/deleteUser.handler
+    events:
+      - http:
+          path: admin/user/{userId}
+          method: delete
+          cors: true
+
+  uploadContent:
+    handler: functions/admin/uploadContent.handler
+    events:
+      - http:
+          path: admin/content/upload
+          method: post
+          cors: true
+
+  getAllLearningRecords:
+    handler: functions/admin/getAllLearningRecords.handler
+    events:
+      - http:
+          path: admin/learning-records
+          method: get
+          cors: true
+
+  # 학생 기능
+  getContents:
+    handler: functions/student/getContents.handler
+    events:
+      - http:
+          path: student/contents
+          method: get
+          cors: true
+
+  getContentDetail:
+    handler: functions/student/getContentDetail.handler
+    events:
+      - http:
+          path: student/content/{contentId}
+          method: get
+          cors: true
+
+  saveLearningRecord:
+    handler: functions/student/saveLearningRecord.handler
+    events:
+      - http:
+          path: student/learning-record
+          method: post
+          cors: true
+
+  getMyRecords:
+    handler: functions/student/getMyRecords.handler
+    events:
+      - http:
+          path: student/my-records
+          method: get
+          cors: true
+
+resources:
+  Resources:
+    # Users 테이블
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.USERS_TABLE}
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: email
+            AttributeType: S
+          - AttributeName: status
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: EmailIndex
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+          - IndexName: StatusIndex
+            KeySchema:
+              - AttributeName: status
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    # Contents 테이블
+    ContentsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.CONTENTS_TABLE}
+        AttributeDefinitions:
+          - AttributeName: contentId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: contentId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    # LearningRecords 테이블
+    LearningRecordsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.LEARNING_RECORDS_TABLE}
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: recordId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: recordId
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    # S3 버킷 (콘텐츠 저장용)
+    ContentsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:service}-contents-${self:provider.stage}
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+              MaxAge: 3000
+
+plugins:
+  - serverless-offline
