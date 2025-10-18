@@ -604,9 +604,9 @@
                 const response = await API.getContentDetail(contentId);
                 const content = response.data.content;
 
-                // 실제 HTML 파일로 이동
+                // 실제 HTML 파일로 이동 (contents 폴더에 위치)
                 if (content.filename) {
-                    window.location.href = content.filename;
+                    window.location.href = 'contents/' + content.filename;
                 } else {
                     alert('콘텐츠 파일을 찾을 수 없습니다.');
                 }
