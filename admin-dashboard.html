@@ -279,8 +279,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" data-section="contents">
+                        <span>📚</span> 콘텐츠 목록
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" data-section="upload">
-                        <span>📤</span> 콘텐츠 업로드
+                        <span>📤</span> 콘텐츠 등록
                     </a>
                 </li>
                 <li class="nav-item">
@@ -338,15 +343,82 @@
                 </div>
             </section>
 
-            <!-- 콘텐츠 업로드 섹션 -->
-            <section id="upload" class="section">
+            <!-- 콘텐츠 목록 섹션 -->
+            <section id="contents" class="section">
                 <div class="page-header">
-                    <h1>콘텐츠 업로드</h1>
-                    <p>새로운 학습 콘텐츠를 추가합니다</p>
+                    <h1>콘텐츠 목록</h1>
+                    <p>등록된 학습 콘텐츠를 확인합니다</p>
                 </div>
 
                 <div class="card">
-                    <p style="color: #7f8c8d;">콘텐츠 업로드 기능은 개발 중입니다.</p>
+                    <div id="contentsListContainer">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>불러오는 중...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 콘텐츠 등록 섹션 -->
+            <section id="upload" class="section">
+                <div class="page-header">
+                    <h1>콘텐츠 등록</h1>
+                    <p>새로운 학습 콘텐츠 메타데이터를 등록합니다</p>
+                </div>
+
+                <div class="card">
+                    <form id="uploadForm" style="max-width: 600px;">
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">콘텐츠 ID</label>
+                            <input type="text" id="contentId" placeholder="예: hangeul-spelling-4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" required>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">제목</label>
+                            <input type="text" id="contentTitle" placeholder="예: 한글 맞춤법 제4장" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" required>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">카테고리</label>
+                            <select id="contentCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" required>
+                                <option value="">선택하세요</option>
+                                <option value="grammar">문법</option>
+                                <option value="literature">문학</option>
+                                <option value="reading">독해</option>
+                                <option value="classical">고전/중세국어</option>
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">난이도</label>
+                            <select id="contentDifficulty" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" required>
+                                <option value="">선택하세요</option>
+                                <option value="기초">기초</option>
+                                <option value="중급">중급</option>
+                                <option value="고급">고급</option>
+                                <option value="심화">심화</option>
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">파일명</label>
+                            <input type="text" id="contentFilename" placeholder="예: 한글 맞춤법 4장.html" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" required>
+                            <small style="color: #7f8c8d;">실제 HTML 파일명을 입력하세요</small>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">설명</label>
+                            <textarea id="contentDescription" rows="3" placeholder="콘텐츠 설명" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;"></textarea>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">예상 학습 시간</label>
+                            <input type="text" id="contentTime" placeholder="예: 30분" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 16px;">등록하기</button>
+                    </form>
                 </div>
             </section>
 
@@ -407,6 +479,9 @@
                     break;
                 case 'students':
                     await loadAllStudents();
+                    break;
+                case 'contents':
+                    await loadContentsList();
                     break;
                 case 'records':
                     await loadLearningRecords();
@@ -591,6 +666,90 @@
                 container.innerHTML = `<p style="color: #e74c3c;">오류: ${error.message}</p>`;
             }
         }
+
+        // 콘텐츠 목록 로드
+        async function loadContentsList() {
+            const container = document.getElementById('contentsListContainer');
+
+            try {
+                const response = await API.getContents();
+                const contents = response.data;
+
+                if (contents.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📚</div>
+                            <h3>등록된 콘텐츠가 없습니다</h3>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const categoryNames = {
+                    'grammar': '문법',
+                    'literature': '문학',
+                    'reading': '독해',
+                    'classical': '고전/중세국어'
+                };
+
+                container.innerHTML = `
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>제목</th>
+                                <th>카테고리</th>
+                                <th>난이도</th>
+                                <th>파일명</th>
+                                <th>등록일</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${contents.map(content => `
+                                <tr>
+                                    <td>${content.title}</td>
+                                    <td>${categoryNames[content.category] || content.category}</td>
+                                    <td>${content.difficulty}</td>
+                                    <td><code>${content.filename}</code></td>
+                                    <td>${new Date(content.uploadDate).toLocaleDateString('ko-KR')}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                container.innerHTML = `<p style="color: #e74c3c;">오류: ${error.message}</p>`;
+            }
+        }
+
+        // 콘텐츠 등록 폼 제출
+        document.getElementById('uploadForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const contentData = {
+                contentId: document.getElementById('contentId').value.trim(),
+                title: document.getElementById('contentTitle').value.trim(),
+                category: document.getElementById('contentCategory').value,
+                difficulty: document.getElementById('contentDifficulty').value,
+                filename: document.getElementById('contentFilename').value.trim(),
+                description: document.getElementById('contentDescription').value.trim(),
+                estimatedTime: document.getElementById('contentTime').value.trim(),
+                uploadDate: new Date().toISOString().split('T')[0],
+            };
+
+            try {
+                const response = await API.uploadContent(contentData);
+
+                if (response.success) {
+                    alert('✅ 콘텐츠가 등록되었습니다!');
+                    document.getElementById('uploadForm').reset();
+
+                    // 콘텐츠 목록 탭으로 이동
+                    document.querySelector('[data-section="contents"]').click();
+                }
+            } catch (error) {
+                alert('❌ 등록 실패: ' + error.message);
+            }
+        });
 
         // 상태 배지
         function getStatusBadge(status) {

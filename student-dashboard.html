@@ -597,9 +597,22 @@
         }
 
         // 콘텐츠 열기
-        function openContent(contentId) {
-            // TODO: 콘텐츠 상세 페이지로 이동하거나 모달로 표시
-            alert(`콘텐츠 ID: ${contentId}\n학습 페이지로 이동하는 기능은 추후 구현 예정입니다.`);
+        async function openContent(contentId) {
+            try {
+                // 콘텐츠 상세 정보 가져오기
+                const response = await API.getContentDetail(contentId);
+                const content = response.data;
+
+                // 실제 HTML 파일로 이동
+                if (content.filename) {
+                    window.location.href = content.filename;
+                } else {
+                    alert('콘텐츠 파일을 찾을 수 없습니다.');
+                }
+            } catch (error) {
+                console.error('콘텐츠 로드 실패:', error);
+                alert('콘텐츠를 불러오는 중 오류가 발생했습니다.');
+            }
         }
 
         // 전체 학습 기록 로드
