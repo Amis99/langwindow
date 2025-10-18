@@ -218,12 +218,20 @@ async function handleCompleteLearning() {
  */
 function collectLearningData() {
     console.log('=== 학습 데이터 수집 시작 ===');
-    console.log('totalScore:', typeof totalScore !== 'undefined' ? totalScore : 'undefined');
-    console.log('totalCorrect:', typeof totalCorrect !== 'undefined' ? totalCorrect : 'undefined');
-    console.log('totalWrong:', typeof totalWrong !== 'undefined' ? totalWrong : 'undefined');
-    console.log('stageResults:', typeof stageResults !== 'undefined' ? stageResults : 'undefined');
 
-    // 전역 변수 체크 (window 객체를 통해 확인)
+    // 먼저 window.learningResultData 확인 (권장 방법)
+    if (window.learningResultData) {
+        console.log('✅ window.learningResultData에서 데이터 수집');
+        console.log('수집된 데이터:', window.learningResultData);
+        return window.learningResultData;
+    }
+
+    console.log('⚠️ window.learningResultData가 없습니다. 전역 변수에서 직접 수집 시도...');
+    console.log('totalScore:', typeof window.totalScore !== 'undefined' ? window.totalScore : 'undefined');
+    console.log('totalCorrect:', typeof window.totalCorrect !== 'undefined' ? window.totalCorrect : 'undefined');
+    console.log('totalWrong:', typeof window.totalWrong !== 'undefined' ? window.totalWrong : 'undefined');
+
+    // 전역 변수 체크 (fallback)
     const hasScore = typeof window.totalScore !== 'undefined';
     const hasCorrect = typeof window.totalCorrect !== 'undefined';
     const hasStageResults = typeof window.stageResults !== 'undefined';
@@ -242,11 +250,11 @@ function collectLearningData() {
             stagesDetail: window.stageResults || {}
         };
 
-        console.log('수집된 데이터:', data);
+        console.log('수집된 데이터 (fallback):', data);
         return data;
     }
 
-    console.error('학습 데이터를 찾을 수 없습니다. 전역 변수가 정의되지 않았습니다.');
+    console.error('❌ 학습 데이터를 찾을 수 없습니다. showFinalResults()가 호출되었는지 확인하세요.');
     return null;
 }
 

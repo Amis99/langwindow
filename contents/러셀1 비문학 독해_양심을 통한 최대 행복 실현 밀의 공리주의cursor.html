@@ -3173,6 +3173,18 @@
         }
 
         function showFinalResults() {
+        // 학습 완료 시스템을 위한 데이터 export
+        window.learningResultData = {
+            totalStages: totalStages || 5,
+            totalCorrect: totalCorrect || 0,
+            totalWrong: totalWrong || 0,
+            totalAccuracy: totalAccuracy || 0,
+            totalScore: totalScore || 0,
+            totalElapsedTime: totalElapsedTime || (Date.now() - globalStartTime),
+            stagesDetail: stageResults || {}
+        };
+        console.log('학습 데이터 export:', window.learningResultData);
+
             const mainContent = document.getElementById('main-content');
 
             // 전체 결과 계산
