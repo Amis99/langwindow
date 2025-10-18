@@ -39,6 +39,16 @@ exports.handler = async (event) => {
       totalScore,
       completed,
       progress,
+      // 새로운 필드들
+      score,
+      accuracy,
+      timeSpent,
+      totalQuestions,
+      correctAnswers,
+      wrongAnswers,
+      stagesDetail,
+      wrongQuestions,
+      timestamp,
     } = body;
 
     if (!contentId || !contentTitle) {
@@ -57,11 +67,18 @@ exports.handler = async (event) => {
       startTime: startTime || new Date().toISOString(),
       endTime: endTime || new Date().toISOString(),
       duration: duration || 0,
-      stages: stages || {},
-      totalScore: totalScore || 0,
+      stages: stages || stagesDetail || {},
+      totalScore: totalScore || score || 0,
       completed: completed || false,
-      progress: progress || 0,
-      createdAt: new Date().toISOString(),
+      progress: progress || 100,
+      // 추가 상세 정보
+      accuracy: accuracy || 0,
+      timeSpent: timeSpent || duration || 0,
+      totalQuestions: totalQuestions || 0,
+      correctAnswers: correctAnswers || 0,
+      wrongAnswers: wrongAnswers || 0,
+      wrongQuestions: wrongQuestions || [],
+      createdAt: timestamp || new Date().toISOString(),
     };
 
     await saveLearningRecord(record);
