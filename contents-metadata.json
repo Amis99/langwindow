@@ -245,6 +245,20 @@
       "estimatedTime": "30분",
       "tags": ["비문학", "경제", "리디노미네이션"],
       "stages": ["딥러서치", "OX퀴즈", "객관식"]
+    },
+    {
+      "id": "seonwoo-hwi-bulkkot",
+      "title": "선우휘 - 불꽃 (내신 대비 워크북)",
+      "category": "literature",
+      "subcategory": "현대소설",
+      "description": "선우휘의 단편소설 '불꽃'을 분석하고 내신을 대비합니다",
+      "difficulty": "심화",
+      "filename": "선우휘 불꽃 내신 대비 워크북.html",
+      "thumbnailUrl": "images/thumbnails/bulkkot.png",
+      "uploadDate": "2025-10-19",
+      "estimatedTime": "45분",
+      "tags": ["현대소설", "선우휘", "내신대비", "문학", "전쟁", "서술형"],
+      "stages": ["딥러서치", "어휘", "문장", "OX퀴즈", "서술형"]
     }
   ]
 }
