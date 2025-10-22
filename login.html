@@ -445,6 +445,27 @@
             loginBtn.innerHTML = '<span class="spinner"></span> 로그인 중...';
 
             try {
+                // ⚠️ 임시 개발용 관리자 계정 (배포 전 반드시 제거할 것!)
+                if (email === 'admin@langwindow.com' && password === 'admin1234') {
+                    const tempAdminUser = {
+                        userId: 'temp-admin-001',
+                        email: 'admin@langwindow.com',
+                        name: '임시 관리자',
+                        role: 'admin',
+                        status: 'approved'
+                    };
+                    const tempToken = 'temp-development-token-' + Date.now();
+
+                    saveAuth(tempToken, tempAdminUser);
+                    showAlert('로그인 성공! (개발 모드)', 'success');
+
+                    setTimeout(() => {
+                        window.location.href = 'admin-dashboard.html';
+                    }, 1000);
+                    return;
+                }
+                // ⚠️ 임시 개발용 계정 끝
+
                 const response = await API.login(email, password);
 
                 if (response.success) {
