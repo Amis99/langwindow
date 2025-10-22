@@ -185,6 +185,20 @@ class API {
   static getMyRecords() {
     return this.get(API_CONFIG.ENDPOINTS.GET_MY_RECORDS);
   }
+
+  /**
+   * 학습 수 증가
+   */
+  static incrementLearningCount(contentId) {
+    return this.post(API_CONFIG.ENDPOINTS.INCREMENT_LEARNING_COUNT, { contentId });
+  }
+
+  /**
+   * 랭킹 조회
+   */
+  static getRankings() {
+    return this.get(API_CONFIG.ENDPOINTS.GET_RANKINGS);
+  }
 }
 
 // ==================== 인증 헬퍼 ====================

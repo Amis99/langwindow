@@ -155,6 +155,14 @@ functions:
           method: get
           cors: true
 
+  getRankings:
+    handler: functions/student/getRankings.handler
+    events:
+      - http:
+          path: student/rankings
+          method: get
+          cors: true
+
 resources:
   Resources:
     # Users 테이블

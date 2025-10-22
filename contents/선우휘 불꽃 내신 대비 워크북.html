@@ -2108,6 +2108,12 @@
 
         // 초기화
         function init() {
+            console.log('=== 학습 페이지 초기화 (v2025-10-21-debug) ===');
+            console.log('iframe으로 로드됨:', window.self !== window.top);
+            console.log('window.parent 존재:', !!window.parent);
+            console.log('window.parent !== window:', window.parent !== window);
+            console.log('현재 URL:', window.location.href);
+
             // 전역 시작 시간 기록
             globalStartTime = Date.now();
 
@@ -5221,6 +5227,8 @@
 
         // 전체 결과 표시
         function showFinalResults() {
+            console.log('=== showFinalResults 함수 호출됨 ===');
+
             // 기존 타이머 정리
             if (timerInterval) {
                 clearInterval(timerInterval);
@@ -5232,6 +5240,7 @@
             // 전체 결과 계산
             const totalCorrect = Object.values(stageResults).reduce((sum, s) => sum + s.correct, 0);
             const totalWrong = Object.values(stageResults).reduce((sum, s) => sum + s.wrong, 0);
+            console.log('전체 결과 계산:', { totalCorrect, totalWrong });
             const overallAccuracy = (totalCorrect + totalWrong) > 0 ?
                                    Math.round((totalCorrect / (totalCorrect + totalWrong)) * 100) : 0;
             const totalScore = Object.values(stageResults).reduce((sum, s) => sum + s.score, 0);
@@ -5430,8 +5439,53 @@
         function sendFinalDataToParent() {
             const totalElapsedTime = Date.now() - globalStartTime;
 
+            // 전체 결과 계산
+            const totalCorrect = Object.values(stageResults).reduce((sum, s) => sum + s.correct, 0);
+            const totalWrong = Object.values(stageResults).reduce((sum, s) => sum + s.wrong, 0);
+            const totalAccuracy = (totalCorrect + totalWrong) > 0 ?
+                                   Math.round((totalCorrect / (totalCorrect + totalWrong)) * 100) : 0;
+            const totalScore = Object.values(stageResults).reduce((sum, s) => sum + s.score, 0);
+
+            // 전체 문제 수 계산 (실제 문제 배열 기반)
+            const stage2Questions = vocabularyData.length * 2;  // 단어당 2문제
+            const stage3Questions = sentenceData.length;
+            const totalAllQuestions = learningData.questions.length + stage2Questions + stage3Questions + oxQuizData.length + writingQuestions.length;
+            const answeredQuestions = totalCorrect + totalWrong;
+            const progress = totalAllQuestions > 0
+                ? Math.round((answeredQuestions / totalAllQuestions) * 100)
+                : 100;
+
+            // 각 스테이지에 totalQuestions 추가
+            const stagesDetailWithTotal = {
+                stage1: {
+                    ...stageResults.stage1,
+                    totalQuestions: learningData.questions.length
+                },
+                stage2: {
+                    ...stageResults.stage2,
+                    totalQuestions: stage2Questions
+                },
+                stage3: {
+                    ...stageResults.stage3,
+                    totalQuestions: stage3Questions
+                },
+                stage4: {
+                    ...stageResults.stage4,
+                    totalQuestions: oxQuizData.length
+                },
+                stage5: {
+                    ...stageResults.stage5,
+                    totalQuestions: writingQuestions.length
+                }
+            };
+
+            console.log('=== sendFinalDataToParent 호출됨 ===');
+            console.log('전체 문제 수:', totalAllQuestions, '/ 푼 문제 수:', answeredQuestions, '/ 진행률:', progress + '%');
+            console.log('window.parent 존재:', !!window.parent);
+            console.log('window.parent !== window:', window.parent !== window);
+
             if (window.parent && window.parent !== window) {
-                window.parent.postMessage({
+                const messageData = {
                     type: 'korean-farm-v2',
                     event: 'all-stages-complete',
                     data: {
@@ -5441,10 +5495,21 @@
                         totalAccuracy: totalAccuracy,
                         totalScore: totalScore,
                         totalElapsedTime: totalElapsedTime,
-                        stagesDetail: stageResults,
+                        stagesDetail: stagesDetailWithTotal,
+                        totalQuestions: totalAllQuestions,
+                        answeredQuestions: answeredQuestions,
+                        correctAnswers: totalCorrect,
+                        wrongAnswers: totalWrong,
+                        progress: progress,
                         timestamp: Date.now()
                     }
-                }, '*');
+                };
+
+                console.log('부모로 전송할 데이터:', messageData);
+                window.parent.postMessage(messageData, '*');
+                console.log('postMessage 전송 완료');
+            } else {
+                console.log('부모 윈도우가 없거나 같은 윈도우입니다. 데이터를 전송하지 않습니다.');
             }
         }
 

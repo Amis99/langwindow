@@ -2093,19 +2093,6 @@
             stage1Data.startTime = Date.now();
 
             document.getElementById('result-screen').classList.remove('active');
-            // 학습 완료 시스템을 위한 데이터 export
-        window.learningResultData = {
-            totalStages: totalStages || 5,
-            totalCorrect: totalCorrect || 0,
-            totalWrong: totalWrong || 0,
-            totalAccuracy: totalAccuracy || 0,
-            totalScore: totalScore || 0,
-            totalElapsedTime: totalElapsedTime || (Date.now() - globalStartTime),
-            stagesDetail: stageResults || {}
-        };
-        console.log('학습 데이터 export:', window.learningResultData);
-
-
             document.getElementById('main-content').style.display = 'block';
 
             // 하이라이트 초기화
@@ -3439,7 +3426,6 @@
                 correctParts: [
                     "노둔한 말을 탈 때는 말이 다칠까 봐 전전긍긍하며 채찍을 대지 않는 겸손한 태도를 보였다.",
                     "준마를 얻으면 의기양양하여 방자하게 채찍을 휘두르고 평지처럼 질주하는 오만한 태도로 변한다.",
-                    "태도의 대비가 소유 환경에 따라 감정이 쉽게 교만해짐을 드러낸다.",
                     "이 대비가 만물차용설에 근거한 겸손의 주제를 부각한다."
                 ],
                 distractors: [
@@ -3455,7 +3441,6 @@
                 correctParts: [
                     "글은 노둔마와 준마를 번갈아 탄 개인적 경험에서 출발한다.",
                     "그 경험을 임금·신하, 가족·비복 등 사회 전반의 관계로 확장한다.",
-                    "모든 것이 잠시 빌린 것이라는 만물차용설을 도출한다.",
                     "개별 경험을 보편적 진리로 잇는 유추의 방식을 사용한다."
                 ],
                 distractors: [
@@ -3471,7 +3456,6 @@
                 correctParts: [
                     "임금은 백성에게서 힘을 빌리고 신하는 임금에게서 권세를 빌린다고 제시한다.",
                     "자식·지어미·비복 등 가족과 주종 관계도 서로에게 빌린 것임을 강조한다.",
-                    "이 예시는 지배층이 영원한 소유라 믿던 권력과 재물이 빌린 것임을 폭로한다.",
                     "결국 언제든 잃을 수 있다는 경고로 교만한 지배층을 비판한다."
                 ],
                 distractors: [
@@ -3487,8 +3471,7 @@
                 correctParts: [
                     "맹자의 '차용하고서 반환하지 않으면 자기 것이 아니다'라는 말을 인용한다.",
                     "이를 통해 만물차용설이 단순한 개인 감상이 아니라는 점을 객관화한다.",
-                    "고전 권위를 빌려 논지의 설득력과 보편성을 강화한다.",
-                    "따라서 개인 경험이 보편적 진리로 격상되는 효과가 생긴다."
+                    "고전 권위를 빌려 논지의 설득력과 보편성을 강화한다."
                 ],
                 distractors: [
                     "맹자의 사상을 비판하기 위해 대비적으로 인용했다고 본다.",
@@ -3503,7 +3486,6 @@
                 correctParts: [
                     "'빌렸던 것을 돌려주는 일'은 죽음이나 권력·재물 상실 등 소유가 끝나는 순간을 가리킨다.",
                     "그때 임금도 독부, 대부도 고신이 되어 외로운 처지로 전락한다.",
-                    "최고 신분조차 소유를 잃으면 비참해진다는 사실로 경고를 전한다.",
                     "따라서 현세의 소유에 집착하지 말고 겸손해야 함을 일깨운다."
                 ],
                 distractors: [
@@ -3519,7 +3501,6 @@
                 correctParts: [
                     "준마를 얻자 의기양양해져 고삐를 놓고 달리다 환란을 겪는다.",
                     "노둔마를 탈 때는 전전긍긍하여 후회할 일이 없었다.",
-                    "두 경험의 대비가 태도의 차이가 결과를 가른다는 점을 보여 준다.",
                     "결국 교만한 태도가 불행을 초래한다는 교훈을 제시한다."
                 ],
                 distractors: [
@@ -3565,7 +3546,6 @@
                 correctParts: [
                     "임금·신하 관계는 힘과 권세 같은 공적 자원을 서로에게서 빌리는 예다.",
                     "가족·비복 관계는 생명·사랑·노동력 등 사적 요소를 빌리는 예다.",
-                    "공적 영역과 사적 영역 모두가 빌림의 구조에 놓였음을 강조한다.",
                     "이를 통해 만물차용설의 적용 범위를 사회 전반으로 확장한다."
                 ],
                 distractors: [
@@ -3581,8 +3561,7 @@
                 correctParts: [
                     "'말을 빌려 탄 경험→소유에 대한 깨달음→맹자 인용과 교훈'이라는 '설'의 단계를 충실히 따른다.",
                     "구체적인 말의 경험에서 보편적 진리를 끌어내는 전개가 특징이다.",
-                    "경험을 일반화로 확장하는 유추적 사고가 돋보인다.",
-                    "구성과 사고 방식이 만물차용설의 주제를 단단하게 뒷받침한다."
+                    "경험을 일반화로 확장하는 유추적 사고가 돋보인다."
                 ],
                 distractors: [
                     "이 작품은 자유시 형식으로 전개되어 일정한 구조가 없다고 본다.",
@@ -3651,7 +3630,7 @@
 
             // 헤더 업데이트
             document.querySelector('.title').textContent = '이곡 <차마설>';
-            document.querySelector('.subtitle').textContent = '5단계: 서술형 문제';
+            document.querySelector('.subtitle').textContent = '5단계: 서술형 문제 (카드 배열)';
             document.querySelector('.stage-indicator').textContent = 'Stage 5 / 5';
             document.querySelector('.question-counter').textContent = `문제: 1/${stage5Data.questions.length}`;
 
@@ -3680,8 +3659,8 @@
                     <div class="stage5-question-area">
                         <h2 class="question-number">문제 ${stage5Data.currentQuestionIndex + 1}</h2>
                         <div class="question-text">${question.question}</div>
-                        <div class="required-cards-info" style="margin-top: 15px; padding: 10px; background: #e3f2fd; border-radius: 8px; color: #1976d2; font-weight: 500;">
-                            📝 필요한 카드 개수: ${question.correctParts.length}개
+                        <div class="required-cards-info" style="margin-top: 15px; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; color: white; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+                            ✨ 5단계 서술형 문제: ${question.correctParts.length}개의 정답 카드를 순서대로 배열하세요!
                         </div>
                         <button class="text-review-btn" onclick="showTextModal()" style="margin-top: 15px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; display: inline-flex; align-items: center; gap: 8px;">
                             <span>📖</span> 지문 확인
@@ -4642,15 +4621,54 @@
 
             // 부모 프로그램에 최종 결과 전송
             sendFinalDataToParent();
-            // 학습 완료 버튼 추가
-            if (typeof addCompleteLearningButton === 'function') {
-                setTimeout(() => addCompleteLearningButton(), 500);
-            }
         }
 
         // 부모 프로그램으로 최종 데이터 전송
         function sendFinalDataToParent() {
             const totalElapsedTime = Date.now() - globalStartTime;
+
+            // 전체 결과 계산
+            const totalCorrect = Object.values(stageResults).reduce((sum, s) => sum + s.correct, 0);
+            const totalWrong = Object.values(stageResults).reduce((sum, s) => sum + s.wrong, 0);
+            const totalAccuracy = (totalCorrect + totalWrong) > 0 ?
+                                   Math.round((totalCorrect / (totalCorrect + totalWrong)) * 100) : 0;
+            const totalScore = Object.values(stageResults).reduce((sum, s) => sum + s.score, 0);
+
+            // 전체 문제 수 계산 (실제 문제 배열 기반)
+            const stage2Questions = vocabularyData.length * 2;  // 단어당 2문제 (단어→뜻, 뜻→단어)
+            const stage3Questions = sentenceData.length;
+            const totalAllQuestions = learningData.questions.length + stage2Questions + stage3Questions + oxQuizData.length + writingQuestions.length;
+            const answeredQuestions = totalCorrect + totalWrong;
+            const progress = totalAllQuestions > 0
+                ? Math.round((answeredQuestions / totalAllQuestions) * 100)
+                : 100;
+
+            // 각 스테이지에 totalQuestions 추가
+            const stagesDetailWithTotal = {
+                stage1: {
+                    ...stageResults.stage1,
+                    totalQuestions: learningData.questions.length
+                },
+                stage2: {
+                    ...stageResults.stage2,
+                    totalQuestions: stage2Questions  // 19 단어 × 2 = 38문제
+                },
+                stage3: {
+                    ...stageResults.stage3,
+                    totalQuestions: stage3Questions  // 8문제
+                },
+                stage4: {
+                    ...stageResults.stage4,
+                    totalQuestions: oxQuizData.length
+                },
+                stage5: {
+                    ...stageResults.stage5,
+                    totalQuestions: writingQuestions.length
+                }
+            };
+
+            console.log('=== sendFinalDataToParent 호출됨 ===');
+            console.log('전체 문제 수:', totalAllQuestions, '/ 푼 문제 수:', answeredQuestions, '/ 진행률:', progress + '%');
 
             if (window.parent && window.parent !== window) {
                 window.parent.postMessage({
@@ -4663,7 +4681,12 @@
                         totalAccuracy: totalAccuracy,
                         totalScore: totalScore,
                         totalElapsedTime: totalElapsedTime,
-                        stagesDetail: stageResults,
+                        stagesDetail: stagesDetailWithTotal,
+                        totalQuestions: totalAllQuestions,
+                        answeredQuestions: answeredQuestions,
+                        correctAnswers: totalCorrect,
+                        wrongAnswers: totalWrong,
+                        progress: progress,
                         timestamp: Date.now()
                     }
                 }, '*');
@@ -4722,9 +4745,5 @@
         // 초기화 실행
         window.addEventListener('DOMContentLoaded', init);
     </script>
-
-    <!-- 학습 완료 시스템 -->
-    <script src="../js/config.js"></script>
-    <script src="../js/learning-complete.js"></script>
 </body>
 </html>

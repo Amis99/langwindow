@@ -402,9 +402,28 @@
                         </div>
 
                         <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">HTML 파일 업로드</label>
+                            <input type="file" id="contentFileUpload" accept=".html,.htm" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; background: white;">
+                            <small style="color: #7f8c8d;">HTML 파일을 선택하면 자동으로 분석됩니다</small>
+                            <div id="fileAnalysisResult" style="margin-top: 10px; padding: 10px; border-radius: 6px; display: none;"></div>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
                             <label style="display: block; margin-bottom: 5px; font-weight: 600;">파일명</label>
-                            <input type="text" id="contentFilename" placeholder="예: 한글 맞춤법 4장.html" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" required>
-                            <small style="color: #7f8c8d;">실제 HTML 파일명을 입력하세요</small>
+                            <input type="text" id="contentFilename" placeholder="예: 한글 맞춤법 4장.html" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" required readonly>
+                            <small style="color: #7f8c8d;">파일 업로드 시 자동으로 입력됩니다</small>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">총 문제 수</label>
+                            <input type="number" id="contentTotalQuestions" placeholder="자동 분석됨" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" readonly>
+                            <small style="color: #7f8c8d;">파일 분석 결과에서 자동으로 계산됩니다</small>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">데이터 전송 코드 포함 여부</label>
+                            <input type="text" id="contentHasDataTransmission" placeholder="자동 확인됨" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" readonly>
+                            <small style="color: #7f8c8d;">sendFinalDataToParent 함수 존재 여부</small>
                         </div>
 
                         <div style="margin-bottom: 20px;">
@@ -721,6 +740,112 @@
             }
         }
 
+        // HTML 파일 분석 함수
+        function analyzeHtmlFile(htmlContent, filename) {
+            const result = {
+                filename: filename,
+                totalQuestions: 0,
+                hasDataTransmission: false,
+                stageQuestions: {},
+                analysisDetails: []
+            };
+
+            // 1. sendFinalDataToParent 함수 존재 여부 확인
+            result.hasDataTransmission = /function\s+sendFinalDataToParent/.test(htmlContent);
+
+            // 2. 문제 수 분석 - 여러 패턴 지원
+            const patterns = [
+                // 패턴 1: STAGE1_QUESTIONS, STAGE2_QUESTIONS 등
+                { regex: /const\s+STAGE(\d+)_QUESTIONS\s*=\s*\[[\s\S]*?\];/g, type: 'STAGE_ARRAY' },
+                // 패턴 2: learningData.questions
+                { regex: /learningData\s*=\s*{[\s\S]*?questions:\s*\[[\s\S]*?\]/g, type: 'LEARNING_DATA' },
+                // 패턴 3: stage(\d+)Data.questions
+                { regex: /stage\d+Data\s*=\s*{[\s\S]*?questions:\s*\[[\s\S]*?\]/g, type: 'STAGE_DATA' }
+            ];
+
+            // STAGE_ARRAY 패턴 분석
+            const stageMatches = htmlContent.match(/const\s+STAGE(\d+)_QUESTIONS\s*=\s*\[([\s\S]*?)\];/g);
+            if (stageMatches) {
+                stageMatches.forEach(match => {
+                    const stageNum = match.match(/STAGE(\d+)_QUESTIONS/)[1];
+                    // 문제 객체 개수 세기 (간단한 방법: { 로 시작하는 라인 수)
+                    const questions = match.match(/\{[\s\S]*?\}/g);
+                    const count = questions ? questions.length : 0;
+                    result.stageQuestions[`stage${stageNum}`] = count;
+                    result.totalQuestions += count;
+                    result.analysisDetails.push(`Stage ${stageNum}: ${count}개 문제`);
+                });
+            }
+
+            // 간단한 문제 수 추정 (정확하지 않을 수 있음)
+            if (result.totalQuestions === 0) {
+                // 다른 패턴으로 추정
+                const questionMatches = htmlContent.match(/question:|"question":/g);
+                if (questionMatches) {
+                    result.totalQuestions = questionMatches.length;
+                    result.analysisDetails.push(`추정 문제 수: ${questionMatches.length}개`);
+                }
+            }
+
+            return result;
+        }
+
+        // 파일 업로드 핸들러
+        document.getElementById('contentFileUpload')?.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const resultDiv = document.getElementById('fileAnalysisResult');
+            resultDiv.style.display = 'block';
+            resultDiv.style.background = '#f0f9ff';
+            resultDiv.style.border = '1px solid #3498db';
+            resultDiv.innerHTML = '<p style="margin: 0; color: #2c3e50;">📊 파일 분석 중...</p>';
+
+            try {
+                // 파일 읽기
+                const reader = new FileReader();
+                reader.onload = async (event) => {
+                    const htmlContent = event.target.result;
+                    const analysis = analyzeHtmlFile(htmlContent, file.name);
+
+                    // 폼 필드 자동 입력
+                    document.getElementById('contentFilename').value = file.name;
+                    document.getElementById('contentTotalQuestions').value = analysis.totalQuestions;
+                    document.getElementById('contentHasDataTransmission').value =
+                        analysis.hasDataTransmission ? '✅ 포함됨' : '❌ 없음';
+
+                    // 분석 결과 표시
+                    let resultHtml = '<div style="margin: 0;">';
+                    resultHtml += '<p style="margin: 5px 0; font-weight: 600; color: #2c3e50;">✅ 파일 분석 완료</p>';
+                    resultHtml += `<p style="margin: 5px 0; color: #2c3e50;">📝 총 문제 수: <strong>${analysis.totalQuestions}개</strong></p>`;
+                    resultHtml += `<p style="margin: 5px 0; color: #2c3e50;">🔧 데이터 전송 코드: <strong>${analysis.hasDataTransmission ? '포함됨' : '없음'}</strong></p>`;
+
+                    if (analysis.analysisDetails.length > 0) {
+                        resultHtml += '<p style="margin: 5px 0; font-size: 13px; color: #7f8c8d;">상세:</p>';
+                        resultHtml += '<ul style="margin: 5px 0 0 20px; font-size: 13px; color: #7f8c8d;">';
+                        analysis.analysisDetails.forEach(detail => {
+                            resultHtml += `<li>${detail}</li>`;
+                        });
+                        resultHtml += '</ul>';
+                    }
+
+                    if (!analysis.hasDataTransmission) {
+                        resultHtml += '<p style="margin: 10px 0 0 0; padding: 8px; background: #fff3cd; border-radius: 4px; font-size: 13px; color: #856404;">⚠️ 경고: 이 파일에는 데이터 전송 코드(sendFinalDataToParent)가 없습니다. 파일을 수동으로 수정해주세요.</p>';
+                    }
+
+                    resultHtml += '</div>';
+                    resultDiv.innerHTML = resultHtml;
+                };
+
+                reader.readAsText(file);
+
+            } catch (error) {
+                resultDiv.style.background = '#fee2e2';
+                resultDiv.style.border = '1px solid #dc2626';
+                resultDiv.innerHTML = `<p style="margin: 0; color: #dc2626;">❌ 파일 분석 실패: ${error.message}</p>`;
+            }
+        });
+
         // 콘텐츠 등록 폼 제출
         document.getElementById('uploadForm')?.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -734,6 +859,8 @@
                 description: document.getElementById('contentDescription').value.trim(),
                 estimatedTime: document.getElementById('contentTime').value.trim(),
                 uploadDate: new Date().toISOString().split('T')[0],
+                totalQuestions: parseInt(document.getElementById('contentTotalQuestions').value) || 0,
+                hasDataTransmission: document.getElementById('contentHasDataTransmission').value.includes('포함'),
             };
 
             try {

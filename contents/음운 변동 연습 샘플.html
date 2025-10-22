@@ -1565,6 +1565,83 @@
             modal.classList.remove('dragging');
         }
 
+        // 부모 프로그램으로 최종 데이터 전송
+        function sendFinalDataToParent(totalCorrect, totalWrong, totalScore, overallAccuracy, totalElapsedTime) {
+            console.log('=== sendFinalDataToParent 호출됨 ===');
+            console.log('iframe으로 로드됨:', window.self !== window.top);
+
+            if (window.parent && window.parent !== window) {
+                const answeredQuestions = totalCorrect + totalWrong;
+
+                // Calculate totalQuestions: count all questions from all words
+                let totalAllQuestions = 0;
+                wordList.forEach(word => {
+                    const data = transformationData[word];
+                    data.rows.forEach(row => {
+                        if (row.questions) {
+                            Object.values(row.questions).forEach(q => {
+                                if (q.phoneme) totalAllQuestions++;
+                                if (q.rule) totalAllQuestions++;
+                                if (q.condition) totalAllQuestions++;
+                            });
+                        }
+                    });
+                });
+
+                // 진행률 = (푼 문제 수 / 전체 문제 수) * 100
+                const progress = totalAllQuestions > 0
+                    ? Math.round((answeredQuestions / totalAllQuestions) * 100)
+                    : 100;
+
+                const messageData = {
+                    type: 'korean-farm-v2',
+                    event: 'all-stages-complete',
+                    data: {
+                        totalStages: wordList.length,
+                        totalCorrect: totalCorrect,
+                        totalWrong: totalWrong,
+                        totalAccuracy: overallAccuracy,
+                        totalScore: totalScore,
+                        totalElapsedTime: totalElapsedTime * 1000,
+                        stagesDetail: wordList.map((word, idx) => {
+                            const data = transformationData[word];
+                            let wordQuestions = 0;
+                            data.rows.forEach(row => {
+                                if (row.questions) {
+                                    Object.values(row.questions).forEach(q => {
+                                        if (q.phoneme) wordQuestions++;
+                                        if (q.rule) wordQuestions++;
+                                        if (q.condition) wordQuestions++;
+                                    });
+                                }
+                            });
+                            return {
+                                stage: idx + 1,
+                                stageName: word,
+                                totalQuestions: wordQuestions,
+                                correct: 0,
+                                wrong: 0,
+                                accuracy: 0
+                            };
+                        }),
+                        totalQuestions: totalAllQuestions,
+                        answeredQuestions: answeredQuestions,
+                        correctAnswers: totalCorrect,
+                        wrongAnswers: totalWrong,
+                        progress: progress,
+                        timestamp: Date.now()
+                    }
+                };
+
+                console.log('부모로 전송할 데이터:', messageData);
+                console.log('전체 문제 수:', totalAllQuestions, '/ 푼 문제 수:', answeredQuestions, '/ 진행률:', progress + '%');
+                window.parent.postMessage(messageData, '*');
+                console.log('postMessage 전송 완료');
+            } else {
+                console.log('부모 윈도우가 없거나 같은 윈도우입니다.');
+            }
+        }
+
         // 결과 표시
         function showResults() {
             const mainContent = document.getElementById('main-content');
@@ -1599,73 +1676,13 @@
                 dot.classList.add('completed');
             });
 
-            // 학습 완료 시스템을 위한 데이터 export
-            window.learningResultData = {
-                totalStages: 1, // 음운 변동 연습은 단일 활동
-                totalCorrect: correctAnswers || 0,
-                totalWrong: incorrectAnswers || 0,
-                totalAccuracy: accuracy || 0,
-                totalScore: accuracy || 0,
-                totalElapsedTime: elapsedTime * 1000 || 0, // 밀리초로 변환
-                stagesDetail: {
-                    phonemePractice: {
-                        correct: correctAnswers || 0,
-                        wrong: incorrectAnswers || 0,
-                        accuracy: accuracy || 0,
-                        score: accuracy || 0,
-                        time: elapsedTime || 0,
-                        completedWords: completedWords || []
-                    }
-                }
-            };
-            console.log('학습 데이터 export:', window.learningResultData);
-
             mainContent.style.display = 'none';
             resultsPanel.classList.add('active');
 
-            // 부모 프로그램에 결과 전송
-            if (window.parent && window.parent !== window) {
-                window.parent.postMessage({
-                    type: 'korean-farm.v2',
-                    version: '1.0',
-                    activity: 'complete',
-                    timestamp: Date.now(),
-                    payload: {
-                        // 전체 최종 데이터
-                        totalCorrect: correctAnswers,
-                        totalWrong: incorrectAnswers,
-                        totalAccuracy: accuracy,
-                        totalScore: Math.round((correctAnswers / totalAnswers) * 100),
-                        sessionTime: elapsedTime,
-
-                        // 상세 데이터
-                        totalQuestions: totalAnswers,
-                        timeRemainingPct: timeLeft / 100,
-                        completedWords: completedWords,
-
-                        // 단계별 상세 데이터 (음운 변동 연습의 경우 단일 활동)
-                        stageDetails: {
-                            phonemePractice: {
-                                correct: correctAnswers,
-                                wrong: incorrectAnswers,
-                                accuracy: accuracy,
-                                score: Math.round((correctAnswers / totalAnswers) * 100),
-                                time: elapsedTime
-                            }
-                        }
-                    }
-                }, '*');
-
-            // 학습 완료 버튼 추가
-            if (typeof addCompleteLearningButton === 'function') {
-                setTimeout(() => addCompleteLearningButton(), 500);
-            }
-        }
+            // 부모 프로그램에 결과 전송 - 새로운 standardized function 사용
+            const totalScore = Math.round((correctAnswers / totalAnswers) * 100);
+            sendFinalDataToParent(correctAnswers, incorrectAnswers, totalScore, accuracy, elapsedTime);
         }
     </script>
-
-    <!-- 학습 완료 시스템 -->
-    <script src="../js/config.js"></script>
-    <script src="../js/learning-complete.js"></script>
 </body>
 </html>

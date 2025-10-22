@@ -3081,19 +3081,6 @@
 
         function restartStage() {
             document.getElementById('results-panel').style.display = 'none';
-            // 학습 완료 시스템을 위한 데이터 export
-        window.learningResultData = {
-            totalStages: totalStages || 5,
-            totalCorrect: totalCorrect || 0,
-            totalWrong: totalWrong || 0,
-            totalAccuracy: totalAccuracy || 0,
-            totalScore: totalScore || 0,
-            totalElapsedTime: totalElapsedTime || (Date.now() - globalStartTime),
-            stagesDetail: stageResults || {}
-        };
-        console.log('학습 데이터 export:', window.learningResultData);
-
-
             document.getElementById('main-content').style.display = 'block';
 
             timeRemaining = 100;
@@ -3269,13 +3256,11 @@
 
             // 부모 프로그램에 최종 누적 데이터 전송
             sendFinalDataToParent();
-            // 학습 완료 버튼 추가
-            if (typeof addCompleteLearningButton === 'function') {
-                setTimeout(() => addCompleteLearningButton(), 500);
-            }
         }
 
         function sendFinalDataToParent() {
+            console.log('=== sendFinalDataToParent 호출됨 ===');
+
             if (window.parent && window.parent !== window) {
                 // 전체 결과 계산
                 const totalCorrect = Object.values(stageResults).reduce((sum, s) => sum + s.correct, 0);
@@ -3283,6 +3268,25 @@
                 const totalAccuracy = (totalCorrect + totalWrong) > 0 ?
                                      Math.round((totalCorrect / (totalCorrect + totalWrong)) * 100) : 0;
                 const totalScore = Object.values(stageResults).reduce((sum, s) => sum + s.score, 0);
+
+                // Calculate total questions from actual arrays
+                const totalAllQuestions = learningData.readingQuestions.length; // 28 questions total
+
+                // Add totalQuestions to each stage in stageResults
+                const stageDetailsWithTotal = {};
+                Object.keys(stageResults).forEach(stageKey => {
+                    stageDetailsWithTotal[stageKey] = {
+                        ...stageResults[stageKey],
+                        totalQuestions: 7  // 28 questions / 4 stages = 7 per stage
+                    };
+                });
+
+                const answeredQuestions = totalCorrect + totalWrong;
+                const progress = totalAllQuestions > 0
+                    ? Math.round((answeredQuestions / totalAllQuestions) * 100)
+                    : 100;
+
+                console.log('전체 문제 수:', totalAllQuestions, '/ 푼 문제 수:', answeredQuestions, '/ 진행률:', progress + '%');
 
                 window.parent.postMessage({
                     type: 'korean-farm.v2',
@@ -3298,9 +3302,16 @@
                         sessionTime: (Date.now() - globalStartTime) / 1000,
 
                         // 단계별 상세 데이터
-                        stageDetails: stageResults
+                        stageDetails: stageDetailsWithTotal,
+
+                        // NEW FIELDS for progress tracking
+                        totalQuestions: totalAllQuestions,
+                        answeredQuestions: answeredQuestions,
+                        progress: progress
                     }
                 }, '*');
+
+                console.log('postMessage 전송 완료');
             }
         }
 
@@ -3324,9 +3335,5 @@
             startLearning();
         });
     </script>
-
-    <!-- 학습 완료 시스템 -->
-    <script src="../js/config.js"></script>
-    <script src="../js/learning-complete.js"></script>
 </body>
 </html>

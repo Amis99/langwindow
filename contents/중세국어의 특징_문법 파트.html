@@ -1771,24 +1771,7 @@
             });
 
             document.getElementById('result-screen').classList.remove('active');
-            // 학습 완료 시스템을 위한 데이터 export
-        window.learningResultData = {
-            totalStages: totalStages || 5,
-            totalCorrect: totalCorrect || 0,
-            totalWrong: totalWrong || 0,
-            totalAccuracy: totalAccuracy || 0,
-            totalScore: totalScore || 0,
-            totalElapsedTime: totalElapsedTime || (Date.now() - globalStartTime),
-            stagesDetail: stageResults || {}
-        };
-        console.log('학습 데이터 export:', window.learningResultData);
-
-
             document.getElementById('main-content').style.display = 'block';
-            // 학습 완료 버튼 추가
-            if (typeof addCompleteLearningButton === 'function') {
-                setTimeout(() => addCompleteLearningButton(), 500);
-            }
             startTimer();
         }
 
@@ -2560,6 +2543,70 @@
             // HTML 설정 및 표시
             document.getElementById('main-content').innerHTML = html;
             document.getElementById('main-content').style.display = 'block';
+
+            // 부모 프로그램으로 데이터 전송
+            sendFinalDataToParent(totalCorrect, totalWrong, totalScore, overallAccuracy, totalElapsedTime);
+        }
+
+        // 부모 프로그램으로 최종 데이터 전송
+        function sendFinalDataToParent(totalCorrect, totalWrong, totalScore, overallAccuracy, totalElapsedTime) {
+            console.log('=== sendFinalDataToParent 호출됨 ===');
+            console.log('iframe으로 로드됨:', window.self !== window.top);
+            console.log('window.parent 존재:', !!window.parent);
+            console.log('window.parent !== window:', window.parent !== window);
+
+            if (window.parent && window.parent !== window) {
+                const answeredQuestions = totalCorrect + totalWrong;
+
+                // 각 스테이지별 전체 문제 수 정보 추가
+                const stagesDetailWithTotal = {
+                    stage1: {
+                        ...stageResults.stage1,
+                        totalQuestions: STAGE1_QUESTIONS.length
+                    },
+                    stage2: {
+                        ...stageResults.stage2,
+                        totalQuestions: STAGE2_QUESTIONS.length
+                    },
+                    stage3: {
+                        ...stageResults.stage3,
+                        totalQuestions: STAGE3_QUESTIONS.length
+                    }
+                };
+
+                // 전체 문제 수 = 각 스테이지의 전체 문제 수 합계
+                const totalAllQuestions = STAGE1_QUESTIONS.length + STAGE2_QUESTIONS.length + STAGE3_QUESTIONS.length;
+
+                // 진행률 = (푼 문제 수 / 전체 문제 수) * 100
+                const progress = totalAllQuestions > 0 ? Math.round((answeredQuestions / totalAllQuestions) * 100) : 100;
+
+                const messageData = {
+                    type: 'korean-farm-v2',
+                    event: 'all-stages-complete',
+                    data: {
+                        totalStages: 3,
+                        totalCorrect: totalCorrect,
+                        totalWrong: totalWrong,
+                        totalAccuracy: overallAccuracy,
+                        totalScore: totalScore,
+                        totalElapsedTime: totalElapsedTime * 1000, // 초를 밀리초로 변환
+                        stagesDetail: stagesDetailWithTotal,
+                        totalQuestions: totalAllQuestions, // 전체 문제 수
+                        answeredQuestions: answeredQuestions, // 푼 문제 수
+                        correctAnswers: totalCorrect,
+                        wrongAnswers: totalWrong,
+                        progress: progress, // 진행률
+                        timestamp: Date.now()
+                    }
+                };
+
+                console.log('부모로 전송할 데이터:', messageData);
+                console.log('전체 문제 수:', totalAllQuestions, '/ 푼 문제 수:', answeredQuestions, '/ 진행률:', progress + '%');
+                window.parent.postMessage(messageData, '*');
+                console.log('postMessage 전송 완료');
+            } else {
+                console.log('부모 윈도우가 없거나 같은 윈도우입니다. 데이터를 전송하지 않습니다.');
+            }
         }
 
         // 최종 결과 페이지 이미지 저장
@@ -2608,9 +2655,5 @@
             initStage1();
         };
     </script>
-
-    <!-- 학습 완료 시스템 -->
-    <script src="../js/config.js"></script>
-    <script src="../js/learning-complete.js"></script>
 </body>
 </html>

@@ -208,6 +208,12 @@
               "LogGroupName": "/aws/lambda/langwindow-backend-dev-getMyRecords"
             }
           },
+          "GetRankingsLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/langwindow-backend-dev-getRankings"
+            }
+          },
           "IamRoleLambdaExecution": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -299,7 +305,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/langwindow-backend/dev/1760803320621-2025-10-18T16:02:00.621Z/langwindow-backend.zip"
+                "S3Key": "serverless/langwindow-backend/dev/1761131250807-2025-10-22T11:07:30.807Z/langwindow-backend.zip"
               },
               "Handler": "functions/auth/register.handler",
               "Runtime": "nodejs20.x",
@@ -333,7 +339,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/langwindow-backend/dev/1760803320621-2025-10-18T16:02:00.621Z/langwindow-backend.zip"
+                "S3Key": "serverless/langwindow-backend/dev/1761131250807-2025-10-22T11:07:30.807Z/langwindow-backend.zip"
               },
               "Handler": "functions/auth/login.handler",
               "Runtime": "nodejs20.x",
@@ -367,7 +373,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/langwindow-backend/dev/1760803320621-2025-10-18T16:02:00.621Z/langwindow-backend.zip"
+                "S3Key": "serverless/langwindow-backend/dev/1761131250807-2025-10-22T11:07:30.807Z/langwindow-backend.zip"
               },
               "Handler": "functions/auth/getMe.handler",
               "Runtime": "nodejs20.x",
@@ -401,7 +407,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/langwindow-backend/dev/1760803320621-2025-10-18T16:02:00.621Z/langwindow-backend.zip"
+                "S3Key": "serverless/langwindow-backend/dev/1761131250807-2025-10-22T11:07:30.807Z/langwindow-backend.zip"
               },
               "Handler": "functions/admin/getPendingUsers.handler",
               "Runtime": "nodejs20.x",
@@ -435,7 +441,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/langwindow-backend/dev/1760803320621-2025-10-18T16:02:00.621Z/langwindow-backend.zip"
+                "S3Key": "serverless/langwindow-backend/dev/1761131250807-2025-10-22T11:07:30.807Z/langwindow-backend.zip"
               },
               "Handler": "functions/admin/approveUser.handler",
               "Runtime": "nodejs20.x",
@@ -469,7 +475,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/langwindow-backend/dev/1760803320621-2025-10-18T16:02:00.621Z/langwindow-backend.zip"
+                "S3Key": "serverless/langwindow-backend/dev/1761131250807-2025-10-22T11:07:30.807Z/langwindow-backend.zip"
               },
               "Handler": "functions/admin/rejectUser.handler",
               "Runtime": "nodejs20.x",
@@ -503,7 +509,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/langwindow-backend/dev/1760803320621-2025-10-18T16:02:00.621Z/langwindow-backend.zip"
+                "S3Key": "serverless/langwindow-backend/dev/1761131250807-2025-10-22T11:07:30.807Z/langwindow-backend.zip"
               },
               "Handler": "functions/admin/getAllUsers.handler",
               "Runtime": "nodejs20.x",
@@ -537,7 +543,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/langwindow-backend/dev/1760803320621-2025-10-18T16:02:00.621Z/langwindow-backend.zip"
+                "S3Key": "serverless/langwindow-backend/dev/1761131250807-2025-10-22T11:07:30.807Z/langwindow-backend.zip"
               },
               "Handler": "functions/admin/deleteUser.handler",
               "Runtime": "nodejs20.x",
@@ -571,7 +577,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/langwindow-backend/dev/1760803320621-2025-10-18T16:02:00.621Z/langwindow-backend.zip"
+                "S3Key": "serverless/langwindow-backend/dev/1761131250807-2025-10-22T11:07:30.807Z/langwindow-backend.zip"
               },
               "Handler": "functions/admin/uploadContent.handler",
               "Runtime": "nodejs20.x",
@@ -605,7 +611,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/langwindow-backend/dev/1760803320621-2025-10-18T16:02:00.621Z/langwindow-backend.zip"
+                "S3Key": "serverless/langwindow-backend/dev/1761131250807-2025-10-22T11:07:30.807Z/langwindow-backend.zip"
               },
               "Handler": "functions/admin/getAllLearningRecords.handler",
               "Runtime": "nodejs20.x",
@@ -639,7 +645,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/langwindow-backend/dev/1760803320621-2025-10-18T16:02:00.621Z/langwindow-backend.zip"
+                "S3Key": "serverless/langwindow-backend/dev/1761131250807-2025-10-22T11:07:30.807Z/langwindow-backend.zip"
               },
               "Handler": "functions/student/getContents.handler",
               "Runtime": "nodejs20.x",
@@ -673,7 +679,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/langwindow-backend/dev/1760803320621-2025-10-18T16:02:00.621Z/langwindow-backend.zip"
+                "S3Key": "serverless/langwindow-backend/dev/1761131250807-2025-10-22T11:07:30.807Z/langwindow-backend.zip"
               },
               "Handler": "functions/student/getContentDetail.handler",
               "Runtime": "nodejs20.x",
@@ -707,7 +713,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/langwindow-backend/dev/1760803320621-2025-10-18T16:02:00.621Z/langwindow-backend.zip"
+                "S3Key": "serverless/langwindow-backend/dev/1761131250807-2025-10-22T11:07:30.807Z/langwindow-backend.zip"
               },
               "Handler": "functions/student/saveLearningRecord.handler",
               "Runtime": "nodejs20.x",
@@ -741,7 +747,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/langwindow-backend/dev/1760803320621-2025-10-18T16:02:00.621Z/langwindow-backend.zip"
+                "S3Key": "serverless/langwindow-backend/dev/1761131250807-2025-10-22T11:07:30.807Z/langwindow-backend.zip"
               },
               "Handler": "functions/student/getMyRecords.handler",
               "Runtime": "nodejs20.x",
@@ -768,144 +774,188 @@
               "GetMyRecordsLogGroup"
             ]
           },
-          "RegisterLambdaVersion4dkcsdkQ4ZfvFnKeg5ldB02IGHxmafHoO1ivDhk0SCI": {
+          "GetRankingsLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/langwindow-backend/dev/1761131250807-2025-10-22T11:07:30.807Z/langwindow-backend.zip"
+              },
+              "Handler": "functions/student/getRankings.handler",
+              "Runtime": "nodejs20.x",
+              "FunctionName": "langwindow-backend-dev-getRankings",
+              "MemorySize": 256,
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "USERS_TABLE": "langwindow-backend-users-dev",
+                  "CONTENTS_TABLE": "langwindow-backend-contents-dev",
+                  "LEARNING_RECORDS_TABLE": "langwindow-backend-learning-records-dev",
+                  "JWT_SECRET": "your-secret-key-change-this-in-production",
+                  "STAGE": "dev"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "GetRankingsLogGroup"
+            ]
+          },
+          "RegisterLambdaVersionuBAvmSzZbWWkgVJXjS9nRWanc6xh1SttMfCalulwuc": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "RegisterLambdaFunction"
               },
-              "CodeSha256": "3m4X+RYvGPR9eMUZ5fXp0MMpJE9I4k0UsYgiKpzMmbQ="
+              "CodeSha256": "U7rkQwrcMkUm7a4FQmXvXMrT0q7zQ7U+ExIH94dYcSw="
             }
           },
-          "LoginLambdaVersionb7Qe0eMgiR7wbUDO4jWttkyRkWME6dumfGsq4yJR4": {
+          "LoginLambdaVersionmmZEICIABDeD184SGYz9FISQlMJy5R6xn7DJ6SFAQ": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "LoginLambdaFunction"
               },
-              "CodeSha256": "3m4X+RYvGPR9eMUZ5fXp0MMpJE9I4k0UsYgiKpzMmbQ="
+              "CodeSha256": "U7rkQwrcMkUm7a4FQmXvXMrT0q7zQ7U+ExIH94dYcSw="
             }
           },
-          "GetMeLambdaVersionACuIcY04dTvsjso7sO11ZJA5dopTd1S5CGBWOoNtJ0": {
+          "GetMeLambdaVersionoEvrzLKhyHA5ixMJNBmx1TqTO6u4PZuqeP0qtJ8YE": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetMeLambdaFunction"
               },
-              "CodeSha256": "3m4X+RYvGPR9eMUZ5fXp0MMpJE9I4k0UsYgiKpzMmbQ="
+              "CodeSha256": "U7rkQwrcMkUm7a4FQmXvXMrT0q7zQ7U+ExIH94dYcSw="
             }
           },
-          "GetPendingUsersLambdaVersionMlOaUiA2lzDQ1tAoPsrN0Rvg3PUuePlUMLLohKeqNoQ": {
+          "GetPendingUsersLambdaVersionN1Yr8s7IYtHDegxmZ5Tbacgf3Z9yXsDWrVyRiVItxCw": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetPendingUsersLambdaFunction"
               },
-              "CodeSha256": "3m4X+RYvGPR9eMUZ5fXp0MMpJE9I4k0UsYgiKpzMmbQ="
+              "CodeSha256": "U7rkQwrcMkUm7a4FQmXvXMrT0q7zQ7U+ExIH94dYcSw="
             }
           },
-          "ApproveUserLambdaVersionPygHRmwnqBVUwzdXrlB5HYPGIF50nS6jcvkkMH9fQ": {
+          "ApproveUserLambdaVersionjx1qsDLtYc8LGtqtl3j0WnLAN2R6zX6AF57s110uZ0": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApproveUserLambdaFunction"
               },
-              "CodeSha256": "3m4X+RYvGPR9eMUZ5fXp0MMpJE9I4k0UsYgiKpzMmbQ="
+              "CodeSha256": "U7rkQwrcMkUm7a4FQmXvXMrT0q7zQ7U+ExIH94dYcSw="
             }
           },
-          "RejectUserLambdaVersionFsuV3lxozJ20fGElgx6toKLaXb5jskdiv72d2J658QY": {
+          "RejectUserLambdaVersion1Yww3SaE5MC6gj9OSV1DQLcknXn0pYzgMwblom2uIE": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "RejectUserLambdaFunction"
               },
-              "CodeSha256": "3m4X+RYvGPR9eMUZ5fXp0MMpJE9I4k0UsYgiKpzMmbQ="
+              "CodeSha256": "U7rkQwrcMkUm7a4FQmXvXMrT0q7zQ7U+ExIH94dYcSw="
             }
           },
-          "GetAllUsersLambdaVersionlH1sYaoTxzZ6aVGx8gghWwX421ZgRgbHW2cLTQkDT4U": {
+          "GetAllUsersLambdaVersiondEcMngPvkNpdLpstrM0AjnyyYkMaNjDEwZSJ0cKJnY0": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetAllUsersLambdaFunction"
               },
-              "CodeSha256": "3m4X+RYvGPR9eMUZ5fXp0MMpJE9I4k0UsYgiKpzMmbQ="
+              "CodeSha256": "U7rkQwrcMkUm7a4FQmXvXMrT0q7zQ7U+ExIH94dYcSw="
             }
           },
-          "DeleteUserLambdaVersionmxuRaM6abdC9si3hWghU7ielsj32An0q2K4551lIQ": {
+          "DeleteUserLambdaVersionHamIPsbaeWPjNYnFHJq4bwSx8MxO1vYm0D4f8pED84w": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "DeleteUserLambdaFunction"
               },
-              "CodeSha256": "3m4X+RYvGPR9eMUZ5fXp0MMpJE9I4k0UsYgiKpzMmbQ="
+              "CodeSha256": "U7rkQwrcMkUm7a4FQmXvXMrT0q7zQ7U+ExIH94dYcSw="
             }
           },
-          "UploadContentLambdaVersionGHjIB5GkzPeCq0jcqqR17tBCkCG7hnvUFNYtErwts8o": {
+          "UploadContentLambdaVersionXnMx63chqHtkauFuu5GgzJuKLpud0Pz3iY5qngxjM0": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "UploadContentLambdaFunction"
               },
-              "CodeSha256": "3m4X+RYvGPR9eMUZ5fXp0MMpJE9I4k0UsYgiKpzMmbQ="
+              "CodeSha256": "U7rkQwrcMkUm7a4FQmXvXMrT0q7zQ7U+ExIH94dYcSw="
             }
           },
-          "GetAllLearningRecordsLambdaVersionDmBGPGC8NBumE3PRZ939fAmOFGe2Oz9yuZsTl0VB4lg": {
+          "GetAllLearningRecordsLambdaVersionQSVpDbLk92YLaEgNcQ8ibmAYFAcGMO7kgRtl1zbY": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetAllLearningRecordsLambdaFunction"
               },
-              "CodeSha256": "3m4X+RYvGPR9eMUZ5fXp0MMpJE9I4k0UsYgiKpzMmbQ="
+              "CodeSha256": "U7rkQwrcMkUm7a4FQmXvXMrT0q7zQ7U+ExIH94dYcSw="
             }
           },
-          "GetContentsLambdaVersionlyubXgVUMzIg9BaoRxeidYdB61gcT2U0eeqTGg7E": {
+          "GetContentsLambdaVersioneXdOXhmN1bne8WLkYQnfYWIfS82GrbwL4cT1u0yVmhg": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetContentsLambdaFunction"
               },
-              "CodeSha256": "3m4X+RYvGPR9eMUZ5fXp0MMpJE9I4k0UsYgiKpzMmbQ="
+              "CodeSha256": "U7rkQwrcMkUm7a4FQmXvXMrT0q7zQ7U+ExIH94dYcSw="
             }
           },
-          "GetContentDetailLambdaVersionmWtXdnWl7VFKmZsQfTmVi1VgRSC9IlQRw9mNizGNM": {
+          "GetContentDetailLambdaVersion7n7gF4EiKlHLVdggwxbo1sBQsjGig4PtwfinYZw": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetContentDetailLambdaFunction"
               },
-              "CodeSha256": "3m4X+RYvGPR9eMUZ5fXp0MMpJE9I4k0UsYgiKpzMmbQ="
+              "CodeSha256": "U7rkQwrcMkUm7a4FQmXvXMrT0q7zQ7U+ExIH94dYcSw="
             }
           },
-          "SaveLearningRecordLambdaVersionF9tjVrIENSjpDP0b4RBb2LqFWwLv76KFD1YMbUipLo": {
+          "SaveLearningRecordLambdaVersionQkpDBdYt40X81YC1uGUbFkx4MzqmKrIGYyMW209K4T8": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "SaveLearningRecordLambdaFunction"
               },
-              "CodeSha256": "3m4X+RYvGPR9eMUZ5fXp0MMpJE9I4k0UsYgiKpzMmbQ="
+              "CodeSha256": "U7rkQwrcMkUm7a4FQmXvXMrT0q7zQ7U+ExIH94dYcSw="
             }
           },
-          "GetMyRecordsLambdaVersionVaCnHDg8Jp6OgMzfOrqEiu4E3QDl58mHj4gwSTTd8g": {
+          "GetMyRecordsLambdaVersioncbvMF0Xl12fj95NfOWC3sZXKlIkiJt4MKmbVUMf3vQ": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetMyRecordsLambdaFunction"
               },
-              "CodeSha256": "3m4X+RYvGPR9eMUZ5fXp0MMpJE9I4k0UsYgiKpzMmbQ="
+              "CodeSha256": "U7rkQwrcMkUm7a4FQmXvXMrT0q7zQ7U+ExIH94dYcSw="
+            }
+          },
+          "GetRankingsLambdaVersionyIgN6cFWyY3HkagEEorD5hfMpERTgjcvO0Kjy8ylY": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetRankingsLambdaFunction"
+              },
+              "CodeSha256": "U7rkQwrcMkUm7a4FQmXvXMrT0q7zQ7U+ExIH94dYcSw="
             }
           },
           "ApiGatewayRestApi": {
@@ -1188,6 +1238,18 @@
                 "Ref": "ApiGatewayResourceStudent"
               },
               "PathPart": "my-records",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceStudentRankings": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceStudent"
+              },
+              "PathPart": "rankings",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
@@ -1817,6 +1879,51 @@
               },
               "ResourceId": {
                 "Ref": "ApiGatewayResourceStudentMyDashrecords"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodStudentRankingsOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceStudentRankings"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -2467,7 +2574,53 @@
               "GetMyRecordsLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1760803307962": {
+          "ApiGatewayMethodStudentRankingsGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceStudentRankings"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetRankingsLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "GetRankingsLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayDeployment1761131239749": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -2490,6 +2643,7 @@
               "ApiGatewayMethodStudentContentContentidVarOptions",
               "ApiGatewayMethodStudentLearningDashrecordOptions",
               "ApiGatewayMethodStudentMyDashrecordsOptions",
+              "ApiGatewayMethodStudentRankingsOptions",
               "ApiGatewayMethodAuthRegisterPost",
               "ApiGatewayMethodAuthLoginPost",
               "ApiGatewayMethodAuthMeGet",
@@ -2503,7 +2657,8 @@
               "ApiGatewayMethodStudentContentsGet",
               "ApiGatewayMethodStudentContentContentidVarGet",
               "ApiGatewayMethodStudentLearningDashrecordPost",
-              "ApiGatewayMethodStudentMyDashrecordsGet"
+              "ApiGatewayMethodStudentMyDashrecordsGet",
+              "ApiGatewayMethodStudentRankingsGet"
             ]
           },
           "RegisterLambdaPermissionApiGateway": {
@@ -3024,6 +3179,43 @@
               }
             }
           },
+          "GetRankingsLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetRankingsLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
           "UsersTable": {
             "Type": "AWS::DynamoDB::Table",
             "Properties": {
@@ -3178,7 +3370,7 @@
           "RegisterLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "RegisterLambdaVersion4dkcsdkQ4ZfvFnKeg5ldB02IGHxmafHoO1ivDhk0SCI"
+              "Ref": "RegisterLambdaVersionuBAvmSzZbWWkgVJXjS9nRWanc6xh1SttMfCalulwuc"
             },
             "Export": {
               "Name": "sls-langwindow-backend-dev-RegisterLambdaFunctionQualifiedArn"
@@ -3187,7 +3379,7 @@
           "LoginLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "LoginLambdaVersionb7Qe0eMgiR7wbUDO4jWttkyRkWME6dumfGsq4yJR4"
+              "Ref": "LoginLambdaVersionmmZEICIABDeD184SGYz9FISQlMJy5R6xn7DJ6SFAQ"
             },
             "Export": {
               "Name": "sls-langwindow-backend-dev-LoginLambdaFunctionQualifiedArn"
@@ -3196,7 +3388,7 @@
           "GetMeLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetMeLambdaVersionACuIcY04dTvsjso7sO11ZJA5dopTd1S5CGBWOoNtJ0"
+              "Ref": "GetMeLambdaVersionoEvrzLKhyHA5ixMJNBmx1TqTO6u4PZuqeP0qtJ8YE"
             },
             "Export": {
               "Name": "sls-langwindow-backend-dev-GetMeLambdaFunctionQualifiedArn"
@@ -3205,7 +3397,7 @@
           "GetPendingUsersLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetPendingUsersLambdaVersionMlOaUiA2lzDQ1tAoPsrN0Rvg3PUuePlUMLLohKeqNoQ"
+              "Ref": "GetPendingUsersLambdaVersionN1Yr8s7IYtHDegxmZ5Tbacgf3Z9yXsDWrVyRiVItxCw"
             },
             "Export": {
               "Name": "sls-langwindow-backend-dev-GetPendingUsersLambdaFunctionQualifiedArn"
@@ -3214,7 +3406,7 @@
           "ApproveUserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApproveUserLambdaVersionPygHRmwnqBVUwzdXrlB5HYPGIF50nS6jcvkkMH9fQ"
+              "Ref": "ApproveUserLambdaVersionjx1qsDLtYc8LGtqtl3j0WnLAN2R6zX6AF57s110uZ0"
             },
             "Export": {
               "Name": "sls-langwindow-backend-dev-ApproveUserLambdaFunctionQualifiedArn"
@@ -3223,7 +3415,7 @@
           "RejectUserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "RejectUserLambdaVersionFsuV3lxozJ20fGElgx6toKLaXb5jskdiv72d2J658QY"
+              "Ref": "RejectUserLambdaVersion1Yww3SaE5MC6gj9OSV1DQLcknXn0pYzgMwblom2uIE"
             },
             "Export": {
               "Name": "sls-langwindow-backend-dev-RejectUserLambdaFunctionQualifiedArn"
@@ -3232,7 +3424,7 @@
           "GetAllUsersLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetAllUsersLambdaVersionlH1sYaoTxzZ6aVGx8gghWwX421ZgRgbHW2cLTQkDT4U"
+              "Ref": "GetAllUsersLambdaVersiondEcMngPvkNpdLpstrM0AjnyyYkMaNjDEwZSJ0cKJnY0"
             },
             "Export": {
               "Name": "sls-langwindow-backend-dev-GetAllUsersLambdaFunctionQualifiedArn"
@@ -3241,7 +3433,7 @@
           "DeleteUserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "DeleteUserLambdaVersionmxuRaM6abdC9si3hWghU7ielsj32An0q2K4551lIQ"
+              "Ref": "DeleteUserLambdaVersionHamIPsbaeWPjNYnFHJq4bwSx8MxO1vYm0D4f8pED84w"
             },
             "Export": {
               "Name": "sls-langwindow-backend-dev-DeleteUserLambdaFunctionQualifiedArn"
@@ -3250,7 +3442,7 @@
           "UploadContentLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "UploadContentLambdaVersionGHjIB5GkzPeCq0jcqqR17tBCkCG7hnvUFNYtErwts8o"
+              "Ref": "UploadContentLambdaVersionXnMx63chqHtkauFuu5GgzJuKLpud0Pz3iY5qngxjM0"
             },
             "Export": {
               "Name": "sls-langwindow-backend-dev-UploadContentLambdaFunctionQualifiedArn"
@@ -3259,7 +3451,7 @@
           "GetAllLearningRecordsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetAllLearningRecordsLambdaVersionDmBGPGC8NBumE3PRZ939fAmOFGe2Oz9yuZsTl0VB4lg"
+              "Ref": "GetAllLearningRecordsLambdaVersionQSVpDbLk92YLaEgNcQ8ibmAYFAcGMO7kgRtl1zbY"
             },
             "Export": {
               "Name": "sls-langwindow-backend-dev-GetAllLearningRecordsLambdaFunctionQualifiedArn"
@@ -3268,7 +3460,7 @@
           "GetContentsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetContentsLambdaVersionlyubXgVUMzIg9BaoRxeidYdB61gcT2U0eeqTGg7E"
+              "Ref": "GetContentsLambdaVersioneXdOXhmN1bne8WLkYQnfYWIfS82GrbwL4cT1u0yVmhg"
             },
             "Export": {
               "Name": "sls-langwindow-backend-dev-GetContentsLambdaFunctionQualifiedArn"
@@ -3277,7 +3469,7 @@
           "GetContentDetailLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetContentDetailLambdaVersionmWtXdnWl7VFKmZsQfTmVi1VgRSC9IlQRw9mNizGNM"
+              "Ref": "GetContentDetailLambdaVersion7n7gF4EiKlHLVdggwxbo1sBQsjGig4PtwfinYZw"
             },
             "Export": {
               "Name": "sls-langwindow-backend-dev-GetContentDetailLambdaFunctionQualifiedArn"
@@ -3286,7 +3478,7 @@
           "SaveLearningRecordLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SaveLearningRecordLambdaVersionF9tjVrIENSjpDP0b4RBb2LqFWwLv76KFD1YMbUipLo"
+              "Ref": "SaveLearningRecordLambdaVersionQkpDBdYt40X81YC1uGUbFkx4MzqmKrIGYyMW209K4T8"
             },
             "Export": {
               "Name": "sls-langwindow-backend-dev-SaveLearningRecordLambdaFunctionQualifiedArn"
@@ -3295,10 +3487,19 @@
           "GetMyRecordsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetMyRecordsLambdaVersionVaCnHDg8Jp6OgMzfOrqEiu4E3QDl58mHj4gwSTTd8g"
+              "Ref": "GetMyRecordsLambdaVersioncbvMF0Xl12fj95NfOWC3sZXKlIkiJt4MKmbVUMf3vQ"
             },
             "Export": {
               "Name": "sls-langwindow-backend-dev-GetMyRecordsLambdaFunctionQualifiedArn"
+            }
+          },
+          "GetRankingsLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetRankingsLambdaVersionyIgN6cFWyY3HkagEEorD5hfMpERTgjcvO0Kjy8ylY"
+            },
+            "Export": {
+              "Name": "sls-langwindow-backend-dev-GetRankingsLambdaFunctionQualifiedArn"
             }
           },
           "ServiceEndpoint": {
@@ -3452,7 +3653,7 @@
         "timeout": 30,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "RegisterLambdaVersion4dkcsdkQ4ZfvFnKeg5ldB02IGHxmafHoO1ivDhk0SCI"
+        "versionLogicalId": "RegisterLambdaVersionuBAvmSzZbWWkgVJXjS9nRWanc6xh1SttMfCalulwuc"
       },
       "login": {
         "handler": "functions/auth/login.handler",
@@ -3488,7 +3689,7 @@
         "timeout": 30,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "LoginLambdaVersionb7Qe0eMgiR7wbUDO4jWttkyRkWME6dumfGsq4yJR4"
+        "versionLogicalId": "LoginLambdaVersionmmZEICIABDeD184SGYz9FISQlMJy5R6xn7DJ6SFAQ"
       },
       "getMe": {
         "handler": "functions/auth/getMe.handler",
@@ -3524,7 +3725,7 @@
         "timeout": 30,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "GetMeLambdaVersionACuIcY04dTvsjso7sO11ZJA5dopTd1S5CGBWOoNtJ0"
+        "versionLogicalId": "GetMeLambdaVersionoEvrzLKhyHA5ixMJNBmx1TqTO6u4PZuqeP0qtJ8YE"
       },
       "getPendingUsers": {
         "handler": "functions/admin/getPendingUsers.handler",
@@ -3560,7 +3761,7 @@
         "timeout": 30,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "GetPendingUsersLambdaVersionMlOaUiA2lzDQ1tAoPsrN0Rvg3PUuePlUMLLohKeqNoQ"
+        "versionLogicalId": "GetPendingUsersLambdaVersionN1Yr8s7IYtHDegxmZ5Tbacgf3Z9yXsDWrVyRiVItxCw"
       },
       "approveUser": {
         "handler": "functions/admin/approveUser.handler",
@@ -3596,7 +3797,7 @@
         "timeout": 30,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "ApproveUserLambdaVersionPygHRmwnqBVUwzdXrlB5HYPGIF50nS6jcvkkMH9fQ"
+        "versionLogicalId": "ApproveUserLambdaVersionjx1qsDLtYc8LGtqtl3j0WnLAN2R6zX6AF57s110uZ0"
       },
       "rejectUser": {
         "handler": "functions/admin/rejectUser.handler",
@@ -3632,7 +3833,7 @@
         "timeout": 30,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "RejectUserLambdaVersionFsuV3lxozJ20fGElgx6toKLaXb5jskdiv72d2J658QY"
+        "versionLogicalId": "RejectUserLambdaVersion1Yww3SaE5MC6gj9OSV1DQLcknXn0pYzgMwblom2uIE"
       },
       "getAllUsers": {
         "handler": "functions/admin/getAllUsers.handler",
@@ -3668,7 +3869,7 @@
         "timeout": 30,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "GetAllUsersLambdaVersionlH1sYaoTxzZ6aVGx8gghWwX421ZgRgbHW2cLTQkDT4U"
+        "versionLogicalId": "GetAllUsersLambdaVersiondEcMngPvkNpdLpstrM0AjnyyYkMaNjDEwZSJ0cKJnY0"
       },
       "deleteUser": {
         "handler": "functions/admin/deleteUser.handler",
@@ -3704,7 +3905,7 @@
         "timeout": 30,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "DeleteUserLambdaVersionmxuRaM6abdC9si3hWghU7ielsj32An0q2K4551lIQ"
+        "versionLogicalId": "DeleteUserLambdaVersionHamIPsbaeWPjNYnFHJq4bwSx8MxO1vYm0D4f8pED84w"
       },
       "uploadContent": {
         "handler": "functions/admin/uploadContent.handler",
@@ -3740,7 +3941,7 @@
         "timeout": 30,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "UploadContentLambdaVersionGHjIB5GkzPeCq0jcqqR17tBCkCG7hnvUFNYtErwts8o"
+        "versionLogicalId": "UploadContentLambdaVersionXnMx63chqHtkauFuu5GgzJuKLpud0Pz3iY5qngxjM0"
       },
       "getAllLearningRecords": {
         "handler": "functions/admin/getAllLearningRecords.handler",
@@ -3776,7 +3977,7 @@
         "timeout": 30,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "GetAllLearningRecordsLambdaVersionDmBGPGC8NBumE3PRZ939fAmOFGe2Oz9yuZsTl0VB4lg"
+        "versionLogicalId": "GetAllLearningRecordsLambdaVersionQSVpDbLk92YLaEgNcQ8ibmAYFAcGMO7kgRtl1zbY"
       },
       "getContents": {
         "handler": "functions/student/getContents.handler",
@@ -3812,7 +4013,7 @@
         "timeout": 30,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "GetContentsLambdaVersionlyubXgVUMzIg9BaoRxeidYdB61gcT2U0eeqTGg7E"
+        "versionLogicalId": "GetContentsLambdaVersioneXdOXhmN1bne8WLkYQnfYWIfS82GrbwL4cT1u0yVmhg"
       },
       "getContentDetail": {
         "handler": "functions/student/getContentDetail.handler",
@@ -3848,7 +4049,7 @@
         "timeout": 30,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "GetContentDetailLambdaVersionmWtXdnWl7VFKmZsQfTmVi1VgRSC9IlQRw9mNizGNM"
+        "versionLogicalId": "GetContentDetailLambdaVersion7n7gF4EiKlHLVdggwxbo1sBQsjGig4PtwfinYZw"
       },
       "saveLearningRecord": {
         "handler": "functions/student/saveLearningRecord.handler",
@@ -3884,7 +4085,7 @@
         "timeout": 30,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "SaveLearningRecordLambdaVersionF9tjVrIENSjpDP0b4RBb2LqFWwLv76KFD1YMbUipLo"
+        "versionLogicalId": "SaveLearningRecordLambdaVersionQkpDBdYt40X81YC1uGUbFkx4MzqmKrIGYyMW209K4T8"
       },
       "getMyRecords": {
         "handler": "functions/student/getMyRecords.handler",
@@ -3920,7 +4121,43 @@
         "timeout": 30,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "GetMyRecordsLambdaVersionVaCnHDg8Jp6OgMzfOrqEiu4E3QDl58mHj4gwSTTd8g"
+        "versionLogicalId": "GetMyRecordsLambdaVersioncbvMF0Xl12fj95NfOWC3sZXKlIkiJt4MKmbVUMf3vQ"
+      },
+      "getRankings": {
+        "handler": "functions/student/getRankings.handler",
+        "events": [
+          {
+            "http": {
+              "path": "student/rankings",
+              "method": "get",
+              "cors": {
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "GET"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent",
+                  "X-Amzn-Trace-Id"
+                ],
+                "allowCredentials": false
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "langwindow-backend-dev-getRankings",
+        "package": {},
+        "memory": 256,
+        "timeout": 30,
+        "runtime": "nodejs20.x",
+        "vpc": {},
+        "versionLogicalId": "GetRankingsLambdaVersionyIgN6cFWyY3HkagEEorD5hfMpERTgjcvO0Kjy8ylY"
       }
     },
     "resources": {
@@ -4091,7 +4328,7 @@
     "artifact": "C:\\Users\\RENEWCOM PC\\Documents\\claude-code\\언어의창-학습관\\backend\\.serverless\\langwindow-backend.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/langwindow-backend/dev/1760803320621-2025-10-18T16:02:00.621Z",
+    "artifactDirectoryName": "serverless/langwindow-backend/dev/1761131250807-2025-10-22T11:07:30.807Z",
     "artifact": "langwindow-backend.zip"
   }
 }

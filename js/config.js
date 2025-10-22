@@ -23,6 +23,8 @@ const API_CONFIG = {
     GET_CONTENT_DETAIL: '/student/content',
     SAVE_LEARNING_RECORD: '/student/learning-record',
     GET_MY_RECORDS: '/student/my-records',
+    INCREMENT_LEARNING_COUNT: '/student/content/increment-learning-count',
+    GET_RANKINGS: '/student/rankings',
   }
 };
 

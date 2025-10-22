@@ -2422,19 +2422,6 @@
             stage1Data.startTime = Date.now();
 
             document.getElementById('result-screen').classList.remove('active');
-            // 학습 완료 시스템을 위한 데이터 export
-        window.learningResultData = {
-            totalStages: totalStages || 5,
-            totalCorrect: totalCorrect || 0,
-            totalWrong: totalWrong || 0,
-            totalAccuracy: totalAccuracy || 0,
-            totalScore: totalScore || 0,
-            totalElapsedTime: totalElapsedTime || (Date.now() - globalStartTime),
-            stagesDetail: stageResults || {}
-        };
-        console.log('학습 데이터 export:', window.learningResultData);
-
-
             document.getElementById('main-content').style.display = 'block';
 
             // 하이라이트 초기화
@@ -5197,15 +5184,54 @@
 
             // 부모 프로그램에 최종 결과 전송
             sendFinalDataToParent();
-            // 학습 완료 버튼 추가
-            if (typeof addCompleteLearningButton === 'function') {
-                setTimeout(() => addCompleteLearningButton(), 500);
-            }
         }
 
         // 부모 프로그램으로 최종 데이터 전송
         function sendFinalDataToParent() {
             const totalElapsedTime = Date.now() - globalStartTime;
+
+            // 전체 결과 계산
+            const totalCorrect = Object.values(stageResults).reduce((sum, s) => sum + s.correct, 0);
+            const totalWrong = Object.values(stageResults).reduce((sum, s) => sum + s.wrong, 0);
+            const totalAccuracy = (totalCorrect + totalWrong) > 0 ?
+                                   Math.round((totalCorrect / (totalCorrect + totalWrong)) * 100) : 0;
+            const totalScore = Object.values(stageResults).reduce((sum, s) => sum + s.score, 0);
+
+            // 전체 문제 수 계산 (실제 문제 배열 기반)
+            const stage2Questions = vocabularyData.length * 2;  // 단어당 2문제
+            const stage3Questions = sentenceData.length;
+            const totalAllQuestions = learningData.questions.length + stage2Questions + stage3Questions + oxQuizData.length + writingQuestions.length;
+            const answeredQuestions = totalCorrect + totalWrong;
+            const progress = totalAllQuestions > 0
+                ? Math.round((answeredQuestions / totalAllQuestions) * 100)
+                : 100;
+
+            // 각 스테이지에 totalQuestions 추가
+            const stagesDetailWithTotal = {
+                stage1: {
+                    ...stageResults.stage1,
+                    totalQuestions: learningData.questions.length
+                },
+                stage2: {
+                    ...stageResults.stage2,
+                    totalQuestions: stage2Questions
+                },
+                stage3: {
+                    ...stageResults.stage3,
+                    totalQuestions: stage3Questions
+                },
+                stage4: {
+                    ...stageResults.stage4,
+                    totalQuestions: oxQuizData.length
+                },
+                stage5: {
+                    ...stageResults.stage5,
+                    totalQuestions: writingQuestions.length
+                }
+            };
+
+            console.log('=== sendFinalDataToParent 호출됨 ===');
+            console.log('전체 문제 수:', totalAllQuestions, '/ 푼 문제 수:', answeredQuestions, '/ 진행률:', progress + '%');
 
             if (window.parent && window.parent !== window) {
                 window.parent.postMessage({
@@ -5218,7 +5244,12 @@
                         totalAccuracy: totalAccuracy,
                         totalScore: totalScore,
                         totalElapsedTime: totalElapsedTime,
-                        stagesDetail: stageResults,
+                        stagesDetail: stagesDetailWithTotal,
+                        totalQuestions: totalAllQuestions,
+                        answeredQuestions: answeredQuestions,
+                        correctAnswers: totalCorrect,
+                        wrongAnswers: totalWrong,
+                        progress: progress,
                         timestamp: Date.now()
                     }
                 }, '*');
@@ -5277,9 +5308,5 @@
         // 초기화 실행
         window.addEventListener('DOMContentLoaded', init);
     </script>
-
-    <!-- 학습 완료 시스템 -->
-    <script src="../js/config.js"></script>
-    <script src="../js/learning-complete.js"></script>
 </body>
 </html>
